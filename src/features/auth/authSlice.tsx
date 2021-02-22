@@ -87,20 +87,29 @@ export const fetchAsyncLogin = createAsyncThunk(
     return res.data;
   });
 
-
+ //fフォローしているユーザー
+ export const fetchAsyncFollowing = createAsyncThunk("profile/get", async () => {
+  const res = await axios.get(`${apiUrl}api/following/`, {
+    headers: {
+      Authorization: `JWT ${localStorage.localJWT}`,
+    },
+  });
+  return res.data;
+});
 
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState:{
-    openSignIn: true,
-    openSignUp: false,
-    isLoadingAuth: false, //処理最中にtrue
-
+    openSignInModal: true,
+    openSignUpModal: false,
+    failedSignIn: false,//ログインの成功・失敗
+    openProfile:false,//プロフィール情報のオンオフ
     //ログインしている人のプロフィールを管理
     myprofile: {
       id: 0,
       nickName: "",
+      text:"",
       userProfile: 0,
       created_on: "",
       img: "",
@@ -110,38 +119,67 @@ export const authSlice = createSlice({
       {
         id: 0,
         nickName: "",
+        text:"",
         userProfile: 0,
         created_on: "",
         img: "",
       },
     ],
+    //詳細表示
+    selectedProfile:{
+      id: 0,
+      nickName: "",
+      text:"",
+      userProfile: 0,
+      created_on: "",
+      img: "",
+    },
+    followingUser:[
+      {
+        id:0,
+        userFollow:0,
+        following:0,
+      },
+    ],
   },
   reducers: {
-    fetchCredStart(state) {
-        state.isLoadingAuth = true;
-      },
-      fetchCredEnd(state) {
-        state.isLoadingAuth = false;
-      },
       // ログイン用
       setOpenSignIn(state) {
-        state.openSignIn = true;
+        state.openSignInModal = true;
       },
       resetOpenSignIn(state) {
-        state.openSignIn = false;
+        state.openSignInModal = false;
       },
+      //ログイン失敗
+      setFailedSignIn(state){
+        state.failedSignIn=true;
+      },
+      resetFailedSignIn(state){
+        state.failedSignIn=false;
+      },
+
       //登録用
       setOpenSignUp(state) {
-        state.openSignUp = true;
+        state.openSignUpModal = true;
       },
       resetOpenSignUp(state) {
-        state.openSignUp = false;
+        state.openSignUpModal = false;
       },
      
       //ニックネームを編集するためのアクション
       editNickname(state, action) {
         state.myprofile.nickName = action.payload;
       },
+      //プロフィール表示オンオフ
+      setOpenProfile(state){
+        state.openProfile=true;
+      },
+      resetOpenProfile(state){
+        state.openProfile=false;
+      },
+      selectUserProfile(state,action){
+        state.selectedProfile=action.payload;
+      }
   },
   extraReducers:(builder)=>{
     //ログインが成功したらjwtをローカルに保存
@@ -151,38 +189,42 @@ export const authSlice = createSlice({
     builder.addCase(fetchAsyncCreateProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;//(returnが返ってくる)
       });
-      builder.addCase(fetchAsyncGetMyProf.fulfilled, (state, action) => {
+    builder.addCase(fetchAsyncGetMyProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
       });
-      builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
+
+    builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
         state.profiles = action.payload;
       });
-      builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
+    builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
         state.profiles = state.profiles.map((prof) =>
           prof.id === action.payload.id ? action.payload : prof
         );
       });
-    
   },
 });
 
 export const {
-    fetchCredStart,
-    fetchCredEnd,
     setOpenSignIn,
     resetOpenSignIn,
+    setFailedSignIn,
+    resetFailedSignIn,
     setOpenSignUp,
     resetOpenSignUp,
     editNickname,
+    resetOpenProfile,
+    setOpenProfile,
+    selectUserProfile,
   } = authSlice.actions;
 
-export const selectIsLoadingAuth = (state: RootState) =>state.auth.isLoadingAuth;
-export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
-export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
-
+export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;
+export const selectOpenSignUp = (state: RootState) => state.auth.openSignUpModal;
+export const selectFailedSignIn=(state:RootState) =>state.auth.failedSignIn;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
 export const selectProfiles = (state: RootState) => state.auth.profiles;
+export const selectOpenProfile =(state:RootState)=>state.auth.openProfile;
+export const selectSelectedProfile=(state:RootState)=>state.auth.selectedProfile;
 
 
 export default authSlice.reducer;

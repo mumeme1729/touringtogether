@@ -7,53 +7,55 @@ import Modal from "react-modal";
 
 
 import {
-    selectIsLoadingAuth,
     selectOpenSignIn,
     selectOpenSignUp,
     setOpenSignIn,
     resetOpenSignIn,
     setOpenSignUp,
     resetOpenSignUp,
-    fetchCredStart,
-    fetchCredEnd,
     fetchAsyncLogin,
     fetchAsyncRegister,
     fetchAsyncGetMyProf,
     fetchAsyncGetProfs,
     fetchAsyncCreateProf,
+    setFailedSignIn,
+    selectFailedSignIn,
+    resetFailedSignIn,
   } from "./authSlice";
 
+
+  const customStyles = {
+    overlay: {
+      backgroundColor: "#777777",
+    },
+  };
 
 const Auth:React.FC= () => {
     //ログイン
     const openSignIn = useSelector(selectOpenSignIn);
+    const failedSignIn=useSelector(selectFailedSignIn);
     //新規登録
     const openSignUp = useSelector(selectOpenSignUp);
-    const isLoadingAuth = useSelector(selectIsLoadingAuth);
     const dispatch: AppDispatch = useDispatch();
 
     return (
         <> 
            {/* 登録用モーダル */}
-           <Modal isOpen={openSignUp} > 
+           <Modal isOpen={openSignUp} style={customStyles} > 
            <Formik
             initialErrors={{ email: "required" }}
             initialValues={{ email: "", password: "" }}
             //入力したメアドなどをオブジェクトとしてvaluesへ
             onSubmit={async (values) => {
-              await dispatch(fetchCredStart());
-              const resultReg = await dispatch(fetchAsyncRegister(values));
+              const resultRegister = await dispatch(fetchAsyncRegister(values));
                 
               //新規作成に成功したらログイン
-              if (fetchAsyncRegister.fulfilled.match(resultReg)) {
+              if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
                 await dispatch(fetchAsyncLogin(values));
                 await dispatch(fetchAsyncCreateProf({ nickName: "anonymous" }));
                 await dispatch(fetchAsyncGetProfs());
-                //await dispatch(fetchAsyncGetPosts());
-                //await dispatch(fetchAsyncGetComments());
                 await dispatch(fetchAsyncGetMyProf());
               }
-              await dispatch(fetchCredEnd());
               await dispatch(resetOpenSignUp());
             }}
             //バリデーション
@@ -95,17 +97,9 @@ const Auth:React.FC= () => {
                       onBlur={handleBlur}
                       value={values.password}
                     />
-
                     <br />
                     <br />
-  
-                    <button
-                      color="primary"
-                      disabled={!isValid}
-                      type="submit"
-                    >
-                      Register
-                    </button>
+                    <button color="primary" disabled={!isValid} type="submit">Register</button>
                     <br />
                     <br />
                     <span
@@ -124,22 +118,24 @@ const Auth:React.FC= () => {
         </Modal>
 
            {/*ログイン */}
-           <Modal isOpen={openSignIn} > 
+           <Modal isOpen={openSignIn} style={customStyles}> 
            <Formik
             initialErrors={{ email: "required" }}
             initialValues={{ email: "", password: "" }}
             //入力したメアドなどをオブジェクトとしてvaluesへ
             onSubmit={async (values) => {
-                await dispatch(fetchCredStart());
                 const result = await dispatch(fetchAsyncLogin(values));
                 if (fetchAsyncLogin.fulfilled.match(result)) {
                   await dispatch(fetchAsyncGetProfs());
-                  //await dispatch(fetchAsyncGetPosts());
-                  //await dispatch(fetchAsyncGetComments());
                   await dispatch(fetchAsyncGetMyProf());
+                  await dispatch(resetFailedSignIn());
+                  await dispatch(resetOpenSignIn());
                 }
-                await dispatch(fetchCredEnd());
-                await dispatch(resetOpenSignIn());
+                if(fetchAsyncLogin.rejected.match(result)){
+                  values.email=""
+                  values.password=""
+                  await dispatch(setFailedSignIn());//ログイン失敗
+                }
             }}
             //バリデーション
             validationSchema={Yup.object().shape({
@@ -161,7 +157,8 @@ const Auth:React.FC= () => {
               <div>
                 <form onSubmit={handleSubmit}>
                 <div >
-                    <h1>SNS clone</h1>
+                    <h1>Login</h1>
+                    { failedSignIn ? <div>ログインに失敗しました</div>:<div></div>}
                     <br />
                     <br />
                     <input
@@ -173,7 +170,10 @@ const Auth:React.FC= () => {
                       value={values.email}
                     />
                     <br />
-  
+                    {touched.email && errors.email ? (
+                      <div >{errors.email}</div>
+                    ) : null}
+                    <br />
                     <input
                       placeholder="password"
                       type="password"
@@ -182,19 +182,15 @@ const Auth:React.FC= () => {
                       onBlur={handleBlur}
                       value={values.password}
                     />
+                     {touched.password && errors.password ? (
+                      <div >{errors.password}</div>
+                    ) : null}
                     <br />
                     <br />
-                    <button
-                      color="primary"
-                      disabled={!isValid}
-                      type="submit"
-                    >
-                      Login
-                    </button>
+                    <button color="primary" disabled={!isValid} type="submit"> Login </button>
                     <br />
                     <br />
-                    <span
-                      onClick={async () => {
+                    <span onClick={async () => {
                         await dispatch(resetOpenSignIn());
                         await dispatch(setOpenSignUp());
                       }}
@@ -206,9 +202,8 @@ const Auth:React.FC= () => {
               </div>
             )}
           </Formik>
-           
-           </Modal>
-        </>
+        </Modal>
+      </>
     )
 }
 

@@ -1,0 +1,86 @@
+
+/*    ヘッダー    */
+.home_header {
+    top: 0;
+    background-color: gray;
+    padding: 10px;
+    display: flex;
+    z-index: 1;
+    padding-left: 50px;
+    padding-right: 50px;
+    justify-content: space-between;
+}
+
+.home_header_right{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+.home_header_avater{
+    margin-top: 10px;
+    margin-left: 8px;
+    
+}
+.header_nickname{
+    margin-top: 15px;
+}
+.nickname_p{
+    font-size: 20px;
+    font-weight: 900;
+}
+.home_avatar{
+    height: 50px;
+    width:50px;
+}
+
+.homr_btnprofile {
+    background-color: transparent;
+    color: white;
+    padding-top: 3px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+.homr_btnprofile:hover{
+    opacity: 0.7;
+}
+
+.body_container{
+    display: flex;
+    justify-content: center;
+
+}
+
+.user{
+    margin-left: 10px;
+    
+}
+
+/*      プロフィール詳細        */
+.profileDetail{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.profileDetail_container{
+    width: 50%;
+    border:solid;
+}
+
+.detail_h2{
+  margin-left: 20px;  
+}
+
+.detail_avatar{
+    display: flex;
+    justify-content: left;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.logout_btn{
+    display: flex;
+    justify-content: left;
+    margin-left: 7px;
+}

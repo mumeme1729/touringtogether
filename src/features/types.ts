@@ -13,4 +13,14 @@ export interface PROPS_NICKNAME {
     nickName: string;
 }
 
+export interface PROPS_ALL_USER{
+    id: number;
+    nickName: string;
+    text:string;
+    userProfile: number;
+    created_on: string;
+    img: string;
+}
+
+
 
