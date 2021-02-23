@@ -6,11 +6,13 @@ export interface PROPS_AUTHEN {
 export interface PROPS_PROFILE {
     id: number;
     nickName: string;
+    text:string;
     img: File | null;
 }
 
-export interface PROPS_NICKNAME {
+export interface PROPS_NICKNAME_TEXT {
     nickName: string;
+    text:string;
 }
 
 export interface PROPS_ALL_USER{
@@ -22,5 +24,8 @@ export interface PROPS_ALL_USER{
     img: string;
 }
 
-
+export interface File extends Blob {
+    readonly lastModified: number;
+    readonly name: string;
+  }
 

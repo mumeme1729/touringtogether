@@ -10,7 +10,6 @@ import {
 import User from "./User";
 
 import {
-    editNickname,
     selectProfile,
     setOpenSignIn,
     resetOpenSignIn,
@@ -23,6 +22,7 @@ import {
     setOpenProfile,
     resetOpenProfile,
     selectUserProfile,
+    fetchAsyncRelations,
 } from "../auth/authSlice";
 import classes from './Home.module.css';
 import { PROPS_PROFILE,PROPS_ALL_USER } from '../types';
@@ -41,11 +41,15 @@ const Home:React.FC = () => {
             if (localStorage.localJWT) {
                 dispatch(resetOpenSignIn());//opensignInをoffにする
                 const result = await dispatch(fetchAsyncGetMyProf());//ログインしているユーザーのプロフィールを取得する
+                 
                 if (fetchAsyncGetMyProf.rejected.match(result)) {
                   dispatch(setOpenSignIn());
+                
                   return null;
                 }
-                await dispatch(fetchAsyncGetProfs());
+                await dispatch(fetchAsyncGetProfs()); 
+                await dispatch(fetchAsyncRelations());
+                     
               }
             };
             fetchLoader();

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME,PROPS_ALL_USER } from "../types";
+import { PROPS_ALL_USER } from "../types";
 import { AppDispatch } from "../../app/store";
 import {
     Avatar,

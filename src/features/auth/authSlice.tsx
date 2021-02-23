@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME } from "../types";
+import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT } from "../types";
 
 //環境変数を読み込む
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
@@ -36,7 +36,7 @@ export const fetchAsyncLogin = createAsyncThunk(
   //プロフィールの作成
   export const fetchAsyncCreateProf = createAsyncThunk(
     "profile/post",
-    async (nickName: PROPS_NICKNAME) => {
+    async (nickName: PROPS_NICKNAME_TEXT) => {
       const res = await axios.post(`${apiUrl}api/profile/`, nickName, {
         headers: {
           "Content-Type": "application/json",
@@ -52,6 +52,7 @@ export const fetchAsyncLogin = createAsyncThunk(
     async (profile: PROPS_PROFILE) => {
       const uploadData = new FormData();
       uploadData.append("nickName", profile.nickName);
+      uploadData.append("text", profile.text);
       profile.img && uploadData.append("img", profile.img, profile.img.name);
       const res = await axios.put(
         `${apiUrl}api/profile/${profile.id}/`,
@@ -87,9 +88,9 @@ export const fetchAsyncLogin = createAsyncThunk(
     return res.data;
   });
 
- //fフォローしているユーザー
- export const fetchAsyncFollowing = createAsyncThunk("profile/get", async () => {
-  const res = await axios.get(`${apiUrl}api/following/`, {
+ //フォロー関係をすべて取得
+ export const fetchAsyncRelations = createAsyncThunk("relationships/get", async () => {
+  const res = await axios.get(`${apiUrl}api/relationship/`, {
     headers: {
       Authorization: `JWT ${localStorage.localJWT}`,
     },
@@ -105,6 +106,8 @@ export const authSlice = createSlice({
     openSignUpModal: false,
     failedSignIn: false,//ログインの成功・失敗
     openProfile:false,//プロフィール情報のオンオフ
+    openEditProfile:false,
+    openRelatinDetail:false,//フォロー関係モーダルのオンオフ
     //ログインしている人のプロフィールを管理
     myprofile: {
       id: 0,
@@ -134,7 +137,7 @@ export const authSlice = createSlice({
       created_on: "",
       img: "",
     },
-    followingUser:[
+    followRelations:[
       {
         id:0,
         userFollow:0,
@@ -170,6 +173,10 @@ export const authSlice = createSlice({
       editNickname(state, action) {
         state.myprofile.nickName = action.payload;
       },
+      //紹介文の編集
+      editProfileText(state,action){
+        state.myprofile.text=action.payload;
+      },
       //プロフィール表示オンオフ
       setOpenProfile(state){
         state.openProfile=true;
@@ -179,7 +186,14 @@ export const authSlice = createSlice({
       },
       selectUserProfile(state,action){
         state.selectedProfile=action.payload;
-      }
+      },
+      //プロフィール編集画面のオンオフ
+      setOpenEditProfile(state){
+        state.openEditProfile=true;
+      },
+      resetOpenEditProfile(state){
+        state.openEditProfile=false;
+      },
   },
   extraReducers:(builder)=>{
     //ログインが成功したらjwtをローカルに保存
@@ -195,6 +209,9 @@ export const authSlice = createSlice({
 
     builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
         state.profiles = action.payload;
+      });
+    builder.addCase(fetchAsyncRelations.fulfilled, (state, action) => {
+        state.followRelations = action.payload;
       });
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
@@ -216,6 +233,9 @@ export const {
     resetOpenProfile,
     setOpenProfile,
     selectUserProfile,
+    setOpenEditProfile,
+    resetOpenEditProfile,
+    editProfileText,
   } = authSlice.actions;
 
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;
@@ -225,6 +245,8 @@ export const selectProfile = (state: RootState) => state.auth.myprofile;
 export const selectProfiles = (state: RootState) => state.auth.profiles;
 export const selectOpenProfile =(state:RootState)=>state.auth.openProfile;
 export const selectSelectedProfile=(state:RootState)=>state.auth.selectedProfile;
+export const selectOpenEditProfile =(state:RootState)=>state.auth.openEditProfile;
+export const selectRelationships =(state:RootState)=>state.auth.followRelations;
 
 
 export default authSlice.reducer;

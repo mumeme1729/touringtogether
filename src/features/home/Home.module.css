@@ -66,6 +66,7 @@
 .profileDetail_container{
     width: 50%;
     border:solid;
+    
 }
 
 .detail_h2{
@@ -83,4 +84,12 @@
     display: flex;
     justify-content: left;
     margin-left: 7px;
+}
+
+/*  フォロー・フォロワー */
+.relationship_num{
+    display: flex;
+}
+.relationship_p{
+    margin-left: 5px;
 }

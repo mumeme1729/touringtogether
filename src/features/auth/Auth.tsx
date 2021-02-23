@@ -52,7 +52,7 @@ const Auth:React.FC= () => {
               //新規作成に成功したらログイン
               if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
                 await dispatch(fetchAsyncLogin(values));
-                await dispatch(fetchAsyncCreateProf({ nickName: "anonymous" }));
+                await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定" }));
                 await dispatch(fetchAsyncGetProfs());
                 await dispatch(fetchAsyncGetMyProf());
               }
