@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT } from "../types";
+import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT,  PROPS_RELATION } from "../types";
+import { number } from "yup/lib/locale";
 
 //環境変数を読み込む
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
@@ -98,6 +99,32 @@ export const fetchAsyncLogin = createAsyncThunk(
   return res.data;
 });
 
+//フォロー
+export const fetchAsyncFollowing = createAsyncThunk(
+  "relationships/post",
+  async (following: PROPS_RELATION) => {
+    const res = await axios.post(`${apiUrl}api/relationship/`, following, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  }
+);
+
+//フォロー解除
+export const fetchAsyncFollowingDelete =createAsyncThunk("relationships/delete",async (id:number) =>{
+  await console.log(id)
+  await axios.delete(`${apiUrl}api/relationship/${id}/`,{
+      headers:{
+          "Content-Type":"application/json",
+          Authorization: `JWT ${localStorage.localJWT}`,
+      },
+  });
+  return id;
+});
+
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -108,6 +135,8 @@ export const authSlice = createSlice({
     openProfile:false,//プロフィール情報のオンオフ
     openEditProfile:false,
     openRelatinDetail:false,//フォロー関係モーダルのオンオフ
+    openFollowing:false,
+    openFollower:false,
     //ログインしている人のプロフィールを管理
     myprofile: {
       id: 0,
@@ -136,6 +165,12 @@ export const authSlice = createSlice({
       userProfile: 0,
       created_on: "",
       img: "",
+    },
+    //新しいフォロー関係
+    newRelationsip:{
+      id:0,
+      userFollow:0,
+      following:0,
     },
     followRelations:[
       {
@@ -194,6 +229,31 @@ export const authSlice = createSlice({
       resetOpenEditProfile(state){
         state.openEditProfile=false;
       },
+      //フォロー関係のオンオフ
+      setOpenRelationshipDetail(state){
+        state.openRelatinDetail=true;
+      },
+      resetOpenRelationshipDetail(state){
+        state.openRelatinDetail=false;
+      },
+      //フォロー
+      setOpenFollowing(state){
+        state.openFollowing=true;
+      },
+      resetOpenFollowing(state){
+        state.openFollowing=false;
+      },
+      setOpenFollower(state){
+        state.openFollower=true;
+      },
+      resetOpenFollower(state){
+        state.openFollower=false;
+      },
+      addRelation(state,action){
+        state.newRelationsip=action.payload;
+      }
+
+
   },
   extraReducers:(builder)=>{
     //ログインが成功したらjwtをローカルに保存
@@ -213,12 +273,28 @@ export const authSlice = createSlice({
     builder.addCase(fetchAsyncRelations.fulfilled, (state, action) => {
         state.followRelations = action.payload;
       });
+    builder.addCase(fetchAsyncFollowing.fulfilled,(state,action)=>{
+        return{
+          ...state,
+          followRelations:[action.payload,...state.followRelations]
+        }
+    });
+    builder.addCase(fetchAsyncFollowingDelete.fulfilled,(state,action)=>{
+        return{
+          ...state,
+          followRelations:state.followRelations.filter((t)=>t.id!==action.payload),
+          newRelationsip:{id:0,userFollow:0,following:0,},
+        };
+    });
+
+
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
         state.profiles = state.profiles.map((prof) =>
           prof.id === action.payload.id ? action.payload : prof
         );
       });
+      
   },
 });
 
@@ -236,6 +312,13 @@ export const {
     setOpenEditProfile,
     resetOpenEditProfile,
     editProfileText,
+    setOpenRelationshipDetail,
+    resetOpenRelationshipDetail,
+    setOpenFollowing,
+    resetOpenFollowing,
+    setOpenFollower,
+    resetOpenFollower,
+    addRelation,
   } = authSlice.actions;
 
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;
@@ -247,6 +330,9 @@ export const selectOpenProfile =(state:RootState)=>state.auth.openProfile;
 export const selectSelectedProfile=(state:RootState)=>state.auth.selectedProfile;
 export const selectOpenEditProfile =(state:RootState)=>state.auth.openEditProfile;
 export const selectRelationships =(state:RootState)=>state.auth.followRelations;
-
+export const selectOpenRelationshipDetail=(state:RootState)=>state.auth.openRelatinDetail;
+export const selectOpenFollowing=(state:RootState)=>state.auth.openFollowing;
+export const selectOpenFollower=(state:RootState)=>state.auth.openFollower;
+export const selectAddRelationship=(state:RootState)=>state.auth.newRelationsip;
 
 export default authSlice.reducer;

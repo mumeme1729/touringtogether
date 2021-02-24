@@ -93,3 +93,21 @@
 .relationship_p{
     margin-left: 5px;
 }
+
+.relationship_all{
+    display: flex;
+    margin-top: 10px;
+}
+.relationship_nickname{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.profile_text{
+    margin-left: 50px;
+    margin-top: -18px;
+    z-index: 1;
+}
+.text_p{
+    font-size: 12px;
+    
+}

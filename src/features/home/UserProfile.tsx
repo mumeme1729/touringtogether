@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { useSelector,useDispatch } from "react-redux";
 import { 
     selectSelectedProfile,
@@ -6,7 +6,8 @@ import {
     setOpenSignIn,
     setOpenEditProfile,
     resetOpenProfile,
-    selectRelationships
+    selectRelationships,
+    fetchAsyncRelations
 } from "../auth/authSlice";
 import { Avatar,Button} from "@material-ui/core";
 import styles from "./Home.module.css";
@@ -19,6 +20,15 @@ const UserProfile:React.FC = () => {
     const loginUser=useSelector(selectProfile)
     const followRelations=useSelector(selectRelationships);
     const dispatch: AppDispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchLoader = async ()=>{ 
+            await dispatch(fetchAsyncRelations());  
+        };
+        fetchLoader();
+    },[dispatch]);
+
+
     return (
         <div className={styles.profileDetail}>
             <div className={styles.profileDetail_container}>
@@ -49,12 +59,12 @@ const UserProfile:React.FC = () => {
                         </div>
                     </>
                 ): 
-                <>
+                 <>
+                     {/* ログインしているユーザー以外 */}
                     <div className={styles.detail_avatar}>
                         <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>{" "}
                         <div className={styles.detail_h2}>
                             <h2>{selectedProfile.nickName}</h2>
-                            <p>フォロー</p>
                             <RelationShip id={selectedProfile.id} nickName={selectedProfile.nickName} text={selectedProfile.text} userProfile={selectedProfile.userProfile} created_on={selectedProfile.created_on} img={selectedProfile.img}/>
                         </div>
                     </div>

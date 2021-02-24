@@ -48,8 +48,7 @@ const Home:React.FC = () => {
                   return null;
                 }
                 await dispatch(fetchAsyncGetProfs()); 
-                await dispatch(fetchAsyncRelations());
-                     
+               // await dispatch(fetchAsyncRelations());       
               }
             };
             fetchLoader();

@@ -29,3 +29,10 @@ export interface File extends Blob {
     readonly name: string;
   }
 
+export interface PROPS_RELATION{
+    id:number;
+    userFollow:number,
+    following:number,
+}
+
+
