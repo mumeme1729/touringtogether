@@ -5,7 +5,6 @@ import {
     selectProfile,
     setOpenSignIn,
     setOpenEditProfile,
-    resetOpenProfile,
     selectRelationships,
     fetchAsyncRelations
 } from "../auth/authSlice";
@@ -14,12 +13,23 @@ import styles from "./Home.module.css";
 import { AppDispatch } from "../../app/store";
 import EditProfile from './EditProfile';
 import RelationShip from './relationShip';
+import {Link} from 'react-router-dom';
 
 const UserProfile:React.FC = () => {
-    const selectedProfile=useSelector(selectSelectedProfile)
+    //const selectedProfile=useSelector(selectSelectedProfile)
     const loginUser=useSelector(selectProfile)
     const followRelations=useSelector(selectRelationships);
     const dispatch: AppDispatch = useDispatch();
+    
+    const selectedProfile:{
+        id: number,
+        nickName: string,
+        text:string,
+        userProfile: number,
+        created_on: string,
+        img: string,
+      }=JSON.parse(localStorage.getItem("localselectedProfile") as string);
+
 
     useEffect(() => {
         const fetchLoader = async ()=>{ 
@@ -42,12 +52,13 @@ const UserProfile:React.FC = () => {
                             </div>
                         </div>
                         <div className={styles.logout_btn}>
-                            <Button onClick={() => {
-                                    localStorage.removeItem("localJWT");
-                                    dispatch(setOpenSignIn());
-                                    dispatch(resetOpenProfile());
-                                }}
-                            >Logout</Button>
+                            <Link to ="/">
+                                <Button onClick={() => {
+                                        localStorage.removeItem("localJWT");
+                                        dispatch(setOpenSignIn());
+                                    }}
+                                >Logout</Button>
+                            </Link>
                             <Button onClick={() => {
                                     dispatch(setOpenEditProfile());
                                 }}
@@ -80,5 +91,6 @@ const UserProfile:React.FC = () => {
         </div>
     )
 }
+
 
 export default UserProfile

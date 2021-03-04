@@ -22,7 +22,7 @@ import {
     selectFailedSignIn,
     resetFailedSignIn,
   } from "./authSlice";
-
+  import {fetchAsyncGetPlans,}from "../plan/planSlice";
 
   const customStyles = {
     overlay: {
@@ -128,6 +128,7 @@ const Auth:React.FC= () => {
                 if (fetchAsyncLogin.fulfilled.match(result)) {
                   await dispatch(fetchAsyncGetProfs());
                   await dispatch(fetchAsyncGetMyProf());
+                  await dispatch(fetchAsyncGetPlans()); 
                   await dispatch(resetFailedSignIn());
                   await dispatch(resetOpenSignIn());
                 }

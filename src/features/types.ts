@@ -34,5 +34,23 @@ export interface PROPS_RELATION{
     userFollow:number,
     following:number,
 }
+// プラン
+export interface PROPS_PLAN{
+    destination:string,
+    date:string,
+    text:string,
+}
 
+export interface PROPS_PLANS{
+    id:number,
+    destination:string,
+    date:string,
+    userPlan:number,
+    created_on:string,
+    text:string,
+}
 
+export interface PROPS_SEARCH_PLAN{
+    destination:string,
+    date:string,
+}

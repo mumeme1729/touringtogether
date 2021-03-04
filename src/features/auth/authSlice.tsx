@@ -132,7 +132,6 @@ export const authSlice = createSlice({
     openSignInModal: true,
     openSignUpModal: false,
     failedSignIn: false,//ログインの成功・失敗
-    openProfile:false,//プロフィール情報のオンオフ
     openEditProfile:false,
     openRelatinDetail:false,//フォロー関係モーダルのオンオフ
     openFollowing:false,
@@ -213,14 +212,9 @@ export const authSlice = createSlice({
         state.myprofile.text=action.payload;
       },
       //プロフィール表示オンオフ
-      setOpenProfile(state){
-        state.openProfile=true;
-      },
-      resetOpenProfile(state){
-        state.openProfile=false;
-      },
       selectUserProfile(state,action){
         state.selectedProfile=action.payload;
+        localStorage.setItem("localselectedProfile", JSON.stringify(action.payload));
       },
       //プロフィール編集画面のオンオフ
       setOpenEditProfile(state){
@@ -306,8 +300,6 @@ export const {
     setOpenSignUp,
     resetOpenSignUp,
     editNickname,
-    resetOpenProfile,
-    setOpenProfile,
     selectUserProfile,
     setOpenEditProfile,
     resetOpenEditProfile,
@@ -326,7 +318,6 @@ export const selectOpenSignUp = (state: RootState) => state.auth.openSignUpModal
 export const selectFailedSignIn=(state:RootState) =>state.auth.failedSignIn;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
 export const selectProfiles = (state: RootState) => state.auth.profiles;
-export const selectOpenProfile =(state:RootState)=>state.auth.openProfile;
 export const selectSelectedProfile=(state:RootState)=>state.auth.selectedProfile;
 export const selectOpenEditProfile =(state:RootState)=>state.auth.openEditProfile;
 export const selectRelationships =(state:RootState)=>state.auth.followRelations;

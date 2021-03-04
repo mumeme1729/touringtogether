@@ -4,20 +4,7 @@ import styles from "./Home.module.css";
 import { Button, TextField,Avatar} from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import { 
-    selectProfile,
-    selectProfiles,
-    selectRelationships,
-    setOpenRelationshipDetail,
-    resetOpenRelationshipDetail,
-    selectOpenRelationshipDetail,
-    setOpenFollowing,
-    resetOpenFollowing,
-    setOpenFollower,
-    resetOpenFollower,
-    selectOpenFollower,
-    selectOpenFollowing,
-} from "../auth/authSlice";
+import { selectProfiles} from "../auth/authSlice";
 import { PROPS_RELATION } from "../types";
 const modalStyle={
     content: {

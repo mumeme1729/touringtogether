@@ -40,12 +40,11 @@ const modalStyle={
 
 
 const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
-    const followRelations=useSelector(selectRelationships);
-    const openRelationDetail=useSelector(selectOpenRelationshipDetail);
-    const loginUser=useSelector(selectProfile);
-    const openRelationshipDetail=useSelector(selectOpenRelationshipDetail);
-    const openFollowing =useSelector(selectOpenFollower);
-    const newRelation=useSelector(selectAddRelationship);
+    const followRelations=useSelector(selectRelationships); //すべてのフォロー関係
+    const loginUser=useSelector(selectProfile);//ログインしているユーザーのプロフィール
+    const openRelationshipDetail=useSelector(selectOpenRelationshipDetail);//フォロー関係のモーダルを開く
+    const openFollowing =useSelector(selectOpenFollower);//フォロー中のモーダルを開く
+    const newRelation=useSelector(selectAddRelationship);//新しくフォローする関係
     const dispatch: AppDispatch = useDispatch();
 
 
@@ -71,6 +70,7 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
     const isFollowing =follower.some((f)=>{
         return loginUser.userProfile===f.userFollow
     });
+    //フォロー解除時にidを返す
     const relationId =follower.filter((f)=>{
         return loginUser.userProfile===f.userFollow
     });
@@ -80,10 +80,7 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
         dispatch(fetchAsyncFollowing(newRelation));
         
     }
-    const relation=follower.filter((f)=>{
-       return  f.userFollow===loginUser.userProfile
-     });
-    
+   
     
     return (
         <>
