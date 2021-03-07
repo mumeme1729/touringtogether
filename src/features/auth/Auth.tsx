@@ -118,7 +118,7 @@ const Auth:React.FC= () => {
         </Modal>
 
            {/*ログイン */}
-           <Modal isOpen={openSignIn} style={customStyles}> 
+           <Modal isOpen={openSignIn} style={customStyles} ariaHideApp={false}> 
            <Formik
             initialErrors={{ email: "required" }}
             initialValues={{ email: "", password: "" }}

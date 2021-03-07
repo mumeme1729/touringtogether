@@ -16,20 +16,11 @@ import RelationShip from './relationShip';
 import {Link} from 'react-router-dom';
 
 const UserProfile:React.FC = () => {
-    //const selectedProfile=useSelector(selectSelectedProfile)
+    const selectedProfile=useSelector(selectSelectedProfile)
     const loginUser=useSelector(selectProfile)
     const followRelations=useSelector(selectRelationships);
     const dispatch: AppDispatch = useDispatch();
     
-    const selectedProfile:{
-        id: number,
-        nickName: string,
-        text:string,
-        userProfile: number,
-        created_on: string,
-        img: string,
-      }=JSON.parse(localStorage.getItem("localselectedProfile") as string);
-
 
     useEffect(() => {
         const fetchLoader = async ()=>{ 

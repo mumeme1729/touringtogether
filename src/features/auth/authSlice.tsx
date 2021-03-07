@@ -214,7 +214,6 @@ export const authSlice = createSlice({
       //プロフィール表示オンオフ
       selectUserProfile(state,action){
         state.selectedProfile=action.payload;
-        localStorage.setItem("localselectedProfile", JSON.stringify(action.payload));
       },
       //プロフィール編集画面のオンオフ
       setOpenEditProfile(state){

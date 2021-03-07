@@ -11,13 +11,25 @@ import {
     selectPlans
 }from "../plan/planSlice";
 import NewPlan from './NewPlan';
+import { 
+    selectRelationships,
+    selectProfile,
+} from "../auth/authSlice";
 
 
 
 const Home:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const allplans=useSelector(selectPlans);
-   
+    const follow=useSelector(selectRelationships); 
+    const profile=useSelector(selectProfile);
+
+    //フォローしている人の予定
+    const following_plan =allplans.filter((f)=>{
+          return  follow.find((foll)=>{
+           return ((foll.following===f.userPlan) && (foll.userFollow===profile.userProfile)) || (f.userPlan===profile.userProfile);
+        })
+    });
   
     return (
         <>
@@ -38,8 +50,9 @@ const Home:React.FC = () => {
              <br />
             {/* プランを表示 */}
              <div >
-                {allplans.map((plan)=>(
+                {following_plan.map((plan)=>(
                     <Plan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text}/>
+                    
                 ))}
             </div>  
         </>

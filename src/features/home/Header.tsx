@@ -29,12 +29,13 @@ const Header:React.FC = () => {
         const fetchLoader = async ()=>{
             //ログインしていたら
             if (localStorage.localJWT) {
-                dispatch(resetOpenSignIn());//opensignInをoffにする
+                dispatch(resetOpenSignIn());
                 const result = await dispatch(fetchAsyncGetMyProf());//ログインしているユーザーのプロフィールを取得する
                 if (fetchAsyncGetMyProf.rejected.match(result)) {
                   dispatch(setOpenSignIn());
                   return null;
                 }
+                //ログインしているユーザーデータをとる？
                 await dispatch(fetchAsyncGetPlans()); 
                 await dispatch(fetchAsyncGetProfs()); 
               }

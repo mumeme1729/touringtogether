@@ -54,3 +54,8 @@ export interface PROPS_SEARCH_PLAN{
     destination:string,
     date:string,
 }
+
+export interface PROPS_COMMENT {
+    text: string;
+    plan: number;
+  }

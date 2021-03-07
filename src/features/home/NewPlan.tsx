@@ -23,7 +23,6 @@ const customStyles = {
     },
   };
 
-
 const NewPlan:React.FC = () => {
     const dispatch = useDispatch();
     const openPlan=useSelector(selectOpenPlan);
@@ -48,6 +47,7 @@ const NewPlan:React.FC = () => {
                     await dispatch(resetOpenNewPlan());
                 }}
                 style={customStyles}
+               ariaHideApp={false}
             >
             <form > 
                 <TextField

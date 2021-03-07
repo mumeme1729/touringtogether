@@ -19,18 +19,18 @@ const Plan:React.FC< PROPS_PLANS> = (plan) => {
     return (
         <div className={styles.plan_detail_container}>
             <div className={styles.plan_body}>
-            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}>
-                <button className={styles.plan_btn} onClick={()=>{dispatch(selectPlan(plan))}}>
-                    {/* <Link to ={"/profile/"+prof[0]?.userProfile}>
+            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id} >
+                <button className={styles.plan_btn} onClick={()=>{dispatch(selectPlan(plan))}}> 
+                      <Link to ={"/profile/"+prof[0]?.userProfile}> 
                         <button className={styles.plan_btnprofile} onClick={()=>{dispatch(selectUserProfile(prof[0]));}}>
                             <Avatar alt="who?" src={prof[0]?.img} style={{height:'70px',width:'70px'}}/>{" "}
                         </button>
-                    </Link> */}
+                     </Link>  
                     {prof[0]?.nickName}
                     <h2>目的地:{plan.destination}</h2>
                     <h3>出発予定日:{plan.date}</h3>
                     <p>{plan.text}</p>
-                </button>
+                 </button> 
             </Link>
             </div>  
         </div>
