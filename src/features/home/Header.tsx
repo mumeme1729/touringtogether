@@ -10,7 +10,6 @@ import {
     fetchAsyncGetMyProf,
     fetchAsyncGetProfs,
     selectProfile,
-    selectUserProfile
 } from "../auth/authSlice";
 import {
     setOpenNewPlan,
@@ -18,12 +17,14 @@ import {
     selectPlans
 }from "../plan/planSlice";
 
+
 import {Link} from 'react-router-dom';
 
 
 const Header:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const profile = useSelector(selectProfile);
+    
 
     useEffect(()=>{
         const fetchLoader = async ()=>{
@@ -35,9 +36,9 @@ const Header:React.FC = () => {
                   dispatch(setOpenSignIn());
                   return null;
                 }
-                //ログインしているユーザーデータをとる？
                 await dispatch(fetchAsyncGetPlans()); 
                 await dispatch(fetchAsyncGetProfs()); 
+                //フォローしている人のデータをとる
               }
             };
             fetchLoader();
@@ -59,9 +60,7 @@ const Header:React.FC = () => {
             </div>
             <div className={styles.home_header_avater}>
                 <Link to ={"/profile/"+profile.userProfile}>
-                    <button className={styles.homr_btnprofile} onClick={()=>{
-                        dispatch(selectUserProfile(profile)); 
-                    }}>
+                    <button className={styles.homr_btnprofile} onClick={()=>{}}>
                         <Avatar alt="who?" src={profile.img} style={{height:'70px',width:'70px'}}/>{" "}
                     </button>
                 </Link>

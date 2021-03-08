@@ -5,33 +5,44 @@ import {
     selectProfile,
     setOpenSignIn,
     setOpenEditProfile,
-    selectRelationships,
-    fetchAsyncRelations
+    fetchAsyncSelectProfile,
 } from "../auth/authSlice";
+
+import {selectFollowing,
+        selectFollower,
+        fetchAsyncFollowing,
+        fetchAsyncFollower,
+    } from "../relationship/RelationshipSlice";
+
 import { Avatar,Button} from "@material-ui/core";
 import styles from "./Home.module.css";
 import { AppDispatch } from "../../app/store";
 import EditProfile from './EditProfile';
-import RelationShip from './relationShip';
-import {Link} from 'react-router-dom';
+import RelationShip from '../relationship/relationShip';
+import {Link,useLocation} from 'react-router-dom';
 
 const UserProfile:React.FC = () => {
-    const selectedProfile=useSelector(selectSelectedProfile)
-    const loginUser=useSelector(selectProfile)
-    const followRelations=useSelector(selectRelationships);
+    const selectedProfile=useSelector(selectSelectedProfile);
+    const loginUser=useSelector(selectProfile);
+    const location = useLocation();
     const dispatch: AppDispatch = useDispatch();
-    
+    const user_id=(location.pathname.substr(9));
 
     useEffect(() => {
         const fetchLoader = async ()=>{ 
-            await dispatch(fetchAsyncRelations());  
+            if (localStorage.localJWT) {
+                await dispatch(fetchAsyncFollowing(user_id));
+                await dispatch(fetchAsyncFollower(user_id));
+                await dispatch(fetchAsyncSelectProfile(user_id));
+            }
         };
         fetchLoader();
-    },[dispatch]);
+    },[user_id]);
 
 
     return (
         <div className={styles.profileDetail}>
+
             <div className={styles.profileDetail_container}>
                 { loginUser.id== selectedProfile.id?(
                     <>
@@ -58,6 +69,7 @@ const UserProfile:React.FC = () => {
                         </div>
                         <div className={styles.name_text}>
                             <p>{loginUser.text}</p>
+                            
                         </div>
                     </>
                 ): 

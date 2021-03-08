@@ -16,6 +16,16 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     return res.data;
   });
 
+  //選択した予定を取得
+  export const fetchAsyncGetSelectPlan = createAsyncThunk("selectplan/get", async (id:string) => {
+    const res = await axios.get(`${apiUrl}api/plan/${id}`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  });
+
 //検索
   export const fetchAsyncSearchPlans = createAsyncThunk("searchplans/get", 
   async (search:PROPS_SEARCH_PLAN) => {
@@ -58,46 +68,8 @@ export const fetchAsyncPlanDelete =createAsyncThunk("plan/delete",async (id:numb
     return id;
   });
 
-//コメントを投稿
-export const fetchAsyncPostComment = createAsyncThunk(
-    "comment/post",
-    async (comment: PROPS_COMMENT) => {
-      const res = await axios.post(`${apiUrl}api/comment/`, comment, {
-        headers: {
-          Authorization: `JWT ${localStorage.localJWT}`,
-        },
-      });
-      return res.data;
-    }
-  );
-
-  //コメントを取得
-  export const fetchAsyncGetComments = createAsyncThunk(
-    "comment/get",
-    async () => {
-      const res = await axios.get(`${apiUrl}api/comment/`, {
-        headers: {
-          Authorization: `JWT ${localStorage.localJWT}`,
-        },
-      });
-      return res.data;
-    }
-  );
-  
-  //コメントを削除
-  export const fetchAsyncCommentDelete =createAsyncThunk("comment/delete",async (id:number) =>{
-    await axios.delete(`${apiUrl}api/comment/${id}/`,{
-        headers:{
-            "Content-Type":"application/json",
-            Authorization: `JWT ${localStorage.localJWT}`,
-        },
-    });
-    return id;
-  });
 
   
-
-
 export const planSlice =createSlice({
     name:"plan",
     initialState:{
@@ -130,14 +102,6 @@ export const planSlice =createSlice({
             created_on:"",
             text:"",
         },
-        comments: [
-            {
-              id: 0,
-              text: "",
-              userComment: 0,
-              plan: 0,
-            },
-          ],
     },
     reducers:{
         setOpenNewPlan(state){
@@ -146,9 +110,6 @@ export const planSlice =createSlice({
         resetOpenNewPlan(state){
             state.openNewPlan=false;
         },
-        selectPlan(state,action){
-            state.selectedPlan=action.payload;
-        }
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncNewPlan.fulfilled,(state,action)=>{
@@ -160,40 +121,24 @@ export const planSlice =createSlice({
         builder.addCase(fetchAsyncGetPlans.fulfilled,(state, action) => {
             state.plans = action.payload;
         });
+        builder.addCase(fetchAsyncGetSelectPlan.fulfilled,(state,action)=>{
+            state.selectedPlan=action.payload;
+        });
         builder.addCase(fetchAsyncSearchPlans.fulfilled,(state,action)=>{
             state.searchplans=action.payload;
-        });
-        builder.addCase(fetchAsyncPostComment.fulfilled, (state, action) => {
-            return {
-              ...state,
-              comments: [...state.comments, action.payload],
-            };
-        });
-        builder.addCase(fetchAsyncGetComments.fulfilled, (state, action) => {
-            return {
-              ...state,
-              comments: action.payload,
-            };
-        });
-        builder.addCase(fetchAsyncCommentDelete.fulfilled,(state,action)=>{
-            return{
-              ...state,
-              comments:state.comments.filter((t)=>t.id!==action.payload),
-            };
         });
         builder.addCase(fetchAsyncPlanDelete.fulfilled,(state,action)=>{
           return{
             ...state,
             plans:state.plans.filter((t)=>t.id!==action.payload),
           };
-      });
+        });
     },
 });
 
 export const{
     setOpenNewPlan,
     resetOpenNewPlan,
-    selectPlan
 }=planSlice.actions
 
 
@@ -201,5 +146,4 @@ export const selectPlans=(state:RootState)=>state.plan.plans;
 export const selectOpenPlan=(state:RootState)=>state.plan.openNewPlan;
 export const selectSearchPlans=(state:RootState)=>state.plan.searchplans;
 export const selectSelectedPlan=(state:RootState)=>state.plan.selectedPlan;
-export const selectComments = (state: RootState) => state.plan.comments;
 export default planSlice.reducer;

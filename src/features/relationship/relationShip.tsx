@@ -3,7 +3,9 @@ import { useSelector,useDispatch } from "react-redux";
 import { 
     selectProfile,
     selectProfiles,
-    selectRelationships,
+} from "../auth/authSlice";
+    
+import {
     setOpenRelationshipDetail,
     resetOpenRelationshipDetail,
     selectOpenRelationshipDetail,
@@ -12,19 +14,21 @@ import {
     setOpenFollower,
     resetOpenFollower,
     selectOpenFollower,
-    selectOpenFollowing,
-    fetchAsyncFollowing,
     selectAddRelationship,
     addRelation,
     fetchAsyncFollowingDelete,
-} from "../auth/authSlice";
+    selectFollowing,
+    selectFollower,
+    fetchAsyncAddFollowing
+    } from "../relationship/RelationshipSlice";
+
 import { Avatar,Button} from "@material-ui/core";
-import styles from "./Home.module.css";
+import styles from "./relationship.module.css";
 import { AppDispatch } from "../../app/store";
 import { PROPS_ALL_USER, PROPS_RELATION } from "../types";
-import RelationshipDetail from "./RelationshipDetail";
+import RelationshipDetail from "../home/RelationshipDetail";
 import Modal from "react-modal";
-
+import {useLocation} from 'react-router-dom';
 
 const modalStyle={
     content: {
@@ -40,30 +44,22 @@ const modalStyle={
 
 
 const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
-    const followRelations=useSelector(selectRelationships); //すべてのフォロー関係
     const loginUser=useSelector(selectProfile);//ログインしているユーザーのプロフィール
     const openRelationshipDetail=useSelector(selectOpenRelationshipDetail);//フォロー関係のモーダルを開く
     const openFollowing =useSelector(selectOpenFollower);//フォロー中のモーダルを開く
     const newRelation=useSelector(selectAddRelationship);//新しくフォローする関係
     const dispatch: AppDispatch = useDispatch();
-
-
-     //フォローしているユーザー
-     const following=followRelations.filter((followRelation)=>{
-        return followRelation.userFollow===proFile.userProfile
-    });
-    //フォロワー
-    const follower=followRelations.filter((followRelation)=>{
-        return followRelation.following===proFile.userProfile
-    });
-
+    const following=useSelector(selectFollowing);
+    const follower=useSelector(selectFollower);
+    const location = useLocation();
+    const user_id=(location.pathname.substr(9));
 
     useEffect(() => {
         const fetchLoader = async ()=>{ 
-            await dispatch(addRelation({following:proFile.userProfile}));
+            await dispatch(addRelation({following:user_id}));
         };
         fetchLoader();
-    },[proFile]);
+    },[dispatch]);
     
 
     //選択したユーザーをフォローしているかどうか
@@ -75,10 +71,9 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
         return loginUser.userProfile===f.userFollow
     });
 
-    //フォローするユーザー情報を取得
+    //フォローする
     const addNewFollowing=()=>{
-        dispatch(fetchAsyncFollowing(newRelation));
-        
+        dispatch(fetchAsyncAddFollowing(newRelation));
     }
    
     
@@ -96,7 +91,8 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
                         
                          </Button>
                     ):
-                    <Button variant="outlined" color="primary" onClick={()=>{
+                    <Button variant="outlined" color="primary" onClick={async()=>{
+                        
                         addNewFollowing();
                     }}>
                         フォロー
@@ -127,6 +123,7 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
                         await dispatch(resetOpenRelationshipDetail());
                     }}
                     style={modalStyle}
+                    ariaHideApp={false}
                 >
                     <div>
                         <Button onClick={()=>{
@@ -162,5 +159,4 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
         </>
     )
 }
-
 export default RelationShip

@@ -17,9 +17,9 @@ function App() {
       <Router>
         <Header/>
         <Route exact path="/" component={Home}/>
-        <Route  path="/profile/:id" component={UserProfile}/>
+        <Route  path="/profile/:id" component={UserProfile}/> 
         <Route  path="/search" component={SearchList}/>
-        <Route exact path="/plandetail/:id/:id" component={PlanDetail}/>
+        <Route  path="/plandetail/:id/:id" component={PlanDetail}/>
       </Router>
     </div>
   );

@@ -11,22 +11,33 @@ import {
     selectPlans
 }from "../plan/planSlice";
 import NewPlan from './NewPlan';
-import { 
-    selectRelationships,
-    selectProfile,
-} from "../auth/authSlice";
+import { selectProfile,} from "../auth/authSlice";
 
+import {selectFollowing,
+    fetchAsyncFollowing,
+    fetchAsyncFollower,
+} from "../relationship/RelationshipSlice";
 
 
 const Home:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const allplans=useSelector(selectPlans);
-    const follow=useSelector(selectRelationships); 
+    const following=useSelector(selectFollowing); 
     const profile=useSelector(selectProfile);
+    const loginuser:string=String(profile.userProfile);
+    useEffect(()=>{
+        const fetchLoader = async ()=>{
+            if (localStorage.localJWT){
+                await dispatch(fetchAsyncFollowing(loginuser));
+                await dispatch(fetchAsyncFollower(loginuser));
+            };
+        };
+            fetchLoader();
+    },[profile]);
 
     //フォローしている人の予定
     const following_plan =allplans.filter((f)=>{
-          return  follow.find((foll)=>{
+          return  following.find((foll)=>{
            return ((foll.following===f.userPlan) && (foll.userFollow===profile.userProfile)) || (f.userPlan===profile.userProfile);
         })
     });

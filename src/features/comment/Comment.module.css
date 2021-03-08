@@ -1,0 +1,11 @@
+.post_comments{
+    justify-content: center;
+    margin-left: 30%;
+}
+.post_comment{
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+    border: solid;
+    width: 50%;
+}

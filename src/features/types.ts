@@ -59,3 +59,9 @@ export interface PROPS_COMMENT {
     text: string;
     plan: number;
   }
+export interface COMMENT{
+    id: number;
+    text: string;
+    userComment: number;
+    plan: number;
+}
