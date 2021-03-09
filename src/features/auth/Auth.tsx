@@ -16,7 +16,6 @@ import {
     fetchAsyncLogin,
     fetchAsyncRegister,
     fetchAsyncGetMyProf,
-    fetchAsyncGetProfs,
     fetchAsyncCreateProf,
     setFailedSignIn,
     selectFailedSignIn,
@@ -53,7 +52,7 @@ const Auth:React.FC= () => {
               if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
                 await dispatch(fetchAsyncLogin(values));
                 await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定" }));
-                await dispatch(fetchAsyncGetProfs());
+                //await dispatch(fetchAsyncGetProfs());
                 await dispatch(fetchAsyncGetMyProf());
               }
               await dispatch(resetOpenSignUp());
@@ -126,7 +125,7 @@ const Auth:React.FC= () => {
             onSubmit={async (values) => {
                 const result = await dispatch(fetchAsyncLogin(values));
                 if (fetchAsyncLogin.fulfilled.match(result)) {
-                  await dispatch(fetchAsyncGetProfs());
+                  //await dispatch(fetchAsyncGetProfs());
                   await dispatch(fetchAsyncGetMyProf());
                   await dispatch(fetchAsyncGetPlans()); 
                   await dispatch(resetFailedSignIn());

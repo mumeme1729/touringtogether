@@ -50,7 +50,7 @@ const UserProfile:React.FC = () => {
                             <Avatar alt="who?" src={loginUser.img} style={{height:'70px',width:'70px'}}/>{" "}
                             <div className={styles.detail_h2}>
                                 <h2>{loginUser.nickName}</h2>
-                                <RelationShip id={loginUser.id} nickName={loginUser.nickName} text={loginUser.text} userProfile={loginUser.userProfile} created_on={loginUser.created_on} img={loginUser.img}/>
+                                <RelationShip key={loginUser.id} id={loginUser.id} nickName={loginUser.nickName} text={loginUser.text} userProfile={loginUser.userProfile} created_on={loginUser.created_on} img={loginUser.img}/>
                             </div>
                         </div>
                         <div className={styles.logout_btn}>
@@ -79,7 +79,7 @@ const UserProfile:React.FC = () => {
                         <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>{" "}
                         <div className={styles.detail_h2}>
                             <h2>{selectedProfile.nickName}</h2>
-                            <RelationShip id={selectedProfile.id} nickName={selectedProfile.nickName} text={selectedProfile.text} userProfile={selectedProfile.userProfile} created_on={selectedProfile.created_on} img={selectedProfile.img}/>
+                            <RelationShip key={selectedProfile.id} id={selectedProfile.id} nickName={selectedProfile.nickName} text={selectedProfile.text} userProfile={selectedProfile.userProfile} created_on={selectedProfile.created_on} img={selectedProfile.img}/>
                         </div>
                     </div>
                     <div className={styles.logout_btn}>

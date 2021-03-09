@@ -13,6 +13,7 @@ import {
     fetchAsyncGetSelectPlan,
 } from "../plan/planSlice";
 
+  
 import {
     selectComments,
     fetchAsyncGetComments,
@@ -40,13 +41,15 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
       };
 
     useEffect(()=>{
+        console.log('---プラン詳細---')
+        console.log(id)
         const fetchLoader = async ()=>{
             //ログインしていたら
             if (localStorage.localJWT) {
                 await dispatch(fetchAsyncGetComments(id[3]));
+                await dispatch(fetchAsyncGetSelectPlan(id[3])); 
                 await dispatch(fetchAsyncSelectProfile(id[2]));
-                await dispatch(fetchAsyncGetSelectPlan(id[3])); //投稿主のプロフィールを取得
-              }
+            }
             };
             fetchLoader();
     },[dispatch]);
@@ -99,8 +102,9 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
             <div>
                 <div className={styles.post_comments}>
                     {comments.map((comment) => (
-                        <Comment key={comment.id} id={comment.id} text={comment.text} userComment={comment.userComment} plan={comment.plan}/>
+                        <Comment key={comment.id} id={comment.id} text={comment.text} userComment={comment.userComment} plan={comment.plan}/>        
                     ))}
+                  
             </div>
         </div>
     </>

@@ -24,7 +24,6 @@ export const fetchAsyncAddFollowing = createAsyncThunk(
 
 //フォロー解除
 export const fetchAsyncFollowingDelete =createAsyncThunk("relationships/delete",async (id:number) =>{
-  await console.log(id)
   await axios.delete(`${apiUrl}api/relationship/${id}/`,{
       headers:{
           "Content-Type":"application/json",
@@ -55,6 +54,9 @@ export const fetchAsyncFollower = createAsyncThunk("follower/get",
     return res.data;
   });
 
+//フォロー・フォロワーのプロフィール
+
+
 export const RelationshipSlice = createSlice({
   name: 'relationship',
   initialState:{
@@ -82,6 +84,27 @@ export const RelationshipSlice = createSlice({
         userFollow:0,
         following:0,
       }
+    ],
+    //各ユーザーのフォロー・フォロワープロフィールリスト
+    followingprofile:[
+      {
+        id: 0,
+        nickName: "",
+        text:"",
+        userProfile: 0,
+        created_on: "",
+        img: "",
+      },
+    ],
+    followerprofile:[
+      {
+        id: 0,
+        nickName: "",
+        text:"",
+        userProfile: 0,
+        created_on: "",
+        img: "",
+      },
     ],
   },
   reducers: {

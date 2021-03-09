@@ -16,6 +16,16 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     return res.data;
   });
 
+  //タイムライン
+  export const fetchAsyncTimeline = createAsyncThunk("timeline/get", async () => {
+    const res = await axios.get(`${apiUrl}api/timeline/`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  });
+
   //選択した予定を取得
   export const fetchAsyncGetSelectPlan = createAsyncThunk("selectplan/get", async (id:string) => {
     const res = await axios.get(`${apiUrl}api/plan/${id}`, {
@@ -67,8 +77,6 @@ export const fetchAsyncPlanDelete =createAsyncThunk("plan/delete",async (id:numb
     });
     return id;
   });
-
-
   
 export const planSlice =createSlice({
     name:"plan",
@@ -84,6 +92,16 @@ export const planSlice =createSlice({
                 text:"",
             },
         ],
+        timeline:[
+          {
+              id:0,
+              destination:"",
+              date:"",
+              userPlan:0,
+              created_on:"",
+              text:"",
+          },
+      ],
         searchplans:[
             {
                 id:0,
@@ -102,6 +120,7 @@ export const planSlice =createSlice({
             created_on:"",
             text:"",
         },
+        
     },
     reducers:{
         setOpenNewPlan(state){
@@ -110,17 +129,21 @@ export const planSlice =createSlice({
         resetOpenNewPlan(state){
             state.openNewPlan=false;
         },
+       
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncNewPlan.fulfilled,(state,action)=>{
             return {
                 ...state,
-                plans: [ action.payload,...state.plans],
+                timeline: [ action.payload,...state.plans],
             };
         });
         builder.addCase(fetchAsyncGetPlans.fulfilled,(state, action) => {
             state.plans = action.payload;
         });
+        builder.addCase(fetchAsyncTimeline.fulfilled,(state, action) => {
+          state.timeline = action.payload;
+      });
         builder.addCase(fetchAsyncGetSelectPlan.fulfilled,(state,action)=>{
             state.selectedPlan=action.payload;
         });
@@ -146,4 +169,6 @@ export const selectPlans=(state:RootState)=>state.plan.plans;
 export const selectOpenPlan=(state:RootState)=>state.plan.openNewPlan;
 export const selectSearchPlans=(state:RootState)=>state.plan.searchplans;
 export const selectSelectedPlan=(state:RootState)=>state.plan.selectedPlan;
+export const selectTimeline=(state:RootState)=>state.plan.timeline;
+
 export default planSlice.reducer;

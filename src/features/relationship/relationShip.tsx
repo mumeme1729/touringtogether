@@ -144,14 +144,14 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
                             {/* フォローしているユーザー */}
                             フォロー中
                             {following.map((f)=>(
-                                <RelationshipDetail id={f.id} following={f.following} userFollow={f.userFollow}/>
+                                <RelationshipDetail key={f.id} id={f.id} following={f.following} userFollow={f.userFollow}/>
                             ))} 
                         </>
                     ):
                         <>
                             フォロワー
                             {follower.map((f)=>(
-                                <RelationshipDetail id={f.id} following={f.userFollow} userFollow={f.following}/>
+                                <RelationshipDetail key={f.id} id={f.id} following={f.userFollow} userFollow={f.following}/>
                             ))} 
                         </>
                     }

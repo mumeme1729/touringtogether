@@ -8,8 +8,9 @@ import {
     setOpenSignIn,
     resetOpenSignIn,
     fetchAsyncGetMyProf,
-    fetchAsyncGetProfs,
     selectProfile,
+    fetchAsyncGetProfs,
+    
 } from "../auth/authSlice";
 import {
     setOpenNewPlan,
@@ -17,14 +18,12 @@ import {
     selectPlans
 }from "../plan/planSlice";
 
-
 import {Link} from 'react-router-dom';
 
 
 const Header:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const profile = useSelector(selectProfile);
-    
 
     useEffect(()=>{
         const fetchLoader = async ()=>{
@@ -36,9 +35,8 @@ const Header:React.FC = () => {
                   dispatch(setOpenSignIn());
                   return null;
                 }
-                await dispatch(fetchAsyncGetPlans()); 
-                await dispatch(fetchAsyncGetProfs()); 
-                //フォローしている人のデータをとる
+                await dispatch(fetchAsyncGetPlans());  
+                await dispatch(fetchAsyncGetProfs());
               }
             };
             fetchLoader();

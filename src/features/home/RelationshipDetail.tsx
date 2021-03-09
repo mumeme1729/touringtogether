@@ -30,12 +30,14 @@ const RelationshipDetail:React.FC<PROPS_RELATION> = (relation) => {
         <div>
             {relationshipProfile.map((p)=>(
                 <>
-                <div className={styles.relationship_all}>
-                    <Avatar alt="who?" src={p.img} style={{height:'50px',width:'50px'}}/>{" "}
-                    <div className={styles.relationship_nickname}>{p.nickName}</div>
-                </div>
-                <div className={styles.profile_text}>
-                    <p className={styles.text_p}>{p.text}</p>
+                <div key={p.id}>
+                    <div  className={styles.relationship_all}>
+                        <Avatar alt="who?" src={p.img} style={{height:'50px',width:'50px'}}/>{" "}
+                        <div className={styles.relationship_nickname}>{p.nickName}</div>
+                    </div>
+                    <div  className={styles.profile_text}>
+                        <p className={styles.text_p}>{p.text}</p>
+                    </div>
                 </div>
                 </>
             ))} 

@@ -75,7 +75,17 @@ export const commentSlice =createSlice({
         },
       ],
     },
-    reducers:{},
+    reducers:{
+      resetcomments(state){
+        state.comments=[{
+          id: 0,
+          text: "",
+          userComment: 0,
+          plan: 0,
+        },
+      ]
+    }
+    },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncPostComment.fulfilled, (state, action) => {
             return {
@@ -89,6 +99,7 @@ export const commentSlice =createSlice({
               comments: action.payload,
             };
         });
+        
         builder.addCase(fetchAsyncCommentDelete.fulfilled,(state,action)=>{
             return{
               ...state,
@@ -105,6 +116,7 @@ export const commentSlice =createSlice({
 });
 
 export const{
+  resetcomments
 }=commentSlice.actions
 
 

@@ -5,7 +5,7 @@ import styles from "./Comment.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { COMMENT } from '../types';
 import { AppDispatch } from "../../app/store";
-import {fetchAsyncCommentDelete,selectCommentProfiles,fetchAsyncCommentProfile}from '../comment/commentSlice'
+import {fetchAsyncCommentDelete,selectCommentProfiles,fetchAsyncCommentProfile}from './commentSlice'
 import {selectProfile} from "../auth/authSlice";
 import { Avatar,Button,TextField} from "@material-ui/core";
 
@@ -13,11 +13,13 @@ const Comment:React.FC<COMMENT> = (comment) => {
     const dispatch: AppDispatch = useDispatch();
     const commentprofs =useSelector(selectCommentProfiles);
     const profile = useSelector(selectProfile);
-
+    
     useEffect(()=>{
+        console.log('---コメント---')
+        console.log(comment)
         const fetchLoader = async ()=>{
             //ログインしていたら
-            if (localStorage.localJWT) {
+            if (localStorage.localJWT && comment.id!==0) {
                 await dispatch(fetchAsyncCommentProfile(comment.userComment));
               }
             };

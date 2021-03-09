@@ -10,19 +10,19 @@ import {Link} from 'react-router-dom';
 import { styles } from '@material-ui/pickers/views/Calendar/Calendar';
 import styles_css from "./Home.module.css";
 
+
 const Search:React.FC = () => {
     const dispatch = useDispatch();
     const [destination,setDestination]=useState("");
     const [date,setDate]=useState("");
     
 
-    const searchPlan = async()=>{
+    const searchPlan =()=>{
         const packet = { destination: destination, date: date};
-        await dispatch(fetchAsyncSearchPlans(packet));
+        dispatch(fetchAsyncSearchPlans(packet));
         setDestination("");
         setDate("");
     }
-
 
     return (
         <div className={styles_css.search_container}>

@@ -3,10 +3,16 @@ import {selectSearchPlans} from "../plan/planSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import Plan from "../plan/Plan";
-import { PROPS_PROFILE,PROPS_ALL_USER, PROPS_PLANS } from '../types';
+import {
+
+}from "../plan/planSlice";
+
 const SearchList:React.FC = () => {
     const searchplans=useSelector(selectSearchPlans);
-    
+    const dispatch: AppDispatch = useDispatch();
+
+
+   
     return (
         <div>
             {searchplans.length?

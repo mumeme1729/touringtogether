@@ -79,16 +79,6 @@ export const fetchAsyncLogin = createAsyncThunk(
     //filterを使うと配列で返ってくるため
   });
 
-  //すべてのプロフィール
-  export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
-    const res = await axios.get(`${apiUrl}api/profile/`, {
-      headers: {
-        Authorization: `JWT ${localStorage.localJWT}`,
-      },
-    });
-    return res.data;
-  });
-
   //目的のプロフィールを取得
   export const fetchAsyncSelectProfile = createAsyncThunk("selectprofile/get", 
   async (id:string) => {
@@ -100,6 +90,16 @@ export const fetchAsyncLogin = createAsyncThunk(
     return res.data[0];
   });
 
+
+  //すべてのプロフィール
+  export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
+    const res = await axios.get(`${apiUrl}api/profile/`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  });
 
 
 export const authSlice = createSlice({
@@ -118,7 +118,7 @@ export const authSlice = createSlice({
       created_on: "",
       img: "",
     },
-    //プロフィールのリスト(全員)
+
     profiles: [
       {
         id: 0,
@@ -129,7 +129,7 @@ export const authSlice = createSlice({
         img: "",
       },
     ],
-    //詳細表示
+    //選択するユーザー
     selectedProfile:{
       id: 0,
       nickName: "",
@@ -192,14 +192,15 @@ export const authSlice = createSlice({
     builder.addCase(fetchAsyncGetMyProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
       });
-
-    builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
-        state.profiles = action.payload;
-      });
     builder.addCase(fetchAsyncSelectProfile.fulfilled,(state,action)=>{
       state.selectedProfile=action.payload;
     });
-   
+
+    builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
+      state.profiles = action.payload;
+    });
+
+    
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
         state.profiles = state.profiles.map((prof) =>
