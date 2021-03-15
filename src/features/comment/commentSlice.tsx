@@ -15,6 +15,7 @@ export const fetchAsyncPostComment = createAsyncThunk(
           Authorization: `JWT ${localStorage.localJWT}`,
         },
       });
+      res.data.profile=comment.profile
       return res.data;
     }
   );
@@ -43,48 +44,34 @@ export const fetchAsyncPostComment = createAsyncThunk(
     return id;
   });
 
-  export const fetchAsyncCommentProfile = createAsyncThunk("commentprofile/get", 
-  async (id:number) => {
-    const res = await axios.get(`${apiUrl}api/selectprofile/?userProfile=${id}`, {
-      headers: {
-        Authorization: `JWT ${localStorage.localJWT}`,
-      },
-    });
-    return res.data[0];
-  });
-
-
 export const commentSlice =createSlice({
     name:"comment",
     initialState:{
+      isLoadComment:false,
         comments: [
             {
               id: 0,
               text: "",
               userComment: 0,
               plan: 0,
+              profile:{
+                id: 0,
+                nickName: "",
+                text:"",
+                userProfile: 0,
+                created_on: "",
+                img: "",
+              }
             },
           ],
-        commentprofiles:[{
-          id: 0,
-          nickName: "",
-          text:"",
-          userProfile: 0,
-          created_on: "",
-          img: "",
-        },
-      ],
     },
     reducers:{
-      resetcomments(state){
-        state.comments=[{
-          id: 0,
-          text: "",
-          userComment: 0,
-          plan: 0,
-        },
-      ]
-    }
+      startLoadComment(state){
+        state.isLoadComment=true;
+      },
+      endLoadComment(state){
+        state.isLoadComment=false;
+      }
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncPostComment.fulfilled, (state, action) => {
@@ -94,10 +81,7 @@ export const commentSlice =createSlice({
             };
         });
         builder.addCase(fetchAsyncGetComments.fulfilled, (state, action) => {
-            return {
-              ...state,
-              comments: action.payload,
-            };
+            state.comments = action.payload;
         });
         
         builder.addCase(fetchAsyncCommentDelete.fulfilled,(state,action)=>{
@@ -106,20 +90,16 @@ export const commentSlice =createSlice({
               comments:state.comments.filter((t)=>t.id!==action.payload),
             };
         });
-        builder.addCase(fetchAsyncCommentProfile.fulfilled,(state,action)=>{
-          return {
-            ...state,
-            commentprofiles: [...state.commentprofiles, action.payload],
-          };
-        });
     },
 });
 
 export const{
-  resetcomments
+  startLoadComment,
+  endLoadComment,
 }=commentSlice.actions
 
 
 export const selectComments = (state: RootState) => state.comment.comments;
-export const selectCommentProfiles=(state:RootState)=>state.comment.commentprofiles;
+export const selectIsLoadComment=(state:RootState)=>state.comment.isLoadComment;
+
 export default commentSlice.reducer;

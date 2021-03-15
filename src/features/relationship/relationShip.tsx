@@ -1,10 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import { useSelector,useDispatch } from "react-redux";
-import { 
-    selectProfile,
-    selectProfiles,
-} from "../auth/authSlice";
-    
+import { selectProfile,} from "../auth/authSlice"; 
 import {
     setOpenRelationshipDetail,
     resetOpenRelationshipDetail,
@@ -15,18 +11,21 @@ import {
     resetOpenFollower,
     selectOpenFollower,
     selectAddRelationship,
-    addRelation,
     fetchAsyncFollowingDelete,
-    selectFollowing,
-    selectFollower,
-    fetchAsyncAddFollowing
+    fetchAsyncAddFollowing,
+    selectFollowerProfile,
+    selectFollowingProfile,
+    fetchAsyncGetFollowerProfile,
+    selectDeleteId,
+    fetchAsyncGetRelationId,
     } from "../relationship/RelationshipSlice";
 
-import { Avatar,Button} from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import styles from "./relationship.module.css";
 import { AppDispatch } from "../../app/store";
-import { PROPS_ALL_USER, PROPS_RELATION } from "../types";
-import RelationshipDetail from "../home/RelationshipDetail";
+import { PROPS_ALL_USER,RELATION } from "../types";
+import Following from "./Following";
+import Follower from "./Follower";
 import Modal from "react-modal";
 import {useLocation} from 'react-router-dom';
 
@@ -49,43 +48,44 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
     const openFollowing =useSelector(selectOpenFollower);//フォロー中のモーダルを開く
     const newRelation=useSelector(selectAddRelationship);//新しくフォローする関係
     const dispatch: AppDispatch = useDispatch();
-    const following=useSelector(selectFollowing);
-    const follower=useSelector(selectFollower);
     const location = useLocation();
     const user_id=(location.pathname.substr(9));
 
-    useEffect(() => {
-        const fetchLoader = async ()=>{ 
-            await dispatch(addRelation({following:user_id}));
-        };
-        fetchLoader();
-    },[dispatch]);
+    const following =useSelector(selectFollowingProfile);
+    const follower  = useSelector(selectFollowerProfile);
+    const Id=useSelector(selectDeleteId);
     
+   
 
     //選択したユーザーをフォローしているかどうか
     const isFollowing =follower.some((f)=>{
-        return loginUser.userProfile===f.userFollow
+        return loginUser.userProfile===f.userProfile;
     });
-    //フォロー解除時にidを返す
-    const relationId =follower.filter((f)=>{
-        return loginUser.userProfile===f.userFollow
-    });
-
+    
     //フォローする
-    const addNewFollowing=()=>{
-        dispatch(fetchAsyncAddFollowing(newRelation));
+    const addNewFollowing=async()=>{
+        console.log(newRelation.following)
+        await dispatch(fetchAsyncAddFollowing(newRelation));//フォローする
+        await dispatch(fetchAsyncGetFollowerProfile(user_id));
+        const relation:RELATION={userFollow:loginUser.userProfile,following:user_id}
+        await dispatch(fetchAsyncGetRelationId(relation));
+    }
+
+    const deleteReration=async()=>{
+        await dispatch(fetchAsyncFollowingDelete(Id.id))
+        await dispatch(fetchAsyncGetFollowerProfile(user_id));
     }
    
     
     return (
         <>
             <div className={styles.relationship_num}>
-                {/* <RelationshipDetail /> */}
                 <div>
                 {proFile.id!==loginUser.id?(
                     isFollowing?(
                         <Button variant="outlined" color="primary" onClick={()=>{
-                           dispatch(fetchAsyncFollowingDelete(relationId[0].id))
+                            //フォロー解除時
+                            deleteReration();
                         }}>
                          フォロー中 
                         
@@ -143,16 +143,16 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
                         <>
                             {/* フォローしているユーザー */}
                             フォロー中
-                            {following.map((f)=>(
-                                <RelationshipDetail key={f.id} id={f.id} following={f.following} userFollow={f.userFollow}/>
-                            ))} 
+                             {following.map((f)=>(
+                                <Following key={f.id} id={f.id} nickName={f.nickName} text={f.text} userProfile={f.userProfile} created_on={f.created_on} img={f.img}/>
+                            ))}  
                         </>
                     ):
                         <>
                             フォロワー
-                            {follower.map((f)=>(
-                                <RelationshipDetail key={f.id} id={f.id} following={f.userFollow} userFollow={f.following}/>
-                            ))} 
+                             {follower.map((f)=>(
+                                <Follower key={f.id} id={f.id} nickName={f.nickName} text={f.text} userProfile={f.userProfile} created_on={f.created_on} img={f.img}/>
+                            ))}  
                         </>
                     }
                 </Modal>

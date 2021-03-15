@@ -5,10 +5,12 @@ import {
     fetchAsyncNewPlan,
     setOpenNewPlan,
     resetOpenNewPlan,
-    selectOpenPlan
+    selectOpenPlan,
+    selectSelectedPlan
 }from "../plan/planSlice";
 import { Button, TextField, IconButton } from "@material-ui/core";
 import Modal from "react-modal";
+import {selectProfile } from "../auth/authSlice";
 
 const customStyles = {
     content: {
@@ -26,17 +28,18 @@ const customStyles = {
 const NewPlan:React.FC = () => {
     const dispatch = useDispatch();
     const openPlan=useSelector(selectOpenPlan);
+    const myprofile=useSelector(selectProfile)
     const [destination,setDestination]=useState("");
     const [date,setDate]=useState("");
     const [text,setText]=useState("");
 
     const newPlan = async()=>{
-        const packet = { destination: destination, date: date ,text:text};
-        await dispatch(fetchAsyncNewPlan(packet));
+        const packet = { destination: destination, date: date ,text:text,profile:myprofile};
+        dispatch(fetchAsyncNewPlan(packet));
         setDestination("");
         setDate("");
         setText("");
-        await dispatch(resetOpenNewPlan());
+        dispatch(resetOpenNewPlan());
     }
 
 
@@ -44,7 +47,7 @@ const NewPlan:React.FC = () => {
         <>
             <Modal isOpen={openPlan}
                 onRequestClose={async () => {
-                    await dispatch(resetOpenNewPlan());
+                    dispatch(resetOpenNewPlan());
                 }}
                 style={customStyles}
                ariaHideApp={false}

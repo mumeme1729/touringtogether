@@ -6,15 +6,6 @@ import {PROPS_PLAN,PROPS_COMMENT,PROPS_SEARCH_PLAN} from "../types";
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
-//予定をすべて取得
-  export const fetchAsyncGetPlans = createAsyncThunk("plans/get", async () => {
-    const res = await axios.get(`${apiUrl}api/plan/`, {
-      headers: {
-        Authorization: `JWT ${localStorage.localJWT}`,
-      },
-    });
-    return res.data;
-  });
 
   //タイムライン
   export const fetchAsyncTimeline = createAsyncThunk("timeline/get", async () => {
@@ -26,7 +17,7 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     return res.data;
   });
 
-  //選択した予定を取得
+  //プランを取得(リロード用)
   export const fetchAsyncGetSelectPlan = createAsyncThunk("selectplan/get", async (id:string) => {
     const res = await axios.get(`${apiUrl}api/plan/${id}`, {
       headers: {
@@ -36,6 +27,8 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     return res.data;
   });
 
+
+
 //検索
   export const fetchAsyncSearchPlans = createAsyncThunk("searchplans/get", 
   async (search:PROPS_SEARCH_PLAN) => {
@@ -43,6 +36,7 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },
+      
     });
     return res.data;
   });
@@ -64,6 +58,7 @@ export const fetchAsyncNewPlan = createAsyncThunk(
                     Authorization: `JWT ${localStorage.localJWT}`,
                 },
         });
+        res.data.profile=newPlan.profile
         return res.data;
     });
 
@@ -77,21 +72,13 @@ export const fetchAsyncPlanDelete =createAsyncThunk("plan/delete",async (id:numb
     });
     return id;
   });
+
   
 export const planSlice =createSlice({
     name:"plan",
     initialState:{
         openNewPlan:false,
-        plans:[
-            {
-                id:0,
-                destination:"",
-                date:"",
-                userPlan:0,
-                created_on:"",
-                text:"",
-            },
-        ],
+        isLoadingPlan:false,
         timeline:[
           {
               id:0,
@@ -100,6 +87,14 @@ export const planSlice =createSlice({
               userPlan:0,
               created_on:"",
               text:"",
+              profile: {
+                id: 0,
+                nickName: "",
+                text: "",
+                userProfile: 0,
+                created_on: "",
+                img: ""
+              }
           },
       ],
         searchplans:[
@@ -110,6 +105,14 @@ export const planSlice =createSlice({
                 userPlan:0,
                 created_on:"",
                 text:"",
+                profile: {
+                  id: 0,
+                  nickName: "",
+                  text: "",
+                  userProfile: 0,
+                  created_on: "",
+                  img: ""
+                }
             },
         ],
         selectedPlan:{
@@ -120,7 +123,6 @@ export const planSlice =createSlice({
             created_on:"",
             text:"",
         },
-        
     },
     reducers:{
         setOpenNewPlan(state){
@@ -129,20 +131,24 @@ export const planSlice =createSlice({
         resetOpenNewPlan(state){
             state.openNewPlan=false;
         },
-       
+        startLoad(state){
+          state.isLoadingPlan=true;
+        },
+        endLoad(state){
+          state.isLoadingPlan=false;
+        },
+
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncNewPlan.fulfilled,(state,action)=>{
             return {
                 ...state,
-                timeline: [ action.payload,...state.plans],
+                timeline: [ action.payload,...state.timeline],
             };
-        });
-        builder.addCase(fetchAsyncGetPlans.fulfilled,(state, action) => {
-            state.plans = action.payload;
         });
         builder.addCase(fetchAsyncTimeline.fulfilled,(state, action) => {
           state.timeline = action.payload;
+
       });
         builder.addCase(fetchAsyncGetSelectPlan.fulfilled,(state,action)=>{
             state.selectedPlan=action.payload;
@@ -153,7 +159,7 @@ export const planSlice =createSlice({
         builder.addCase(fetchAsyncPlanDelete.fulfilled,(state,action)=>{
           return{
             ...state,
-            plans:state.plans.filter((t)=>t.id!==action.payload),
+            timeline:state.timeline.filter((t)=>t.id!==action.payload),
           };
         });
     },
@@ -162,13 +168,14 @@ export const planSlice =createSlice({
 export const{
     setOpenNewPlan,
     resetOpenNewPlan,
+    startLoad,
+    endLoad,
 }=planSlice.actions
 
 
-export const selectPlans=(state:RootState)=>state.plan.plans;
 export const selectOpenPlan=(state:RootState)=>state.plan.openNewPlan;
 export const selectSearchPlans=(state:RootState)=>state.plan.searchplans;
 export const selectSelectedPlan=(state:RootState)=>state.plan.selectedPlan;
 export const selectTimeline=(state:RootState)=>state.plan.timeline;
-
+export const selectLoadPlan=(state:RootState)=>state.plan.isLoadingPlan;
 export default planSlice.reducer;

@@ -1,19 +1,34 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Avatar,} from "@material-ui/core";
 import { PROPS_PLANPROFILE } from '../types';
-import styles from "./Plan.module.css";
+import styles from "./User.module.css";
 import {Link,} from 'react-router-dom';
-import { startLoad } from './planSlice';
+import { startLoad } from '../plan/planSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import { startProfileLoad} from "../auth/authSlice";
+import { startProfileLoad,selectProfile} from "../auth/authSlice";
 import {startLoadComment}from '../comment/commentSlice';
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL
 
-const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
-    const dispatch: AppDispatch = useDispatch();
+const UserPlan:React.FC< PROPS_PLANPROFILE> = (plan) => {
+    const profile=useSelector(selectProfile);
     let imgpath=""
+    useEffect(()=>{
+        console.log('プラン')
+        const fetchLoader = async ()=>{
+            let imgpath=""
+            if((plan.profile.img)[0]!=='h'){
+                imgpath=apiUrl+(plan.profile.img).substr(1);
+            }else{
+                imgpath=plan.profile.img;
+            }
+        };
+        fetchLoader();
+    },[profile]);
+
+    const dispatch: AppDispatch = useDispatch();
+    
     if((plan.profile.img)[0]!=='h'){
         imgpath=apiUrl+(plan.profile.img).substr(1);
     }else{
@@ -29,13 +44,11 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                         dispatch(startLoad());
                         dispatch(startLoadComment());
                         }}> 
-                        <Link to ={"/profile/"+plan.profile.userProfile}> 
-                            <button className={styles.plan_btnprofile} onClick={()=>dispatch(startProfileLoad())}>
-                                {imgpath!==apiUrl?
-                                    <Avatar alt="who?" src={imgpath} style={{height:'70px',width:'70px'}}/>
-                                    :null}
-                            </button>
-                        </Link>  
+                        
+                        {imgpath!==apiUrl?
+                            <Avatar alt="who?" src={imgpath} style={{height:'70px',width:'70px'}}/>
+                        :null}
+                         
                         {plan.profile.nickName}
                         <h2>目的地:{plan.destination}</h2>
                         <h3>出発予定日:{plan.date}</h3>
@@ -48,4 +61,4 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
     )
 }
 
-export default Plan
+export default UserPlan

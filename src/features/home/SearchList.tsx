@@ -1,7 +1,6 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import {selectSearchPlans} from "../plan/planSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch } from "../../app/store";
+import { useSelector} from "react-redux";
 import Plan from "../plan/Plan";
 import {
 
@@ -9,16 +8,13 @@ import {
 
 const SearchList:React.FC = () => {
     const searchplans=useSelector(selectSearchPlans);
-    const dispatch: AppDispatch = useDispatch();
-
-
-   
+    
     return (
         <div>
             {searchplans.length?
                 <>    
                     {searchplans.map((plan)=>(
-                        <Plan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text}/>
+                         <Plan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} profile={plan.profile}/>
                     ))}
                 </>
                 // 検索結果なし

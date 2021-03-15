@@ -21,8 +21,7 @@ import {
     selectFailedSignIn,
     resetFailedSignIn,
   } from "./authSlice";
-  import {fetchAsyncGetPlans,}from "../plan/planSlice";
-
+  
   const customStyles = {
     overlay: {
       backgroundColor: "#777777",
@@ -125,9 +124,7 @@ const Auth:React.FC= () => {
             onSubmit={async (values) => {
                 const result = await dispatch(fetchAsyncLogin(values));
                 if (fetchAsyncLogin.fulfilled.match(result)) {
-                  //await dispatch(fetchAsyncGetProfs());
-                  await dispatch(fetchAsyncGetMyProf());
-                  await dispatch(fetchAsyncGetPlans()); 
+                  await dispatch(fetchAsyncGetMyProf()); 
                   await dispatch(resetFailedSignIn());
                   await dispatch(resetOpenSignIn());
                 }

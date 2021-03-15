@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 import Modal from "react-modal";
-import styles from "./Home.module.css";
+import styles from "./User.module.css";
 import {
     editNickname,
     editProfileText,
@@ -10,11 +10,12 @@ import {
     fetchAsyncUpdateProf,
   } from "../auth/authSlice";
 
-import { File } from "../types";
+
 import { Button, TextField,Avatar} from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-
+import ImageTrimming from "./ImageTrimming";
+import {setOpenImageTrimming}from "./userSlice";
 const modalStyle={
     content: {
         width: 400,
@@ -34,27 +35,26 @@ const EditProfile:React.FC = () => {
     const profile=useSelector(selectProfile);//ログインしているユーザーのprofile
     const [image, setImage] = useState<File | null>(null);
 
-
-    const updateProfile = async (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
-        const packet = { id: profile.id, nickName: profile.nickName,text:profile.text ,img: image };
+    const updateProfile = async () => {
+        
+        const packet = { id: profile.id, nickName: profile.nickName,text:profile.text};
     
         await dispatch(fetchAsyncUpdateProf(packet));
-        await dispatch(resetOpenEditProfile());
+        //dispatch(resetOpenEditProfile());
       };
 
 
-      const handlerEditPicture = () => {
-        const fileInput = document.getElementById("imageInput");
-        fileInput?.click();
-      };
+    //   const handlerEditPicture = () => {
+    //     const fileInput = document.getElementById("imageInput");
+    //     fileInput?.click();
+    //   };
     
     return (
-        <div>
+        
             <Modal
                 isOpen={openEditProfile}
                 onRequestClose={async () => {
-                    await dispatch(resetOpenEditProfile());
+                    dispatch(resetOpenEditProfile());
                 }}
                 style={modalStyle}
              >
@@ -63,7 +63,7 @@ const EditProfile:React.FC = () => {
                     <br />
                     
                     <input type="file" id="imageInput" hidden={true} onChange={(event) => setImage(event.target.files![0])}/>
-                    <Button onClick={handlerEditPicture} className={styles.homr_btnprofile}>
+                    <Button onClick={()=>{dispatch(setOpenImageTrimming());}} className={styles.homr_btnprofile}>
                         <Avatar alt="who?" src={profile.img} style={{height:'70px',width:'70px'}}/>
                     </Button>
 
@@ -87,8 +87,11 @@ const EditProfile:React.FC = () => {
                     </Button>
 
                 </form>
+
+               <ImageTrimming/> 
+
              </Modal>
-        </div>
+        
     )
 }
 

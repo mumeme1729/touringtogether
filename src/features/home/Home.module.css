@@ -56,35 +56,7 @@
     
 }
 
-/*      プロフィール詳細        */
-.profileDetail{
-    display: flex;
-    justify-content: center;
-    
-}
 
-.profileDetail_container{
-    width: 50%;
-    border:solid;
-    
-}
-
-.detail_h2{
-  margin-left: 20px;  
-}
-
-.detail_avatar{
-    display: flex;
-    justify-content: left;
-    margin-top: 10px;
-    margin-left: 10px;
-}
-
-.logout_btn{
-    display: flex;
-    justify-content: left;
-    margin-left: 7px;
-}
 
 
 /* プラン */

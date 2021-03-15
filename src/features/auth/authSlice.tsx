@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT,} from "../types";
-import { number } from "yup/lib/locale";
+import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT,PROFILE_IMAGE} from "../types";
 
 //環境変数を読み込む
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
@@ -47,14 +46,14 @@ export const fetchAsyncLogin = createAsyncThunk(
       return res.data;
     }
   );
- //アップデート
+ //アップデート(プロフィール以外)
   export const fetchAsyncUpdateProf = createAsyncThunk(
     "profile/put",
     async (profile: PROPS_PROFILE) => {
       const uploadData = new FormData();
       uploadData.append("nickName", profile.nickName);
       uploadData.append("text", profile.text);
-      profile.img && uploadData.append("img", profile.img, profile.img.name);
+      //profile.img && uploadData.append("img", profile.img, profile.img.name);
       const res = await axios.put(
         `${apiUrl}api/profile/${profile.id}/`,
         uploadData,
@@ -65,9 +64,36 @@ export const fetchAsyncLogin = createAsyncThunk(
           },
         }
       );
+      
       return res.data;
     }
   );
+
+  //プロフィール画像
+  export const fetchAsyncUpdateProfImage = createAsyncThunk(
+    "profileimage/put",
+    async (profileimage:PROFILE_IMAGE ) => {
+      const uploadData = new FormData();
+      uploadData.append("nickName", profileimage.nickName);
+      uploadData.append("text", profileimage.text);
+      console.log(profileimage.text)
+      profileimage.img &&uploadData.append("img",profileimage.img,profileimage.name);
+      const res = await axios.put(
+        `${apiUrl}api/profile/${profileimage.id}/`,
+        uploadData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${localStorage.localJWT}`,
+          },
+        }
+      )
+      
+      return res.data;
+    }
+  );
+
+
   //自分のプロフィールを取得
   export const fetchAsyncGetMyProf = createAsyncThunk("profile/get", async () => {
     const res = await axios.get(`${apiUrl}api/myprofile/`, {
@@ -90,17 +116,16 @@ export const fetchAsyncLogin = createAsyncThunk(
     return res.data[0];
   });
 
-
-  //すべてのプロフィール
-  export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
-    const res = await axios.get(`${apiUrl}api/profile/`, {
+  //フォローしている人のプロフィール
+  export const fetchAsyncGetmyFollowingProfile = createAsyncThunk("myfollowingprofile/get", 
+  async () => {
+    const res = await axios.get(`${apiUrl}api/myfollowing_profile/`, {
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },
     });
     return res.data;
   });
-
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -109,6 +134,7 @@ export const authSlice = createSlice({
     openSignUpModal: false,
     failedSignIn: false,//ログインの成功・失敗
     openEditProfile:false,
+    isLoadingProfile:false,
     //ログインしている人のプロフィールを管理
     myprofile: {
       id: 0,
@@ -118,8 +144,7 @@ export const authSlice = createSlice({
       created_on: "",
       img: "",
     },
-
-    profiles: [
+    myfollowingprofile:[
       {
         id: 0,
         nickName: "",
@@ -179,7 +204,14 @@ export const authSlice = createSlice({
       resetOpenEditProfile(state){
         state.openEditProfile=false;
       },
-      
+
+      //ロード
+      startProfileLoad(state){
+        state.isLoadingProfile=true;
+      },
+      endProfileLoad(state){
+        state.isLoadingProfile=false;
+      },
   },
   extraReducers:(builder)=>{
     //ログインが成功したらjwtをローカルに保存
@@ -196,17 +228,16 @@ export const authSlice = createSlice({
       state.selectedProfile=action.payload;
     });
 
-    builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
-      state.profiles = action.payload;
+    builder.addCase(fetchAsyncGetmyFollowingProfile.fulfilled,(state,action)=>{
+      state.myfollowingprofile=action.payload;
     });
-
     
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
         state.myprofile = action.payload;
-        state.profiles = state.profiles.map((prof) =>
-          prof.id === action.payload.id ? action.payload : prof
-        );
-      });      
+    });
+    builder.addCase(fetchAsyncUpdateProfImage.fulfilled,(state,action)=>{
+        state.myprofile=action.payload;
+    });      
   },
 });
 
@@ -221,14 +252,18 @@ export const {
     setOpenEditProfile,
     resetOpenEditProfile,
     editProfileText,
+    startProfileLoad,
+    endProfileLoad,
   } = authSlice.actions;
 
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;
 export const selectOpenSignUp = (state: RootState) => state.auth.openSignUpModal;
 export const selectFailedSignIn=(state:RootState) =>state.auth.failedSignIn;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
-export const selectProfiles = (state: RootState) => state.auth.profiles;
 export const selectSelectedProfile=(state:RootState)=>state.auth.selectedProfile;
 export const selectOpenEditProfile =(state:RootState)=>state.auth.openEditProfile;
+export const selectmyFollowingProfile=(state:RootState)=>state.auth.myfollowingprofile;
+export const selectIsLoadingProfile=(state:RootState)=>state.auth.isLoadingProfile;
+
 
 export default authSlice.reducer;

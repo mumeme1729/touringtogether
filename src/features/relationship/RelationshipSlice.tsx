@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT,  PROPS_RELATION,PROPS_ALL_USER } from "../types";
-import { number } from "yup/lib/locale";
+import { PROPS_RELATION,RELATION} from "../types";
 
 //環境変数を読み込む
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
 
-//フォロー
+//新しくフォロー
 export const fetchAsyncAddFollowing = createAsyncThunk(
   "relationships/post",
   async (following: PROPS_RELATION) => {
@@ -22,7 +21,22 @@ export const fetchAsyncAddFollowing = createAsyncThunk(
   }
 );
 
-//フォロー解除
+//フォロー解除時のidを返す
+export const fetchAsyncGetRelationId =createAsyncThunk("relationshipid/delete",async (relation:RELATION) =>{
+  const res=await axios.get(`${apiUrl}api/relation/`,{
+      headers:{
+          "Content-Type":"application/json",
+          Authorization: `JWT ${localStorage.localJWT}`,
+      },
+      params:{
+        userFollow:`${relation.userFollow}`,
+        following:`${relation.following}`
+      },
+  });
+  return res.data[0];
+});
+
+//デリーーーと
 export const fetchAsyncFollowingDelete =createAsyncThunk("relationships/delete",async (id:number) =>{
   await axios.delete(`${apiUrl}api/relationship/${id}/`,{
       headers:{
@@ -33,29 +47,33 @@ export const fetchAsyncFollowingDelete =createAsyncThunk("relationships/delete",
   return id;
 });
 
-//フォロー中のユーザーを取得
-export const fetchAsyncFollowing = createAsyncThunk("following/get", 
-  async (following:string) => {
-    const res = await axios.get(`${apiUrl}api/following/?userFollow=${following}`, {
-      headers: {
-        Authorization: `JWT ${localStorage.localJWT}`,
-      },
-    });
-    return res.data;
-  });
-//フォロワーを取得
-export const fetchAsyncFollower = createAsyncThunk("follower/get", 
-  async (following:string) => {
-    const res = await axios.get(`${apiUrl}api/follower/?following=${following}`, {
-      headers: {
-        Authorization: `JWT ${localStorage.localJWT}`,
-      },
-    });
-    return res.data;
-  });
 
 //フォロー・フォロワーのプロフィール
+export const fetchAsyncGetFollowingProfile = createAsyncThunk("followingprofile/get", 
+  async (id:string) => {
+    const res = await axios.get(`${apiUrl}api/following_profile/`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+      params:{
+        id:`${id}`,
+      },
+    });
+    return res.data;
+  });
 
+  export const fetchAsyncGetFollowerProfile = createAsyncThunk("followerprofile/get", 
+  async (id:string) => {
+    const res = await axios.get(`${apiUrl}api/follower_profile/`,{
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+      params:{
+        id:`${id}`,
+      },
+    });
+    return res.data;
+  });
 
 export const RelationshipSlice = createSlice({
   name: 'relationship',
@@ -63,21 +81,20 @@ export const RelationshipSlice = createSlice({
     openRelatinDetail:false,//フォロー関係モーダルのオンオフ
     openFollowing:false,
     openFollower:false,
-    //プロフィールのリスト(全員)
-
+    
     //新しいフォロー関係
     newRelationsip:{
       id:0,
       userFollow:0,
       following:0,
     },
-    following:[
-      {
-        id:0,
-        userFollow:0,
-        following:0,
-      },
-    ],
+    //フォロー解除用id
+    deleteid:{
+      id:0,
+      userFollow:0,
+      following:0,
+    },
+   
     follower:[
       {
         id:0,
@@ -131,7 +148,17 @@ export const RelationshipSlice = createSlice({
       },
       addRelation(state,action){
         state.newRelationsip=action.payload;
-      }
+      },
+      //ロード
+      setfollowerprofile(state,action){
+        return{
+          ...state,
+          followerprofile: [ action.payload,...state.followerprofile],
+        }
+      },
+      resetfollowerprofile(state,action){
+        state.followerprofile.filter((t)=>t.userProfile!==action.payload.userProfile)
+      },
   },
   extraReducers:(builder)=>{
     builder.addCase(fetchAsyncAddFollowing.fulfilled,(state,action)=>{
@@ -141,21 +168,16 @@ export const RelationshipSlice = createSlice({
       }
   });
    
-    builder.addCase(fetchAsyncFollowing.fulfilled,(state,action)=>{
-      state.following = action.payload;
+    builder.addCase(fetchAsyncGetFollowingProfile.fulfilled,(state,action)=>{
+      state.followingprofile = action.payload;
     });
-    builder.addCase(fetchAsyncFollower.fulfilled,(state,action)=>{
-      state.follower=action.payload;
-  });
-    builder.addCase(fetchAsyncFollowingDelete.fulfilled,(state,action)=>{
-        return{
-          ...state,
-          follower:state.follower.filter((t)=>t.id!==action.payload),
-          // newRelationsip:{id:0,userFollow:0,following:0,},
-        };
-    });
-    
-      
+    builder.addCase(fetchAsyncGetFollowerProfile.fulfilled,(state,action)=>{
+      state.followerprofile=action.payload;
+    })
+    builder.addCase(fetchAsyncGetRelationId.fulfilled,(state,action)=>{
+      state.deleteid=action.payload;
+    })
+
   },
 });
 
@@ -167,6 +189,8 @@ export const {
     setOpenFollower,
     resetOpenFollower,
     addRelation,
+    setfollowerprofile,
+    resetfollowerprofile,
   } = RelationshipSlice.actions;
 
 
@@ -175,7 +199,12 @@ export const selectOpenFollowing=(state:RootState)=>state.relationship.openFollo
 export const selectOpenFollower=(state:RootState)=>state.relationship.openFollower;
 export const selectAddRelationship=(state:RootState)=>state.relationship.newRelationsip;
 
-export const selectFollowing=(state:RootState)=>state.relationship.following;
 export const selectFollower=(state:RootState)=>state.relationship.follower
+
+export const selectFollowingProfile=(state:RootState)=>state.relationship.followingprofile;
+export const selectFollowerProfile=(state:RootState)=>state.relationship.followerprofile;
+
+
+export const selectDeleteId=(state:RootState)=>state.relationship.deleteid;
 
 export default RelationshipSlice.reducer;

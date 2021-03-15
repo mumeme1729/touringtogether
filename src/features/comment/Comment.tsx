@@ -3,40 +3,35 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Link,useLocation} from 'react-router-dom';
 import styles from "./Comment.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { COMMENT } from '../types';
+import { COMMENT,COMMENT_PROFILE } from '../types';
 import { AppDispatch } from "../../app/store";
-import {fetchAsyncCommentDelete,selectCommentProfiles,fetchAsyncCommentProfile}from './commentSlice'
+import {fetchAsyncCommentDelete}from './commentSlice'
 import {selectProfile} from "../auth/authSlice";
 import { Avatar,Button,TextField} from "@material-ui/core";
 
-const Comment:React.FC<COMMENT> = (comment) => {
-    const dispatch: AppDispatch = useDispatch();
-    const commentprofs =useSelector(selectCommentProfiles);
-    const profile = useSelector(selectProfile);
-    
-    useEffect(()=>{
-        console.log('---コメント---')
-        console.log(comment)
-        const fetchLoader = async ()=>{
-            //ログインしていたら
-            if (localStorage.localJWT && comment.id!==0) {
-                await dispatch(fetchAsyncCommentProfile(comment.userComment));
-              }
-            };
-            fetchLoader();
-    },[dispatch]);
+const apiUrl = process.env.REACT_APP_DEV_API_URL
 
+const Comment:React.FC<COMMENT_PROFILE> = (comment) => {
+    const dispatch: AppDispatch = useDispatch();
+    const profile = useSelector(selectProfile);
+    let imgpath=""
+    if((comment.profile.img)[0]!=='h'){
+        imgpath=apiUrl+(comment.profile.img).substr(1);
+    }else{
+        imgpath=comment.profile.img;
+    }
+  
     return (
         <>
           <div className={styles.post_comment}>
             <Link to ={"/profile/"+comment.userComment}>
                 <button className={styles.plan_btnprofile} onClick={()=>{}}>
-                    <Avatar src={commentprofs.find((prof) => prof.userProfile === comment.userComment)?.img}/>         
+                    {imgpath!==apiUrl?
+                        <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
+                    :null}         
                 </button>
             </Link>
-            { commentprofs.find((prof) => (
-                prof.userProfile === comment.userComment
-            ))?.nickName}
+            { comment.profile.nickName}
             <br/>
             {comment.text}
             <div key={comment.id}>

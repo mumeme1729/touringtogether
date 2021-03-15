@@ -9,15 +9,9 @@ import {
     resetOpenSignIn,
     fetchAsyncGetMyProf,
     selectProfile,
-    fetchAsyncGetProfs,
-    
+    startProfileLoad,
 } from "../auth/authSlice";
-import {
-    setOpenNewPlan,
-    fetchAsyncGetPlans,
-    selectPlans
-}from "../plan/planSlice";
-
+import {startLoad} from "../plan/planSlice";
 import {Link} from 'react-router-dom';
 
 
@@ -35,8 +29,6 @@ const Header:React.FC = () => {
                   dispatch(setOpenSignIn());
                   return null;
                 }
-                await dispatch(fetchAsyncGetPlans());  
-                await dispatch(fetchAsyncGetProfs());
               }
             };
             fetchLoader();
@@ -49,7 +41,11 @@ const Header:React.FC = () => {
         <button onClick={()=>{
             
         }}className={styles.homr_btnprofile}>
-            <Link to ="/"><h1 >Home</h1></Link>
+            <Link to ="/">
+                {/* <button onClick={()=>dispatch(startLoad())}> */}
+                <h1 >Home</h1>
+                {/* </button> */}
+            </Link>
             
         </button>
         <div className={styles.home_header_right}>
@@ -58,7 +54,7 @@ const Header:React.FC = () => {
             </div>
             <div className={styles.home_header_avater}>
                 <Link to ={"/profile/"+profile.userProfile}>
-                    <button className={styles.homr_btnprofile} onClick={()=>{}}>
+                    <button className={styles.homr_btnprofile} >
                         <Avatar alt="who?" src={profile.img} style={{height:'70px',width:'70px'}}/>{" "}
                     </button>
                 </Link>
