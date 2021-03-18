@@ -7,18 +7,24 @@ import TimeLine from "./TimeLine";
 import Search from "./Search";
 import {setOpenNewPlan,}from "../plan/planSlice";
 import NewPlan from './NewPlan';
-import {startLoad,endLoad,fetchAsyncTimeline,selectLoadPlan} from "../plan/planSlice";
+import {startLoad,endLoad,fetchAsyncTimeline,selectLoadPlan,fetchAsyncSearchPlans} from "../plan/planSlice";
 import { Button,CircularProgress} from "@material-ui/core";
+import {fetchAsyncGetNotification,} from "../notification/notificationSlice";
+import SearchList from "./SearchList";
 const Home:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const isloadplan=useSelector(selectLoadPlan);
 
     useEffect(()=>{
-        console.log('timeline')
         const fetchLoader = async ()=>{
-            dispatch(startLoad());
-            await dispatch(fetchAsyncTimeline());//タイムラインの投稿を取得
-            dispatch(endLoad());
+            if (localStorage.localJWT) {
+                dispatch(startLoad());
+                //await dispatch(fetchAsyncTimeline());//タイムラインの投稿を取得
+                const packet = { destination: "", date: ""};
+                await dispatch(fetchAsyncSearchPlans(packet));
+                await dispatch(fetchAsyncGetNotification());//通知を取得
+                dispatch(endLoad());
+            }
         };
         fetchLoader();
     },[dispatch]);
@@ -26,11 +32,15 @@ const Home:React.FC = () => {
     return (
         <>
             <Auth />
-            {/* メインコンテンツ */}            
-            <div>
+            {/* メインコンテンツ */}       
+            <div className={styles.home_title}>
+                <h2 className={styles.title_h2}>ホーム</h2>
+            </div> 
+            <br/>  
+            <br/>
+            <br/>  
+            <div className={styles.home_newplan}>
                 <NewPlan/> 
-                <br/>
-                <br />
                 <Button variant="outlined" color="primary"
                     onClick={() => {
                      dispatch(setOpenNewPlan());
@@ -48,7 +58,7 @@ const Home:React.FC = () => {
                     </>
                 :
                     <>
-                        <TimeLine/>
+                        <SearchList/>
                     </>
             }
             </div>  

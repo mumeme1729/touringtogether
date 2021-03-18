@@ -53,7 +53,6 @@ const UserProfile:React.FC = () => {
     useEffect(() => {
         const fetchLoader = async ()=>{ 
             if (localStorage.localJWT) {
-                console.log('プロフォール')
                 dispatch(startProfileLoad());
                 await dispatch(fetchAsyncSelectProfile(user_id));
                 dispatch(addRelation({following:user_id}));
@@ -66,7 +65,6 @@ const UserProfile:React.FC = () => {
                 }
                 //リロード用
                 if(myfollowing[0]?.id===0){
-                    console.log('リロード')
                     await dispatch(fetchAsyncGetmyFollowingProfile());
                 }
 

@@ -1,25 +1,53 @@
 
 /*    ヘッダー    */
-.home_header {
-    top: 0;
-    background-color: gray;
-    padding: 10px;
-    display: flex;
-    z-index: 1;
-    padding-left: 50px;
-    padding-right: 50px;
-    justify-content: space-between;
-}
 
-.home_header_right{
+.home_header {
+    bottom:1vh;
+    padding: 10px;
+    /* display: flex; */
+    z-index: 1;
+    position:fixed;
+    width:20%;
+    height: 90vh;
+    margin-left: 5%; 
+}
+.header_top{
+    bottom:5vh;
+    position:fixed;
+    width:20%;  
+}
+.header_contents_container{
+    width:100%;
+    margin-top: 5px;
+    margin-left: 15px;
+}
+.home_header_contents{
+    width:40%;
+    border-radius: 10px;
     display: flex;
-    justify-content: space-between;
-    margin-right: 10px;
+    justify-content:left;
+}
+.header_link{
+    text-decoration: none;
+    color:black;
+}
+.header_con{
+    width: 100%;
+}
+.header_contents_container:hover .home_header_contents{
+    border-color: crimson;
+    border:solid 1px;
+    border-radius: 20px;
+    opacity: 0.9;
+}
+.home_header_profile{
+    display: flex;
+    border-radius:60px;
+    height: 90px;  
 }
 .home_header_avater{
     margin-top: 10px;
-    margin-left: 8px;
-    
+    margin-left: 8px; 
 }
 .header_nickname{
     margin-top: 15px;
@@ -31,6 +59,31 @@
 .home_avatar{
     height: 50px;
     width:50px;
+}
+
+/* ページタイトル */
+.home_title{
+    border:solid 1px rgba(0,0,0,0.1);
+    width:500px;
+    height: 40px;
+    /* position: relative; */
+    margin-bottom: 10px;
+    position: fixed;
+    background-color: white;
+    z-index: 1;
+    left:50%;
+    margin-left: -275px;
+    
+}
+.title_h2{
+    margin-top: 3px;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+}
+.home_newplan{
+    margin-top: -2px;
+    margin-left: -50px;
 }
 
 .homr_btnprofile {
@@ -71,6 +124,8 @@
     justify-content: center;
 }
 .search_body{
-    width: 50%;
-    border:solid;
+    width:500px;
+    border:solid 1px rgba(0,0,0,0.1);
+    position: relative;
+    left: -24px;
 }

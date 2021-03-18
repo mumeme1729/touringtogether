@@ -28,6 +28,7 @@ import Following from "./Following";
 import Follower from "./Follower";
 import Modal from "react-modal";
 import {useLocation} from 'react-router-dom';
+import {fetchAsyncPostNotification} from '../notification/notificationSlice';
 
 const modalStyle={
     content: {
@@ -71,6 +72,12 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
         await dispatch(fetchAsyncGetRelationId(relation));
     }
 
+    //通知を追加
+    const addNotification=async()=>{
+        const packet={status:true,receive:proFile.userProfile,send:loginUser.userProfile,targetplan:null}
+        await dispatch(fetchAsyncPostNotification(packet));
+    }
+
     const deleteReration=async()=>{
         await dispatch(fetchAsyncFollowingDelete(Id.id))
         await dispatch(fetchAsyncGetFollowerProfile(user_id));
@@ -91,8 +98,8 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
                         
                          </Button>
                     ):
-                    <Button variant="outlined" color="primary" onClick={async()=>{
-                        
+                    <Button variant="outlined" color="primary" onClick={()=>{
+                        addNotification();
                         addNewFollowing();
                     }}>
                         フォロー

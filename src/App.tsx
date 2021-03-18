@@ -9,6 +9,8 @@ import UserProfile from './features/user/UserProfile';
 import Header from './features/home/Header';
 import SearchList from './features/home/SearchList';
 import PlanDetail from './features/plan/PlanDetail';
+import Notification from './features/notification/Notification';
+import TimeLine from './features/home/TimeLine';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route  path="/profile/:id" component={UserProfile}/> 
         <Route  path="/search" component={SearchList}/>
         <Route  path="/plandetail/:id/:id" component={PlanDetail}/>
+        <Route path="/notification" component={Notification}/>
+        <Route path="/timeline"component={TimeLine}/>
       </Router>
     </div>
   );

@@ -6,8 +6,8 @@ import {
     fetchAsyncSearchPlans
 }from "../plan/planSlice";
 import {Link} from 'react-router-dom';
-import { styles } from '@material-ui/pickers/views/Calendar/Calendar';
-import styles_css from "./Home.module.css";
+
+import styles from "./Home.module.css";
 
 
 const Search:React.FC = () => {
@@ -24,8 +24,8 @@ const Search:React.FC = () => {
     }
 
     return (
-        <div className={styles_css.search_container}>
-            <div className={styles_css.search_body}>
+        <div className={styles.search_container}>
+            <div className={styles.search_body}>
                 <SearchIcon/>ツーリング仲間を探す
                 <br/>
                 <TextField

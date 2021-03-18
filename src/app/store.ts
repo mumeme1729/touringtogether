@@ -4,6 +4,7 @@ import planReducer from '../features/plan/planSlice';
 import RelationshipReducer from '../features/relationship/RelationshipSlice';
 import commentReducer from '../features/comment/commentSlice';
 import userReducer from '../features/user/userSlice';
+import notificationReducer from '../features/notification/notificationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     plan:planReducer,
     relationship:RelationshipReducer,
     comment:commentReducer,
-    user: userReducer
+    user: userReducer,
+    notification:notificationReducer,
   },
 });
 

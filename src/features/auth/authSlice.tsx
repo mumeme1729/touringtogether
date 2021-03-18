@@ -76,7 +76,6 @@ export const fetchAsyncLogin = createAsyncThunk(
       const uploadData = new FormData();
       uploadData.append("nickName", profileimage.nickName);
       uploadData.append("text", profileimage.text);
-      console.log(profileimage.text)
       profileimage.img &&uploadData.append("img",profileimage.img,profileimage.name);
       const res = await axios.put(
         `${apiUrl}api/profile/${profileimage.id}/`,
@@ -133,6 +132,7 @@ export const authSlice = createSlice({
     openSignInModal: true,
     openSignUpModal: false,
     failedSignIn: false,//ログインの成功・失敗
+    failedSignUp:false,
     openEditProfile:false,
     isLoadingProfile:false,
     //ログインしている人のプロフィールを管理
@@ -179,7 +179,13 @@ export const authSlice = createSlice({
       resetFailedSignIn(state){
         state.failedSignIn=false;
       },
-
+      //登録失敗
+      setFailedSignUp(state){
+        state.failedSignUp=true;
+      },
+      resetFailedSignUp(state){
+        state.failedSignUp=false;
+      },
       //登録用
       setOpenSignUp(state) {
         state.openSignUpModal = true;
@@ -254,6 +260,8 @@ export const {
     editProfileText,
     startProfileLoad,
     endProfileLoad,
+    setFailedSignUp,
+    resetFailedSignUp,
   } = authSlice.actions;
 
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;
@@ -264,6 +272,6 @@ export const selectSelectedProfile=(state:RootState)=>state.auth.selectedProfile
 export const selectOpenEditProfile =(state:RootState)=>state.auth.openEditProfile;
 export const selectmyFollowingProfile=(state:RootState)=>state.auth.myfollowingprofile;
 export const selectIsLoadingProfile=(state:RootState)=>state.auth.isLoadingProfile;
-
+export const selectFailedSignUp=(state:RootState)=>state.auth.failedSignUp;
 
 export default authSlice.reducer;

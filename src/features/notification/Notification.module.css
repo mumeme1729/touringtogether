@@ -1,0 +1,10 @@
+.notification_detail_container{
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.notification_body{
+    width: 50%;
+    border:solid;
+}

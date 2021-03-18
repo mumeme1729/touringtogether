@@ -15,7 +15,6 @@ const UserPlan:React.FC< PROPS_PLANPROFILE> = (plan) => {
     const profile=useSelector(selectProfile);
     let imgpath=""
     useEffect(()=>{
-        console.log('プラン')
         const fetchLoader = async ()=>{
             let imgpath=""
             if((plan.profile.img)[0]!=='h'){
@@ -41,8 +40,8 @@ const UserPlan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                 <div className={styles.plan_body}>
                 <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id} >
                     <button className={styles.plan_btn} onClick={()=>{
-                        dispatch(startLoad());
-                        dispatch(startLoadComment());
+                         dispatch(startLoad());
+                         dispatch(startLoadComment());
                         }}> 
                         
                         {imgpath!==apiUrl?

@@ -135,3 +135,35 @@ export interface PROFILE_IMAGE{
     img:File | null;
     name:string;
 }
+
+export interface NOTIFICATION{
+    status:boolean;
+    receive:number;
+    targetplan:number | null;
+    send:number;
+}
+
+export interface NOTIFICATION_GET{
+    id:number;
+    status:boolean;
+    receive:number;
+    send:number;
+    targetplan:number|null;
+    created_on:string;
+}
+
+export interface NOTIFICATION_DELETE{
+    id:number;
+    status:boolean;
+    receive:number;
+    send:number;
+    targetplan:number|null;
+    profile: {
+        id: number,
+        nickName: string,
+        text: string,
+        userProfile: number,
+        created_on: string,
+        img: string,
+    }
+}

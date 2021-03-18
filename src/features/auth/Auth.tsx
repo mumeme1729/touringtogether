@@ -20,18 +20,35 @@ import {
     setFailedSignIn,
     selectFailedSignIn,
     resetFailedSignIn,
+    setFailedSignUp,
+    resetFailedSignUp,
+    selectFailedSignUp,
   } from "./authSlice";
-  
+  import {fetchAsyncGetNotification} from "../notification/notificationSlice";
+  import {fetchAsyncTimeline,fetchAsyncSearchPlans} from "../plan/planSlice";
   const customStyles = {
     overlay: {
       backgroundColor: "#777777",
+      zIndex:100
+    },
+    content: {
+      width: 400,
+      height: 520,
+
+      top: "55%",
+      left: "50%",
+
+      transform: "translate(-50%, -50%)",
     },
   };
+
+ 
 
 const Auth:React.FC= () => {
     //ログイン
     const openSignIn = useSelector(selectOpenSignIn);
     const failedSignIn=useSelector(selectFailedSignIn);
+    const failedSignUp=useSelector(selectFailedSignUp);
     //新規登録
     const openSignUp = useSelector(selectOpenSignUp);
     const dispatch: AppDispatch = useDispatch();
@@ -49,19 +66,27 @@ const Auth:React.FC= () => {
                 
               //新規作成に成功したらログイン
               if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
+                console.log(resultRegister);
                 await dispatch(fetchAsyncLogin(values));
                 await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定" }));
-                //await dispatch(fetchAsyncGetProfs());
-                await dispatch(fetchAsyncGetMyProf());
+                const packet = { destination: "", date: ""};
+                await dispatch(fetchAsyncSearchPlans(packet));
+                dispatch(resetFailedSignUp()); 
+                dispatch(resetOpenSignUp());
+              }else{
+                console.log(resultRegister);
+                values.email="";
+                values.password="";
+                dispatch(setFailedSignUp());
               }
-              await dispatch(resetOpenSignUp());
+              
             }}
             //バリデーション
             validationSchema={Yup.object().shape({
               email: Yup.string()
-                .email("email format is wrong")
-                .required("email is must"),
-              password: Yup.string().required("password is must").min(4),
+                .email("メールアドレスのフォーマットが不正です。")
+                .required("メールアドレスは必須です。"),
+              password: Yup.string().required("パスワードは必須です。").min(4),
             })}
           >
             {({
@@ -76,7 +101,8 @@ const Auth:React.FC= () => {
               <div>
                 <form onSubmit={handleSubmit}>
                   <div >
-                    <h1>SNS clone</h1>
+                    <h1>Sigh Up</h1>
+                    { failedSignUp ? <div>このメールアドレスは既に登録されています。</div>:<div></div>}
                     <br />
                     <input
                       placeholder="email"
@@ -87,6 +113,10 @@ const Auth:React.FC= () => {
                       value={values.email}
                     />
                     <br />
+                    {touched.email && errors.email ? (
+                      <div >{errors.email}</div>
+                    ) : null}
+                    <br />
                     <input
                       placeholder="password"
                       type="password"
@@ -95,6 +125,9 @@ const Auth:React.FC= () => {
                       onBlur={handleBlur}
                       value={values.password}
                     />
+                    {touched.password && errors.password ? (
+                      <div >{errors.password}</div>
+                    ) : null}
                     <br />
                     <br />
                     <button color="primary" disabled={!isValid} type="submit">Register</button>
@@ -102,11 +135,11 @@ const Auth:React.FC= () => {
                     <br />
                     <span
                       onClick={async () => {
-                        await dispatch(setOpenSignIn());
-                        await dispatch(resetOpenSignUp());
+                         dispatch(setOpenSignIn());
+                         dispatch(resetOpenSignUp());
                       }}
                     >
-                      You already have a account ?
+                      ログイン 
                     </span>
                   </div>
                 </form>
@@ -120,26 +153,29 @@ const Auth:React.FC= () => {
            <Formik
             initialErrors={{ email: "required" }}
             initialValues={{ email: "", password: "" }}
-            //入力したメアドなどをオブジェクトとしてvaluesへ
             onSubmit={async (values) => {
                 const result = await dispatch(fetchAsyncLogin(values));
                 if (fetchAsyncLogin.fulfilled.match(result)) {
-                  await dispatch(fetchAsyncGetMyProf()); 
-                  await dispatch(resetFailedSignIn());
-                  await dispatch(resetOpenSignIn());
-                }
-                if(fetchAsyncLogin.rejected.match(result)){
+                  await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
+                  await dispatch(fetchAsyncGetNotification());//通知
+                  // await dispatch(fetchAsyncTimeline());
+                  const packet = { destination: "", date: ""};
+                  await dispatch(fetchAsyncSearchPlans(packet));
+                  dispatch(resetFailedSignIn());
+                  dispatch(resetOpenSignIn());
+                }else
+                {
                   values.email=""
                   values.password=""
-                  await dispatch(setFailedSignIn());//ログイン失敗
+                  dispatch(setFailedSignIn());
                 }
             }}
             //バリデーション
             validationSchema={Yup.object().shape({
               email: Yup.string()
-                .email("email format is wrong")
-                .required("email is must"),
-              password: Yup.string().required("password is must").min(4),
+                .email("メールアドレスのフォーマットが不正です。")
+                .required("メールアドレスは必須です。"),
+              password: Yup.string().required("パスワードは必須です。").min(4),
             })}
           >
             {({
@@ -188,11 +224,11 @@ const Auth:React.FC= () => {
                     <br />
                     <br />
                     <span onClick={async () => {
-                        await dispatch(resetOpenSignIn());
-                        await dispatch(setOpenSignUp());
+                         dispatch(resetOpenSignIn());
+                         dispatch(setOpenSignUp());
                       }}
                     >
-                      You don't have a account ?
+                      アカウント作成 
                     </span>
                   </div>
                 </form>

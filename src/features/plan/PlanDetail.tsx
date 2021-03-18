@@ -26,7 +26,7 @@ import {
     selectIsLoadComment,
 }from '../comment/commentSlice';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import {fetchAsyncPostNotification} from '../notification/notificationSlice';
 
 const PlanDetail:React.FC< PROPS_PLANS> = () => {
     const selectedProfile=useSelector(selectSelectedProfile);
@@ -40,12 +40,17 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
     const isloadcomment=useSelector(selectIsLoadComment);
     const isloadplan=useSelector(selectLoadPlan);
 
-    const postComment = async (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
+    const postComment = async () => {
         const packet = { text: text, plan: plan.id,profile:myprofile };
         await dispatch(fetchAsyncPostComment(packet));
         setText("");
       };
+
+    //通知
+    const addNotification=async()=>{
+        const packet={status:true,receive:plan.userPlan,send:myprofile.userProfile,targetplan:plan.id}
+        await dispatch(fetchAsyncPostNotification(packet));
+    }
 
     useEffect(()=>{
         const fetchLoader = async ()=>{
@@ -59,6 +64,7 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                 dispatch(startLoadComment());
                 await dispatch(fetchAsyncGetComments(id[3]));
                 dispatch(endLoadComment());
+                
             }
             };
             fetchLoader();
@@ -106,7 +112,10 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                 disabled={!text.length}
                 className={styles.post_button}
                 type="submit"
-                onClick={postComment}
+                onClick={()=>{
+                    postComment();
+                    addNotification();
+                }}
             >
                 コメントを投稿
             </button>
