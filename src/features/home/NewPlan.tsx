@@ -9,16 +9,21 @@ import {
     selectSelectedPlan
 }from "../plan/planSlice";
 import { Button, TextField, IconButton } from "@material-ui/core";
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import Modal from "react-modal";
 import {selectProfile } from "../auth/authSlice";
 
 const customStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        zIndex:2
+      },
     content: {
       top: "55%",
       left: "50%",
   
       width: 280,
-      height: 220,
+      height: '90vh',
       padding: "50px",
   
       transform: "translate(-50%, -50%)",
@@ -32,21 +37,33 @@ const NewPlan:React.FC = () => {
     const [destination,setDestination]=useState("");
     const [date,setDate]=useState("");
     const [text,setText]=useState("");
-
+    const [image, setImage] = useState<File | null>(null);
+    let url="";
     const newPlan = async()=>{
-        const packet = { destination: destination, date: date ,text:text,profile:myprofile};
+        const packet = { destination: destination, date: date ,text:text,img:image,profile:myprofile};
         dispatch(fetchAsyncNewPlan(packet));
         setDestination("");
         setDate("");
         setText("");
+        setImage(null);
         dispatch(resetOpenNewPlan());
     }
-
-
+    const handlerEditPicture = () => {
+        const fileInput = document.getElementById("imageInput");
+        fileInput?.click();
+      };
+      
+      if(image!==null){
+        var binaryData = [];
+        binaryData.push(image);
+        url=window.URL.createObjectURL(new Blob(binaryData, {type: "image/*"}))
+      }
     return (
         <>
             <Modal isOpen={openPlan}
                 onRequestClose={async () => {
+                    url="";
+                    setImage(null);
                     dispatch(resetOpenNewPlan());
                 }}
                 style={customStyles}
@@ -82,6 +99,10 @@ const NewPlan:React.FC = () => {
                     defaultValue={text}
                 />
                 <br/>
+                <input type="file" id="imageInput" hidden={true} onChange={(e) => setImage(e.target.files![0])}/>
+                <IconButton onClick={handlerEditPicture}>
+                    <AddPhotoAlternateIcon />
+                </IconButton>
                 <br/>
                 <Button
                     disabled={!destination || !date  ||!text}
@@ -91,6 +112,8 @@ const NewPlan:React.FC = () => {
                 >
                     投稿
                 </Button>
+                {url}
+                <img src={url} width="50%" height="50%"/>
             </form>
         </Modal>
             

@@ -32,6 +32,7 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     return res.data;
   });
 
+  
 
 
 export const userSlice =createSlice({
@@ -49,6 +50,7 @@ export const userSlice =createSlice({
           userPlan:0,
           created_on:"",
           text:"",
+          img:"",
         },
       ],
       commnetplan:[
@@ -59,13 +61,15 @@ export const userSlice =createSlice({
             userPlan:0,
             created_on:"",
             text:"",
+            img:"",
             profile: {
               id: 0,
               nickName: "",
               text: "",
               userProfile: 0,
               created_on: "",
-              img: ""
+              img: "",
+              base:"",
             }
         },
     ],

@@ -23,27 +23,29 @@ const Comment:React.FC<COMMENT_PROFILE> = (comment) => {
   
     return (
         <>
-          <div className={styles.post_comment}>
-            <Link to ={"/profile/"+comment.userComment}>
-                <button className={styles.plan_btnprofile} onClick={()=>{}}>
-                    {imgpath!==apiUrl?
-                        <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
-                    :null}         
-                </button>
-            </Link>
-            { comment.profile.nickName}
-            <br/>
-            {comment.text}
-            <div key={comment.id}>
-                {comment.userComment===profile.userProfile?
-                    <>
-                        <button onClick={()=>{dispatch(fetchAsyncCommentDelete(comment.id))}}>
-                        <DeleteIcon />
+            <div className={styles.comment_container}>
+                <div className={styles.post_comment}>
+                    <Link to ={"/profile/"+comment.userComment}>
+                        <button className={styles.plan_btnprofile} onClick={()=>{}}>
+                            {imgpath!==apiUrl?
+                                <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
+                            :null}         
                         </button>
-                    </>
-                :null}
-            </div>  
-          </div>  
+                    </Link>
+                    { comment.profile.nickName}
+                    <br/>
+                    {comment.text}
+                    <div key={comment.id}>
+                        {comment.userComment===profile.userProfile?
+                            <>
+                                <button onClick={()=>{dispatch(fetchAsyncCommentDelete(comment.id))}}>
+                                <DeleteIcon />
+                                </button>
+                            </>
+                        :null}
+                    </div>  
+                </div>  
+            </div>
         </>
     )
 }

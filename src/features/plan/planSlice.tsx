@@ -49,6 +49,7 @@ export const fetchAsyncNewPlan = createAsyncThunk(
         planData.append("destination",newPlan.destination)
         planData.append("date",newPlan.date)
         planData.append("text",newPlan.text)
+        newPlan.img && planData.append("img", newPlan.img, newPlan.img.name);
         const res =await axios.post(
             `${apiUrl}api/plan/`,
             planData,
@@ -79,6 +80,8 @@ export const planSlice =createSlice({
     initialState:{
         openNewPlan:false,
         isLoadingPlan:false,
+        isOpenImage:false,
+        planImage:"",
         timeline:[
           {
               id:0,
@@ -87,13 +90,15 @@ export const planSlice =createSlice({
               userPlan:0,
               created_on:"",
               text:"",
+              img:"",
               profile: {
                 id: 0,
                 nickName: "",
                 text: "",
                 userProfile: 0,
                 created_on: "",
-                img: ""
+                img: "",
+                base:""
               }
           },
       ],
@@ -105,13 +110,15 @@ export const planSlice =createSlice({
                 userPlan:0,
                 created_on:"",
                 text:"",
+                img:"",
                 profile: {
                   id: 0,
                   nickName: "",
                   text: "",
                   userProfile: 0,
                   created_on: "",
-                  img: ""
+                  img: "",
+                  base:""
                 }
             },
         ],
@@ -122,6 +129,7 @@ export const planSlice =createSlice({
             userPlan:0,
             created_on:"",
             text:"",
+            img:""
         },
     },
     reducers:{
@@ -137,13 +145,22 @@ export const planSlice =createSlice({
         endLoad(state){
           state.isLoadingPlan=false;
         },
-
+        setOpenImage(state){
+          state.isOpenImage=true;
+        },
+        resetOpenImage(state){
+          state.isOpenImage=false;
+        },
+        setPlanImage(state,action){
+          state.planImage=action.payload;
+        }
+ 
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncNewPlan.fulfilled,(state,action)=>{
             return {
                 ...state,
-                timeline: [ action.payload,...state.timeline],
+                searchplans: [ action.payload,...state.searchplans],
             };
         });
         builder.addCase(fetchAsyncTimeline.fulfilled,(state, action) => {
@@ -170,6 +187,9 @@ export const{
     resetOpenNewPlan,
     startLoad,
     endLoad,
+    setOpenImage,
+    resetOpenImage,
+    setPlanImage,
 }=planSlice.actions
 
 
@@ -178,4 +198,6 @@ export const selectSearchPlans=(state:RootState)=>state.plan.searchplans;
 export const selectSelectedPlan=(state:RootState)=>state.plan.selectedPlan;
 export const selectTimeline=(state:RootState)=>state.plan.timeline;
 export const selectLoadPlan=(state:RootState)=>state.plan.isLoadingPlan;
+export const selectOpenImage=(state:RootState)=>state.plan.isOpenImage;
+export const selectPlanImage=(state:RootState)=>state.plan.planImage;
 export default planSlice.reducer;

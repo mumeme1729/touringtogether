@@ -8,6 +8,7 @@ import {
     selectOpenEditProfile,
     resetOpenEditProfile,
     fetchAsyncUpdateProf,
+    editProfileBase,
   } from "../auth/authSlice";
 
 
@@ -17,6 +18,10 @@ import { AppDispatch } from "../../app/store";
 import ImageTrimming from "./ImageTrimming";
 import {setOpenImageTrimming}from "./userSlice";
 const modalStyle={
+    overlay: {
+        
+        zIndex:2
+      },
     content: {
         width: 400,
         height: 520,
@@ -37,7 +42,7 @@ const EditProfile:React.FC = () => {
 
     const updateProfile = async () => {
         
-        const packet = { id: profile.id, nickName: profile.nickName,text:profile.text};
+        const packet = { id: profile.id, nickName: profile.nickName,text:profile.text,base:profile.base};
     
         await dispatch(fetchAsyncUpdateProf(packet));
         //dispatch(resetOpenEditProfile());
@@ -75,6 +80,8 @@ const EditProfile:React.FC = () => {
                         onChange={(event) => dispatch(editProfileText(event.target.value))}/>
                     <br />
                     <br />
+                    <TextField placeholder="拠点" type="text" value={profile?.base} label="拠点"
+                        onChange={(event) => dispatch(editProfileBase(event.target.value))}/>
                     <br />
                     <Button
                         disabled={!profile?.nickName}

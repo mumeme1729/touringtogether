@@ -55,7 +55,6 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
     useEffect(()=>{
         const fetchLoader = async ()=>{
             //ログインしていたら
-            console.log('plandetail')
             if (localStorage.localJWT) {
                 dispatch(startLoad());
                 await dispatch(fetchAsyncGetSelectPlan(id[3])); 
@@ -73,6 +72,12 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
 
     return (
         <>
+        <div className={styles.plandetail_title}>
+                <h2 className={styles.title_h2}>プラン</h2>
+        </div>
+        <br/>  
+        <br/>
+        
         {isloadplan?
             <CircularProgress/>
             :<div className={styles.plan_detail_container}>
@@ -87,6 +92,9 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                     <h2>目的地:{plan.destination}</h2>
                     <h3>出発予定日:{plan.date}</h3>
                     <p>{plan.text}</p>
+                    {plan.img!==null?
+                        <img src={plan.img} className={styles.plan_img} alt="" />
+                    :null}
                         
                     {plan.userPlan===myprofile.userProfile?
                         <>

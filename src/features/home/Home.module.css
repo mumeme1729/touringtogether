@@ -81,9 +81,11 @@
     left: 0;
     margin-left: 10px;
 }
+
 .home_newplan{
     margin-top: -2px;
-    margin-left: -50px;
+    margin-left: -120px;
+    margin-bottom: 10px;
 }
 
 .homr_btnprofile {

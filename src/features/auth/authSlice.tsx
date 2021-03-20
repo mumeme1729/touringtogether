@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
 import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME_TEXT,PROFILE_IMAGE} from "../types";
+import { TabTwoTone } from "@material-ui/icons";
 
 //環境変数を読み込む
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
@@ -53,6 +54,7 @@ export const fetchAsyncLogin = createAsyncThunk(
       const uploadData = new FormData();
       uploadData.append("nickName", profile.nickName);
       uploadData.append("text", profile.text);
+      uploadData.append("base",profile.base);
       //profile.img && uploadData.append("img", profile.img, profile.img.name);
       const res = await axios.put(
         `${apiUrl}api/profile/${profile.id}/`,
@@ -143,6 +145,7 @@ export const authSlice = createSlice({
       userProfile: 0,
       created_on: "",
       img: "",
+      base:"",
     },
     myfollowingprofile:[
       {
@@ -152,6 +155,7 @@ export const authSlice = createSlice({
         userProfile: 0,
         created_on: "",
         img: "",
+        base:"",
       },
     ],
     //選択するユーザー
@@ -162,6 +166,7 @@ export const authSlice = createSlice({
       userProfile: 0,
       created_on: "",
       img: "",
+      base:"",
     },
   },
   reducers: {
@@ -202,7 +207,9 @@ export const authSlice = createSlice({
       editProfileText(state,action){
         state.myprofile.text=action.payload;
       },
-      
+      editProfileBase(state,action){
+        state.myprofile.base=action.payload;
+      },
       //プロフィール編集画面のオンオフ
       setOpenEditProfile(state){
         state.openEditProfile=true;
@@ -262,6 +269,7 @@ export const {
     endProfileLoad,
     setFailedSignUp,
     resetFailedSignUp,
+    editProfileBase,
   } = authSlice.actions;
 
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;

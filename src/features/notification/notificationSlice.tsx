@@ -72,6 +72,7 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
                   userProfile: 0,
                   created_on: "",
                   img: "",
+                  base:""
                 }
               }
             

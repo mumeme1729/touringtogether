@@ -1,14 +1,39 @@
-.plan_detail_container{
-    display: flex;
-    justify-content: center;
-    /* margin-top: 5px; */
+
+/* プラン詳細 */
+.plandetail_title{
+    border:solid 1px rgba(0,0,0,0.1);
+    width:500px;
+    height: 40px;
+    /* position: relative; */
+    margin-bottom: 10px;
+    position: fixed;
+    background-color: white;
+    z-index: 1;
+    left:50%;
+    margin-left: -275px;
 }
 
+.title_h2{
+    margin-top: 3px;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+}
+/* プラン表示部分 */
+.plan_detail_container{
+    display: flex;
+    justify-content: center;   
+}
 .plan_body{
     width: 500px;
     border:solid 1px rgba(0,0,0,0.1);
     position: relative;
     left: -24px;
+}
+
+.plan_link{
+    text-decoration: none;
+    color:black;
 }
 .plan_btnprofile {
     background-color: transparent;
@@ -23,22 +48,37 @@
 }
 .plan_btn{
     background-color: transparent;
-   border: none;
-   width: 100%;
+    border: none;
+    width: 100%;
+    text-decoration: none;
+    color:black;
 }
 .plan_btn:hover{
     opacity: 0.7;
 }
 
-/* コメント */
-.post_comments{
-    justify-content: center;
-    margin-left: 30%;
+/* 画像 */
+.plan_img {
+    width: 500px;
+    height: 250px;
+    object-fit: cover; 
+    margin-left: px;/* この一行を追加するだけ！ */
+  }
+
+.plan_image_module{
+    width: 100%;
+    height: 100%;
 }
-.post_comment{
+
+/* モーダル */
+.image_modal{
     display: flex;
-    margin-top: 15px;
+    justify-content: center; 
+    
+}
+
+.image_modal_image{
+    display: flex;
     justify-content: center;
-    border: solid;
-    width: 50%;
+    
 }

@@ -61,6 +61,7 @@ export const commentSlice =createSlice({
                 userProfile: 0,
                 created_on: "",
                 img: "",
+                base:"",
               }
             },
           ],

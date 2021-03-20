@@ -68,7 +68,7 @@ const Auth:React.FC= () => {
               if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
                 console.log(resultRegister);
                 await dispatch(fetchAsyncLogin(values));
-                await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定" }));
+                await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定",base:"" }));
                 const packet = { destination: "", date: ""};
                 await dispatch(fetchAsyncSearchPlans(packet));
                 dispatch(resetFailedSignUp()); 

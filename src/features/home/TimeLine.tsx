@@ -24,7 +24,7 @@ const TimeLine = () => {
         <div>
             
                 {timeline.map((plan)=>(
-                    <Plan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} profile={plan.profile}/> 
+                    <Plan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} img={plan.img} profile={plan.profile}/> 
                 ))}
                 
                 

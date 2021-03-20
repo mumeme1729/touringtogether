@@ -15,6 +15,8 @@ const Home:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const isloadplan=useSelector(selectLoadPlan);
 
+    
+    
     useEffect(()=>{
         const fetchLoader = async ()=>{
             if (localStorage.localJWT) {
@@ -34,20 +36,20 @@ const Home:React.FC = () => {
             <Auth />
             {/* メインコンテンツ */}       
             <div className={styles.home_title}>
-                <h2 className={styles.title_h2}>ホーム</h2>
+                <h2 className={styles.title_h2}>新着プラン</h2>
             </div> 
             <br/>  
             <br/>
             <br/>  
-            <div className={styles.home_newplan}>
+            {/* <div className={styles.home_newplan}>
                 <NewPlan/> 
                 <Button variant="outlined" color="primary"
                     onClick={() => {
                      dispatch(setOpenNewPlan());
                     }}
                 >ツーリング予定を投稿する</Button>
-            </div>
-            <br/>
+            </div> */}
+            
             <Search/>
              <br />
             {/* プランを表示 */}

@@ -93,7 +93,7 @@ const UserProfile:React.FC = () => {
                                     <Avatar alt="who?" src={loginUser.img} style={{height:'70px',width:'70px'}}/>{" "}
                                     <div className={styles.detail_h2}>
                                         <h2>{loginUser.nickName}</h2>
-                                        <RelationShip key={loginUser.id} id={loginUser.id} nickName={loginUser.nickName} text={loginUser.text} userProfile={loginUser.userProfile} created_on={loginUser.created_on} img={loginUser.img}/>
+                                        <RelationShip key={loginUser.id} id={loginUser.id} nickName={loginUser.nickName} text={loginUser.text} userProfile={loginUser.userProfile} created_on={loginUser.created_on} img={loginUser.img} base={loginUser.base} />
                                     </div>
                                 </div>
                                 <div className={styles.logout_btn}>
@@ -112,7 +112,7 @@ const UserProfile:React.FC = () => {
                                 </div>
                                 <div className={styles.name_text}>
                                     <p>{loginUser.text}</p>
-                                    
+                                    <p>{loginUser.base}</p>
                                 </div>
                             </>
                         ): 
@@ -122,12 +122,13 @@ const UserProfile:React.FC = () => {
                                 <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>{" "}
                                 <div className={styles.detail_h2}>
                                     <h2>{selectedProfile.nickName}</h2>
-                                    <RelationShip key={selectedProfile.id} id={selectedProfile.id} nickName={selectedProfile.nickName} text={selectedProfile.text} userProfile={selectedProfile.userProfile} created_on={selectedProfile.created_on} img={selectedProfile.img}/>
+                                    <RelationShip key={selectedProfile.id} id={selectedProfile.id} nickName={selectedProfile.nickName} text={selectedProfile.text} userProfile={selectedProfile.userProfile} created_on={selectedProfile.created_on} img={selectedProfile.img} base={selectedProfile.base} />
                                 </div>
                             </div>
                             <div className={styles.logout_btn}>
                                 <div className={styles.name_text}>
                                     <p>{selectedProfile.text}</p>
+                                    <p>{selectedProfile.base}</p>
                                 </div>
                             </div>
                         </>
@@ -155,13 +156,13 @@ const UserProfile:React.FC = () => {
                 ?
                 <>
                     {userplan.map((plan)=>(
-                        <UserPlan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} profile={selectedProfile}/> 
+                        <UserPlan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} img={plan.img} profile={selectedProfile}/> 
                     ))}
                 </>
                 :
                 <>
                     {commentplan.map((plan)=>(
-                        <UserPlan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} profile={plan.profile}/> 
+                        <UserPlan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} img={plan.img} profile={plan.profile}/> 
                     ))}
                 </>
                 }

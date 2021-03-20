@@ -111,6 +111,7 @@ export const RelationshipSlice = createSlice({
         userProfile: 0,
         created_on: "",
         img: "",
+        base:"",
       },
     ],
     followerprofile:[
@@ -121,6 +122,7 @@ export const RelationshipSlice = createSlice({
         userProfile: 0,
         created_on: "",
         img: "",
+        base:"",
       },
     ],
   },

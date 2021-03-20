@@ -10,12 +10,14 @@ export interface PROPS_PROFILE {
     id: number;
     nickName: string;
     text:string;
+    base:string;
     //img:File | null
 }
 
 export interface PROPS_NICKNAME_TEXT {
     nickName: string;
     text:string;
+    base:string;
 }
 
 export interface PROPS_ALL_USER{
@@ -25,6 +27,7 @@ export interface PROPS_ALL_USER{
     userProfile: number;
     created_on: string;
     img: string;
+    base:string;
 }
 
 export interface File extends Blob {
@@ -48,6 +51,7 @@ export interface PROPS_PLAN{
     destination:string,
     date:string,
     text:string,
+    img:File|null,
     profile: {
         id: number,
         nickName: string,
@@ -55,6 +59,7 @@ export interface PROPS_PLAN{
         userProfile: number,
         created_on: string,
         img: string,
+        base:string,
     }
 
 }
@@ -69,6 +74,7 @@ export interface PROPS_PLANS{
     userPlan:number,
     created_on:string,
     text:string,
+    img:File|null,
 }
 
 export interface PROPS_PLANPROFILE{
@@ -78,6 +84,7 @@ export interface PROPS_PLANPROFILE{
     userPlan:number,
     created_on:string,
     text:string,
+    img:string,
     profile: {
         id: number,
         nickName: string,
@@ -85,6 +92,7 @@ export interface PROPS_PLANPROFILE{
         userProfile: number,
         created_on: string,
         img: string,
+        base:string,
     }
 }
 
@@ -103,6 +111,7 @@ export interface PROPS_COMMENT {
         userProfile: number,
         created_on: string,
         img: string,
+        base:string,
     }
   }
 export interface COMMENT{
@@ -124,6 +133,7 @@ export interface COMMENT_PROFILE{
         userProfile: number,
         created_on: string,
         img: string,
+        base:string
     }
 }
 
@@ -165,5 +175,10 @@ export interface NOTIFICATION_DELETE{
         userProfile: number,
         created_on: string,
         img: string,
+        base:string
     }
+}
+
+export interface PLAN_IMAGE{
+    img:string;
 }
