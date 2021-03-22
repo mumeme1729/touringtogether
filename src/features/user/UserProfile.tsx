@@ -79,7 +79,11 @@ const UserProfile:React.FC = () => {
 
 
     return (
-        <>  
+        <>  <div className={styles.profile_title}>
+                <h2 className={styles.title_h2}>プロフィール</h2>
+            </div>
+            <br/>
+            <br/>
             {isLoadProfile?
             <>
                 <CircularProgress/>
@@ -89,19 +93,12 @@ const UserProfile:React.FC = () => {
                     <div className={styles.profileDetail_container}>
                         { loginUser.id== selectedProfile.id?(
                             <>
-                                <div className={styles.detail_avatar}>
-                                    <Avatar alt="who?" src={loginUser.img} style={{height:'70px',width:'70px'}}/>{" "}
-                                    <div className={styles.detail_h2}>
-                                        <h2>{loginUser.nickName}</h2>
-                                        <RelationShip key={loginUser.id} id={loginUser.id} nickName={loginUser.nickName} text={loginUser.text} userProfile={loginUser.userProfile} created_on={loginUser.created_on} img={loginUser.img} base={loginUser.base} />
-                                    </div>
-                                </div>
                                 <div className={styles.logout_btn}>
                                     <Link to ="/">
                                         <Button onClick={() => {
-                                                localStorage.removeItem("localJWT");
-                                                dispatch(setOpenSignIn());
-                                            }}
+                                             localStorage.removeItem("localJWT");
+                                             dispatch(setOpenSignIn());
+                                        }}
                                         >Logout</Button>
                                     </Link>
                                     <Button onClick={() => {
@@ -110,7 +107,27 @@ const UserProfile:React.FC = () => {
                                     >編集</Button>
                                     <EditProfile/>
                                 </div>
-                                <div className={styles.name_text}>
+                                <div className={styles.detail_avatar}>
+                                    <Avatar alt="who?" src={loginUser.img} style={{height:'70px',width:'70px'}}/>{" "}
+                                    <div className={styles.profile_nickname}>
+                                        <h2 className={styles.nickname_h2}>{loginUser.nickName}</h2>
+                                    </div>
+                                    
+                                    <div className={styles.relationship}>
+                                    <RelationShip 
+                                        key={loginUser.id} 
+                                        id={loginUser.id} 
+                                        nickName={loginUser.nickName} 
+                                        text={loginUser.text} 
+                                        userProfile={loginUser.userProfile} 
+                                        created_on={loginUser.created_on} 
+                                        img={loginUser.img} 
+                                        base={loginUser.base} 
+                                    />
+                                    </div>
+                                </div>
+                                
+                                <div className={styles.profile_description}>
                                     <p>{loginUser.text}</p>
                                     <p>{loginUser.base}</p>
                                 </div>
@@ -118,19 +135,31 @@ const UserProfile:React.FC = () => {
                         ): 
                         <>
                             {/* ログインしているユーザー以外 */}
-                            <div className={styles.detail_avatar}>
-                                <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>{" "}
-                                <div className={styles.detail_h2}>
-                                    <h2>{selectedProfile.nickName}</h2>
-                                    <RelationShip key={selectedProfile.id} id={selectedProfile.id} nickName={selectedProfile.nickName} text={selectedProfile.text} userProfile={selectedProfile.userProfile} created_on={selectedProfile.created_on} img={selectedProfile.img} base={selectedProfile.base} />
+                            <div className={styles.detail_avatar_other}>
+                                <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>
+                                <div className={styles.profile_nickname}>
+                                    <h2 className={styles.nickname_h2}>{selectedProfile.nickName}</h2>
+                                </div>
+                                <div className={styles.relationship}>
+                                    <RelationShip 
+                                        key={selectedProfile.id} 
+                                        id={selectedProfile.id} 
+                                        nickName={selectedProfile.nickName} 
+                                        text={selectedProfile.text} 
+                                        userProfile={selectedProfile.userProfile} 
+                                        created_on={selectedProfile.created_on} 
+                                        img={selectedProfile.img} 
+                                        base={selectedProfile.base} 
+                                    />
                                 </div>
                             </div>
-                            <div className={styles.logout_btn}>
-                                <div className={styles.name_text}>
+
+                            
+                                <div className={styles.profile_description}>
                                     <p>{selectedProfile.text}</p>
                                     <p>{selectedProfile.base}</p>
                                 </div>
-                            </div>
+                           
                         </>
                         }
                         
@@ -156,13 +185,37 @@ const UserProfile:React.FC = () => {
                 ?
                 <>
                     {userplan.map((plan)=>(
-                        <UserPlan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} img={plan.img} profile={selectedProfile}/> 
+                        <UserPlan key={plan.id} 
+                                  id={plan.id}
+                                  title={plan.title}
+                                  departure={plan.departure} 
+                                  prefecture={plan.prefecture} 
+                                  destination={plan.destination} 
+                                  date={plan.date} 
+                                  userPlan={plan.userPlan} 
+                                  created_on={plan.created_on} 
+                                  text={plan.text} 
+                                  img={plan.img} 
+                                  profile={selectedProfile}
+                        /> 
                     ))}
                 </>
                 :
                 <>
                     {commentplan.map((plan)=>(
-                        <UserPlan key={plan.id} id={plan.id} destination={plan.destination} date={plan.date} userPlan={plan.userPlan} created_on={plan.created_on} text={plan.text} img={plan.img} profile={plan.profile}/> 
+                         <UserPlan key={plan.id} 
+                                id={plan.id} 
+                                title={plan.title}
+                                departure={plan.departure} 
+                                prefecture={plan.prefecture} 
+                                destination={plan.destination} 
+                                date={plan.date} 
+                                userPlan={plan.userPlan} 
+                                created_on={plan.created_on} 
+                                text={plan.text} 
+                                img={plan.img} 
+                                profile={plan.profile}
+                         />
                     ))}
                 </>
                 }

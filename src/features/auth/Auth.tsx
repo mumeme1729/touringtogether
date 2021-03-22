@@ -25,7 +25,7 @@ import {
     selectFailedSignUp,
   } from "./authSlice";
   import {fetchAsyncGetNotification} from "../notification/notificationSlice";
-  import {fetchAsyncTimeline,fetchAsyncSearchPlans} from "../plan/planSlice";
+  import {fetchAsyncGetPrefectures,fetchAsyncSearchPlans} from "../plan/planSlice";
   const customStyles = {
     overlay: {
       backgroundColor: "#777777",
@@ -68,8 +68,9 @@ const Auth:React.FC= () => {
               if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
                 console.log(resultRegister);
                 await dispatch(fetchAsyncLogin(values));
+                
                 await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定",base:"" }));
-                const packet = { destination: "", date: ""};
+                const packet = { destination: "", date: "",prefecture:""};
                 await dispatch(fetchAsyncSearchPlans(packet));
                 dispatch(resetFailedSignUp()); 
                 dispatch(resetOpenSignUp());
@@ -158,8 +159,9 @@ const Auth:React.FC= () => {
                 if (fetchAsyncLogin.fulfilled.match(result)) {
                   await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
                   await dispatch(fetchAsyncGetNotification());//通知
+                  
                   // await dispatch(fetchAsyncTimeline());
-                  const packet = { destination: "", date: ""};
+                  const packet = { destination: "", date: "",prefecture:""};
                   await dispatch(fetchAsyncSearchPlans(packet));
                   dispatch(resetFailedSignIn());
                   dispatch(resetOpenSignIn());

@@ -45,7 +45,10 @@ export const userSlice =createSlice({
       userPlan:[
         {
           id:0,
+          title:"",
+          prefecture:"",
           destination:"",
+          departure:"",
           date:"",
           userPlan:0,
           created_on:"",
@@ -55,13 +58,16 @@ export const userSlice =createSlice({
       ],
       commnetplan:[
         {
-            id:0,
-            destination:"",
-            date:"",
-            userPlan:0,
-            created_on:"",
-            text:"",
-            img:"",
+          id:0,
+          title:"",
+          prefecture:"",
+          destination:"",
+          departure:"",
+          date:"",
+          userPlan:0,
+          created_on:"",
+          text:"",
+          img:"",
             profile: {
               id: 0,
               nickName: "",

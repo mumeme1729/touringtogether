@@ -8,14 +8,14 @@ import HomeIcon from '@material-ui/icons/Home';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import ImageModal from '../plan/ImageModal';
 import NewPlan from '../home/NewPlan';
-import {selectNotifications} from "../notification/notificationSlice";
+import {selectNotifications,selectNotificationCount,setCount} from "../notification/notificationSlice";
 import {
     setOpenSignIn,
     resetOpenSignIn,
     fetchAsyncGetMyProf,
     selectProfile,
 } from "../auth/authSlice";
-import {setOpenNewPlan} from "../plan/planSlice";
+import {setOpenNewPlan,fetchAsyncGetPrefectures} from "../plan/planSlice";
 import {Link} from 'react-router-dom';
 
 
@@ -23,13 +23,21 @@ const Header:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const profile = useSelector(selectProfile);
     const notification=useSelector(selectNotifications);
-       
+    const ncount=useSelector(selectNotificationCount)
+    let count=0;
+    const newnotification=notification.filter((n)=>{
+        return n.status===true;
+    });
+    count=newnotification.length;
+    
+
     useEffect(()=>{
         const fetchLoader = async ()=>{
             //ログインしていたら
             if (localStorage.localJWT) {
                 dispatch(resetOpenSignIn());
                 const result = await dispatch(fetchAsyncGetMyProf());//ログインしているユーザーのプロフィールを取得する
+                await dispatch(fetchAsyncGetPrefectures());
                 if (fetchAsyncGetMyProf.rejected.match(result)) {
                   dispatch(setOpenSignIn());
                   return null;
@@ -55,10 +63,13 @@ const Header:React.FC = () => {
                             </div>
                         </Link>
                     
-                        <Link to ="/notification" className={styles.header_link}>
+                        <Link to ="/notification" className={styles.header_link} >
                             <div className={styles.header_contents_container}>
-                                <div className={styles.home_header_contents}>  
+                                <div className={styles.home_header_contents}>
+                                
+                                <Badge badgeContent={ncount} color="secondary">
                                     <NotificationsIcon style={{ fontSize: 40 }}/><p>通知</p>
+                                </Badge>
                                 </div>
                             </div>
                         </Link>

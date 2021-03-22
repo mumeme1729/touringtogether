@@ -14,13 +14,16 @@ const Notification:React.FC = () => {
         const fetchLoader = async ()=>{
             //ログインしていたら
             if (localStorage.localJWT) {
+                console.log('通知既読')
                 notification.map(async(n)=>{
                     if(n.status && n.id!==0){
                        await dispatch(fetchAsyncUpdateStatus(n));
                     }
                 });
+                console.log('取得')
                 await dispatch(fetchAsyncGetNotification());//通知を取得
-                
+        
+                dispatch(setCount(0));
             };
         };
         fetchLoader();
@@ -52,13 +55,11 @@ const Notification:React.FC = () => {
                             <div className={styles.notification_body}>
                                 <Link to ={"/profile/"+noti.profile.userProfile}>
                                       {noti.profile.img!==null && noti.id!==0?
-                            
                                          <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/>
-                                        
-                                    :
+                                        :
                                         <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
-                                    } 
-                                    {noti.profile.nickName}さんにフォローされました。
+                                        } 
+                                        {noti.profile.nickName}さんにフォローされました。
                                 </Link>
                             </div>
                          </div>

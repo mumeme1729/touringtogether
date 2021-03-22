@@ -87,27 +87,28 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
     return (
         <>
             <div className={styles.relationship_num}>
-                <div>
-                {proFile.id!==loginUser.id?(
-                    isFollowing?(
-                        <Button variant="outlined" color="primary" onClick={()=>{
-                            //フォロー解除時
-                            deleteReration();
-                        }}>
-                         フォロー中 
-                        
-                         </Button>
-                    ):
-                    <Button variant="outlined" color="primary" onClick={()=>{
-                        addNotification();
-                        addNewFollowing();
-                    }}>
-                        フォロー
-                     </Button>
-                    
-                ):null}
-                    
-                </div>
+                    {proFile.id!==loginUser.id?(
+                        isFollowing?(
+                            <div className={styles.follow_btn}>
+                                <Button variant="outlined" color="primary" onClick={()=>{
+                                    //フォロー解除時
+                                    deleteReration();
+                                }}>
+                                フォロー中 
+                                </Button>
+                            </div>
+                        ):
+                            <div className={styles.follow_btn}>
+                                <Button variant="outlined" color="primary" onClick={()=>{
+                                    addNotification();
+                                    addNewFollowing();
+                                }}>
+                                    フォロー
+                                </Button>
+                            </div>
+                    ):null}  
+            </div>
+            <div className={styles.follow_follower_btn}>
                 <Button onClick={()=>{
                     dispatch(setOpenRelationshipDetail());
                     dispatch(resetOpenFollower());

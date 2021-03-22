@@ -96,4 +96,5 @@ export const {
 } = notificationSlice.actions;
 
 export const selectNotifications = (state: RootState) => state.notification.notifications; 
+export const selectNotificationCount=(state:RootState)=>state.notification.notificationCount;
 export default notificationSlice.reducer;

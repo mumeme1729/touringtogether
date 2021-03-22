@@ -1,11 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import {PROPS_PLAN,PROPS_COMMENT,PROPS_SEARCH_PLAN} from "../types";
+import {PROPS_PLAN,PROPS_LIKES,PROPS_SEARCH_PLAN} from "../types";
+import { create } from "yup/lib/array";
 
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
+  export const fetchAsyncGetPrefectures=createAsyncThunk("prefectures/get",async()=>{
+    const res=await axios.get(`${apiUrl}api/prefectures/`,{
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  });
 
   //タイムライン
   export const fetchAsyncTimeline = createAsyncThunk("timeline/get", async () => {
@@ -32,7 +41,7 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
 //検索
   export const fetchAsyncSearchPlans = createAsyncThunk("searchplans/get", 
   async (search:PROPS_SEARCH_PLAN) => {
-    const res = await axios.get(`${apiUrl}api/searchplan/?destination=${search.destination}&date=${search.date}`, {
+    const res = await axios.get(`${apiUrl}api/searchplan/?destination=${search.destination}&date=${search.date}&prefecture=${search.prefecture}`, {
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },
@@ -46,6 +55,9 @@ export const fetchAsyncNewPlan = createAsyncThunk(
     "plan/post",
     async(newPlan:PROPS_PLAN)=>{
         const planData = new FormData();
+        planData.append("title",newPlan.title)
+        planData.append("prefecture",newPlan.prefecture)
+        planData.append("departure",newPlan.departure)
         planData.append("destination",newPlan.destination)
         planData.append("date",newPlan.date)
         planData.append("text",newPlan.text)
@@ -74,6 +86,31 @@ export const fetchAsyncPlanDelete =createAsyncThunk("plan/delete",async (id:numb
     return id;
   });
 
+//いいね
+export const fetchAsyncAddLikes = createAsyncThunk(
+  "likes/post",
+  async (likes: PROPS_LIKES) => {
+    const res = await axios.post(`${apiUrl}api/likes/`, likes, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  }
+);
+
+export const fetchAsyncGetLikesCount = createAsyncThunk("likes/get", async (id:string) => {
+  const res = await axios.get(`${apiUrl}api/countlikes/`, {
+    headers: {
+      Authorization: `JWT ${localStorage.localJWT}`,
+    },
+    params:{
+      id:`${id}`,
+    },
+  })
+  return res.data;
+});
   
 export const planSlice =createSlice({
     name:"plan",
@@ -85,12 +122,16 @@ export const planSlice =createSlice({
         timeline:[
           {
               id:0,
+              title:"",
+              prefecture:"",
               destination:"",
+              departure:"",
               date:"",
               userPlan:0,
               created_on:"",
               text:"",
               img:"",
+              liked:[0],
               profile: {
                 id: 0,
                 nickName: "",
@@ -104,32 +145,46 @@ export const planSlice =createSlice({
       ],
         searchplans:[
             {
-                id:0,
-                destination:"",
-                date:"",
-                userPlan:0,
-                created_on:"",
-                text:"",
-                img:"",
-                profile: {
-                  id: 0,
-                  nickName: "",
-                  text: "",
-                  userProfile: 0,
-                  created_on: "",
-                  img: "",
-                  base:""
+              id:0,
+              title:"",
+              prefecture:"",
+              destination:"",
+              departure:"",
+              date:"",
+              userPlan:0,
+              created_on:"",
+              text:"",
+              img:"",
+              liked:[0],
+              profile: {
+                id: 0,
+                nickName: "",
+                text: "",
+                userProfile: 0,
+                created_on: "",
+                img: "",
+                base:""
                 }
             },
         ],
-        selectedPlan:{
+        prefectures:[
+          {
             id:0,
-            destination:"",
-            date:"",
-            userPlan:0,
-            created_on:"",
-            text:"",
-            img:""
+            name:"",
+          }
+        ],
+        selectedPlan:{
+          id:0,
+          title:"",
+          prefecture:"",
+          destination:"",
+          departure:"",
+          date:"",
+          userPlan:0,
+          created_on:"",
+          text:"",
+          img:"",
+          liked:[0],
         },
     },
     reducers:{
@@ -173,6 +228,9 @@ export const planSlice =createSlice({
         builder.addCase(fetchAsyncSearchPlans.fulfilled,(state,action)=>{
             state.searchplans=action.payload;
         });
+        builder.addCase(fetchAsyncGetPrefectures.fulfilled,(state,action)=>{
+            state.prefectures=action.payload;
+        });
         builder.addCase(fetchAsyncPlanDelete.fulfilled,(state,action)=>{
           return{
             ...state,
@@ -200,4 +258,5 @@ export const selectTimeline=(state:RootState)=>state.plan.timeline;
 export const selectLoadPlan=(state:RootState)=>state.plan.isLoadingPlan;
 export const selectOpenImage=(state:RootState)=>state.plan.isOpenImage;
 export const selectPlanImage=(state:RootState)=>state.plan.planImage;
+export const selectPrefectures=(state:RootState)=>state.plan.prefectures;
 export default planSlice.reducer;

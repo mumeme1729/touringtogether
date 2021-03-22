@@ -22,7 +22,8 @@
 /* プラン表示部分 */
 .plan_detail_container{
     display: flex;
-    justify-content: center;   
+    justify-content: center;
+    margin-bottom: -4px;   
 }
 .plan_body{
     width: 500px;
@@ -34,6 +35,40 @@
 .plan_link{
     text-decoration: none;
     color:black;
+}
+.plan_profile{
+    display: flex;
+    margin-top: 5px;
+    margin-left: 1%;
+}
+.plan_profile_nickname{
+    text-align: left;
+    margin-left: 1%;
+}
+.plan_title{
+    margin-top: -15px;
+    width: 100%;
+    margin-left:7% ; 
+}
+.plan_h2{
+    max-width: 400px;
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+.plan_description{
+    margin-top: -30px;
+    text-align: left;
+    margin-left: 15%;
+}
+.plan_description_p{
+    margin-top: -10px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    max-width: 400px;
 }
 .plan_btnprofile {
     background-color: transparent;
@@ -56,13 +91,22 @@
 .plan_btn:hover{
     opacity: 0.7;
 }
+.plan_prefecture_div{
+    text-align: right;
+    margin-right: 2%;
+}
+.plan_prefecture{
+    font-size: 14px;
+    color: blue;
+}
 
 /* 画像 */
 .plan_img {
-    width: 500px;
-    height: 250px;
+    width: 400px;
+    height: 200px;
     object-fit: cover; 
-    margin-left: px;/* この一行を追加するだけ！ */
+    border:solid 1px rgba(0,0,0,0.1);
+    border-radius: 20px;
   }
 
 .plan_image_module{

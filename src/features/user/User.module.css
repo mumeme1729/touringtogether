@@ -1,41 +1,141 @@
+/* ページタイトル */
+.profile_title{
+    border:solid 1px rgba(0,0,0,0.1);
+    width:500px;
+    height: 40px;
+    /* position: relative; */
+    margin-bottom: 10px;
+    position: fixed;
+    background-color: white;
+    z-index: 1;
+    left:50%;
+    margin-left: -275px;
+    
+}
+.title_h2{
+    margin-top: 3px;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+}
+
 .profileDetail{
     display: flex;
     justify-content: center;
+    margin-bottom: -4px; 
     
 }
 
 .profileDetail_container{
-    width: 50%;
-    border:solid;
-    
+    width: 500px;
+    border:solid 1px rgba(0,0,0,0.1);
+    position: relative;
+    left: -24px;
 }
 
-.detail_h2{
-  margin-left: 20px;  
-}
 
 .detail_avatar{
+    display: flex;
+    justify-content: left;
+    margin-top: -15px;
+    margin-left: 10px;
+}
+.detail_avatar_other{
     display: flex;
     justify-content: left;
     margin-top: 10px;
     margin-left: 10px;
 }
 
-.logout_btn{
-    display: flex;
-    justify-content: left;
-    margin-left: 7px;
+.profile_nickname{
+    margin-left: -32%;
+    margin-top: 55px;
+    width: 400px;
+    
+}
+.nickname_h2{
+    font-size: 18px;
+}
+.relationship{
+    width:100%;
+    height: 50px;
 }
 
+.logout_btn{
+    display: flex;
+    height: 35px;
+    margin-left: 70%;
+}
+
+.plandetail_title{
+    border:solid 1px rgba(0,0,0,0.1);
+    width:500px;
+    height: 40px;
+    /* position: relative; */
+    margin-bottom: 10px;
+    position: fixed;
+    background-color: white;
+    z-index: 1;
+    left:50%;
+    margin-left: -275px;
+}
+
+.title_h2{
+    margin-top: 3px;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+}
+/* プラン表示部分 */
 .plan_detail_container{
     display: flex;
     justify-content: center;
-    margin-top: 5px;
+    margin-bottom: -4px;   
+}
+.plan_body{
+    width: 500px;
+    border:solid 1px rgba(0,0,0,0.1);
+    position: relative;
+    left: -24px;
 }
 
-.plan_body{
-    width: 50%;
-    border:solid;
+.plan_link{
+    text-decoration: none;
+    color:black;
+}
+.plan_profile{
+    display: flex;
+    margin-top: 5px;
+    margin-left: 1%;
+}
+.plan_profile_nickname{
+    text-align: left;
+    margin-left: 1%;
+}
+.plan_title{
+    margin-top: -15px;
+    width: 100%;
+    margin-left:7% ; 
+}
+.plan_h2{
+    max-width: 400px;
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+.plan_description{
+    margin-top: -30px;
+    text-align: left;
+    margin-left: 15%;
+}
+.plan_description_p{
+    margin-top: -10px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    max-width: 400px;
 }
 .plan_btnprofile {
     background-color: transparent;
@@ -45,16 +145,53 @@
     outline: none;
     cursor: pointer;
   }
-.plan_btnprofile:hover{
-    opacity: 0.7;
+.plan_body:hover{
+    opacity: 0.9;
 }
 .plan_btn{
     background-color: transparent;
-   border: none;
-   width: 100%;
+    border: none;
+    width: 100%;
+    text-decoration: none;
+    color:black;
 }
 .plan_btn:hover{
     opacity: 0.7;
+}
+.plan_prefecture_div{
+    text-align: right;
+    margin-right: 2%;
+}
+.plan_prefecture{
+    font-size: 14px;
+    color: blue;
+}
+
+/* 画像 */
+.plan_img {
+    width: 400px;
+    height: 200px;
+    object-fit: cover; 
+    border:solid 1px rgba(0,0,0,0.1);
+    border-radius: 20px;
+  }
+
+.plan_image_module{
+    width: 100%;
+    height: 100%;
+}
+
+/* モーダル */
+.image_modal{
+    display: flex;
+    justify-content: center; 
+    
+}
+
+.image_modal_image{
+    display: flex;
+    justify-content: center;
+    
 }
 
 /* コメント */

@@ -3,28 +3,30 @@ import Auth from "../auth/Auth";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import styles from "./Home.module.css";
-import TimeLine from "./TimeLine";
 import Search from "./Search";
-import {setOpenNewPlan,}from "../plan/planSlice";
-import NewPlan from './NewPlan';
-import {startLoad,endLoad,fetchAsyncTimeline,selectLoadPlan,fetchAsyncSearchPlans} from "../plan/planSlice";
-import { Button,CircularProgress} from "@material-ui/core";
-import {fetchAsyncGetNotification,} from "../notification/notificationSlice";
+import {startLoad,endLoad,selectLoadPlan,fetchAsyncSearchPlans,} from "../plan/planSlice";
+import {CircularProgress} from "@material-ui/core";
+import {fetchAsyncGetNotification,selectNotifications,setCount} from "../notification/notificationSlice";
 import SearchList from "./SearchList";
 const Home:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const isloadplan=useSelector(selectLoadPlan);
-
-    
-    
+    const notification=useSelector(selectNotifications);
     useEffect(()=>{
         const fetchLoader = async ()=>{
             if (localStorage.localJWT) {
                 dispatch(startLoad());
                 //await dispatch(fetchAsyncTimeline());//タイムラインの投稿を取得
-                const packet = { destination: "", date: ""};
+                const packet = { destination: "", date: "",prefecture:""};
                 await dispatch(fetchAsyncSearchPlans(packet));
-                await dispatch(fetchAsyncGetNotification());//通知を取得
+                const result = await dispatch(fetchAsyncGetNotification());//通知を取得
+                if(fetchAsyncGetNotification.fulfilled.match(result)){
+                    const notifi=result.payload
+                    const newnotification=notifi.filter((n: { status: boolean; })=>{
+                        return n.status===true;
+                    });
+                    dispatch(setCount(newnotification.length));
+                }
                 dispatch(endLoad());
             }
         };
@@ -39,17 +41,8 @@ const Home:React.FC = () => {
                 <h2 className={styles.title_h2}>新着プラン</h2>
             </div> 
             <br/>  
-            <br/>
-            <br/>  
-            {/* <div className={styles.home_newplan}>
-                <NewPlan/> 
-                <Button variant="outlined" color="primary"
-                    onClick={() => {
-                     dispatch(setOpenNewPlan());
-                    }}
-                >ツーリング予定を投稿する</Button>
-            </div> */}
-            
+            <br/> 
+           
             <Search/>
              <br />
             {/* プランを表示 */}

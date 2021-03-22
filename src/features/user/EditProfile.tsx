@@ -62,6 +62,7 @@ const EditProfile:React.FC = () => {
                     dispatch(resetOpenEditProfile());
                 }}
                 style={modalStyle}
+                ariaHideApp={false}
              >
                 <form className={styles.core_signUp}>
                     <h1 className={styles.core_title}>プロフィールを編集</h1>

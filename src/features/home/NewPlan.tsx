@@ -3,15 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import {
     fetchAsyncNewPlan,
-    setOpenNewPlan,
     resetOpenNewPlan,
     selectOpenPlan,
-    selectSelectedPlan
+    selectPrefectures,
 }from "../plan/planSlice";
-import { Button, TextField, IconButton } from "@material-ui/core";
+import { Button, TextField, IconButton,Menu,MenuItem } from "@material-ui/core";
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import Modal from "react-modal";
 import {selectProfile } from "../auth/authSlice";
+import AddLocationIcon from '@material-ui/icons/AddLocation';
 
 const customStyles = {
     overlay: {
@@ -30,21 +30,33 @@ const customStyles = {
     },
   };
 
+  const ITEM_HEIGHT=47;
+
 const NewPlan:React.FC = () => {
     const dispatch = useDispatch();
     const openPlan=useSelector(selectOpenPlan);
-    const myprofile=useSelector(selectProfile)
+    const myprofile=useSelector(selectProfile);
+    const prefectures=useSelector(selectPrefectures);
+    const [title,setTitle]=useState("");
+    const [departure,setDeparture]=useState("");
+    const [prefecture,setPrefecture]=useState(0);
     const [destination,setDestination]=useState("");
     const [date,setDate]=useState("");
     const [text,setText]=useState("");
     const [image, setImage] = useState<File | null>(null);
+    const [anchorEl, setAnchorEl] =useState(null);
+    const open = Boolean(anchorEl);
+    const [pref,setP]=useState("");
+    
     let url="";
     const newPlan = async()=>{
-        const packet = { destination: destination, date: date ,text:text,img:image,profile:myprofile};
+        const packet = { title:title,departure:departure,prefecture:String(prefecture), destination: destination, date: date ,text:text,img:image,profile:myprofile};
         dispatch(fetchAsyncNewPlan(packet));
         setDestination("");
         setDate("");
         setText("");
+        setPrefecture(0);
+        setP("");
         setImage(null);
         dispatch(resetOpenNewPlan());
     }
@@ -52,6 +64,22 @@ const NewPlan:React.FC = () => {
         const fileInput = document.getElementById("imageInput");
         fileInput?.click();
       };
+
+      const handleClick = (event:any) => {
+        setAnchorEl(event.currentTarget);
+        
+      };
+    
+      const handleClose = () => {
+        setAnchorEl(null);
+        setPrefecture(0);
+        setP("");
+      };
+
+      const setPref=(e:any)=>{
+        setPrefecture(e.id)
+        setP(e.name);
+      }
       
       if(image!==null){
         var binaryData = [];
@@ -65,11 +93,20 @@ const NewPlan:React.FC = () => {
                     url="";
                     setImage(null);
                     dispatch(resetOpenNewPlan());
+                    setPrefecture(0);
+                    setP("");
                 }}
                 style={customStyles}
                ariaHideApp={false}
             >
             <form > 
+                <TextField
+                    placeholder="タイトル"
+                    type="text"
+                    defaultValue={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+                <br />
                 <TextField
                     placeholder="目的地は？"
                     type="text"
@@ -77,6 +114,36 @@ const NewPlan:React.FC = () => {
                     onChange={(e) => setDestination(e.target.value)}
                 />
                 <br />
+                {/* 都道府県 */}
+                <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    <AddLocationIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: '20ch',
+                    },
+                    }}
+                >
+                    
+                    {prefectures.map((prefecture)=>(
+                         <MenuItem key={prefecture.id} selected={prefecture.id === 1}  onClick={()=>{handleClose();setPref(prefecture)}}>
+                            {prefecture.name} 
+                         </MenuItem>
+                    ))}
+                </Menu>
+                {pref}
                 <br/>
                 <TextField
                     id="date"
@@ -91,6 +158,12 @@ const NewPlan:React.FC = () => {
                     }}
                 />
                 <br />
+                <TextField
+                    placeholder="出発地"
+                    type="text"
+                    defaultValue={departure}
+                    onChange={(e) => setDeparture(e.target.value)}
+                />
                 <br />
                 <TextField
                     placeholder="コメント"
@@ -112,7 +185,6 @@ const NewPlan:React.FC = () => {
                 >
                     投稿
                 </Button>
-                {url}
                 <img src={url} width="50%" height="50%"/>
             </form>
         </Modal>

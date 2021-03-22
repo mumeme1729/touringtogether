@@ -1,4 +1,16 @@
 .relationship_num{
+    margin-top: 30px;
+    margin-left: 60%;
+}
+.follow_btn{
+    margin-top: -25px;
+    
+}
+.follow_follower_btn{
+    margin-left: 23%;
+    margin-top: -15px;
+}
+.relationship_num{
     display: flex;
 }
 .relationship_p{

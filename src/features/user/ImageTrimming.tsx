@@ -10,6 +10,9 @@ import {selectProfile,fetchAsyncUpdateProfImage} from "../auth/authSlice";
 // import { File} from "../types";
 
 const modalStyle={
+    overlay: {
+        zIndex:4
+      },
     content: {
         width: 400,
         height: 520,

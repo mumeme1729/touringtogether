@@ -48,10 +48,14 @@ export interface RELATION{
 }
 // プラン
 export interface PROPS_PLAN{
+    title:string,
     destination:string,
+    prefecture:string,
+    departure:string,
     date:string,
     text:string,
     img:File|null,
+    // liked:number[],
     profile: {
         id: number,
         nickName: string,
@@ -79,7 +83,10 @@ export interface PROPS_PLANS{
 
 export interface PROPS_PLANPROFILE{
     id:number,
+    title:string,
     destination:string,
+    prefecture:string,
+    departure:string,
     date:string,
     userPlan:number,
     created_on:string,
@@ -99,6 +106,7 @@ export interface PROPS_PLANPROFILE{
 export interface PROPS_SEARCH_PLAN{
     destination:string,
     date:string,
+    prefecture:string,
 }
 
 export interface PROPS_COMMENT {
@@ -181,4 +189,9 @@ export interface NOTIFICATION_DELETE{
 
 export interface PLAN_IMAGE{
     img:string;
+}
+
+export interface PROPS_LIKES{
+    plan:number;
+    userLikes:number;
 }
