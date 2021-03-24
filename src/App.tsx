@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import UserProfile from './features/user/UserProfile';
 import Header from './features/home/Header';
-import SearchList from './features/home/SearchList';
+import SearchResults from './features/home/SearchResults';
 import PlanDetail from './features/plan/PlanDetail';
 import Notification from './features/notification/Notification';
 import TimeLine from './features/home/TimeLine';
@@ -19,7 +19,7 @@ function App() {
         <Header/>
         <Route exact path="/" component={Home}/>
         <Route  path="/profile/:id" component={UserProfile}/> 
-        <Route  path="/search" component={SearchList}/>
+        <Route  path="/search" component={SearchResults}/>
         <Route  path="/plandetail/:id/:id" component={PlanDetail}/>
         <Route path="/notification" component={Notification}/>
         <Route path="/timeline"component={TimeLine}/>

@@ -21,6 +21,7 @@ const Search:React.FC = () => {
     const [pref,setP]=useState("");
     const prefectures=useSelector(selectPrefectures);
     const open = Boolean(anchorEl);
+    
     const searchPlan =()=>{
         const packet = { destination: destination, date: date,prefecture:String(prefecture)};
         dispatch(fetchAsyncSearchPlans(packet));
@@ -100,7 +101,7 @@ const Search:React.FC = () => {
                     />
                 <br />
                 <br />
-                <Link to ="/search">
+                <Link to ={'/search/'+'destination='+destination+'/'+'date='+date+'/'+'prefecture='+String(prefecture)}>
                     <Button
                         //disabled={!destination || !date}
                         variant="contained"

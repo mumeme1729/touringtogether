@@ -38,6 +38,16 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
 
 
+  //2P以降
+  export const fetchAsyncSearchPlansPage = createAsyncThunk("searchplansPage/get", 
+  async (url:string) => {
+    const res = await axios.get(`${url}`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  });
 //検索
   export const fetchAsyncSearchPlans = createAsyncThunk("searchplans/get", 
   async (search:PROPS_SEARCH_PLAN) => {
@@ -100,6 +110,7 @@ export const fetchAsyncAddLikes = createAsyncThunk(
   }
 );
 
+//いいね取得
 export const fetchAsyncGetLikesCount = createAsyncThunk("likes/get", async (id:string) => {
   const res = await axios.get(`${apiUrl}api/countlikes/`, {
     headers: {
@@ -111,6 +122,19 @@ export const fetchAsyncGetLikesCount = createAsyncThunk("likes/get", async (id:s
   })
   return res.data;
 });
+
+
+
+//言い値取り消し
+export const fetchAsyncLikeDelete =createAsyncThunk("likes/delete",async (id:number) =>{
+  await axios.delete(`${apiUrl}api/likes/${id}/`,{
+      headers:{
+          "Content-Type":"application/json",
+          Authorization: `JWT ${localStorage.localJWT}`,
+      },
+  });
+  return id;
+});
   
 export const planSlice =createSlice({
     name:"plan",
@@ -119,6 +143,7 @@ export const planSlice =createSlice({
         isLoadingPlan:false,
         isOpenImage:false,
         planImage:"",
+        nextpage:"",
         timeline:[
           {
               id:0,
@@ -208,8 +233,13 @@ export const planSlice =createSlice({
         },
         setPlanImage(state,action){
           state.planImage=action.payload;
+        },
+        setNextPagePlans(state,action){
+          return {
+            ...state,
+            searchplans: [...state.searchplans,...action.payload],
+        };
         }
- 
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncNewPlan.fulfilled,(state,action)=>{
@@ -226,7 +256,11 @@ export const planSlice =createSlice({
             state.selectedPlan=action.payload;
         });
         builder.addCase(fetchAsyncSearchPlans.fulfilled,(state,action)=>{
-            state.searchplans=action.payload;
+            state.searchplans=action.payload.results;
+            state.nextpage=action.payload.next;
+        });
+        builder.addCase(fetchAsyncSearchPlansPage.fulfilled,(state,action)=>{
+          state.nextpage=action.payload.next;
         });
         builder.addCase(fetchAsyncGetPrefectures.fulfilled,(state,action)=>{
             state.prefectures=action.payload;
@@ -248,6 +282,7 @@ export const{
     setOpenImage,
     resetOpenImage,
     setPlanImage,
+    setNextPagePlans
 }=planSlice.actions
 
 
@@ -259,4 +294,5 @@ export const selectLoadPlan=(state:RootState)=>state.plan.isLoadingPlan;
 export const selectOpenImage=(state:RootState)=>state.plan.isOpenImage;
 export const selectPlanImage=(state:RootState)=>state.plan.planImage;
 export const selectPrefectures=(state:RootState)=>state.plan.prefectures;
+export const selectNextPage=(state:RootState)=>state.plan.nextpage;
 export default planSlice.reducer;

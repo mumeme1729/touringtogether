@@ -1,13 +1,26 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import {selectSearchPlans} from "../plan/planSlice";
-import { useSelector} from "react-redux";
 import Plan from "../plan/Plan";
-import {
-
-}from "../plan/planSlice";
+import {selectNextPage,fetchAsyncSearchPlansPage,setNextPagePlans,fetchAsyncSearchPlans}from "../plan/planSlice";
+import UseInfiniteScroll from './UseInfiniteScroll'
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../../app/store";
 
 const SearchList:React.FC = () => {
     const searchplans=useSelector(selectSearchPlans);
+    
+    const [isFetching, setIsFetching] = UseInfiniteScroll(fetchMoreListItems);
+    const nextpage=useSelector(selectNextPage);
+    const dispatch: AppDispatch = useDispatch();
+
+    
+      async function fetchMoreListItems() {
+            if(nextpage!==null){
+                const a=await dispatch(fetchAsyncSearchPlansPage(nextpage));
+                dispatch(setNextPagePlans(a.payload.results));
+            }
+            setIsFetching(false)
+      }
     
     return (
         <div>
@@ -27,7 +40,9 @@ const SearchList:React.FC = () => {
                                img={plan.img} 
                                profile={plan.profile}
                         />
-                    ))}
+                    ))} 
+                    
+                    {/* {isFetching && <CircularProgress/>} */}
                 </>
                 // 検索結果なし
                 :

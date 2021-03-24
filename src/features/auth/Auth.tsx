@@ -24,8 +24,8 @@ import {
     resetFailedSignUp,
     selectFailedSignUp,
   } from "./authSlice";
-  import {fetchAsyncGetNotification} from "../notification/notificationSlice";
-  import {fetchAsyncGetPrefectures,fetchAsyncSearchPlans} from "../plan/planSlice";
+  import {fetchAsyncGetNotification,setCount} from "../notification/notificationSlice";
+  import {fetchAsyncSearchPlans} from "../plan/planSlice";
   const customStyles = {
     overlay: {
       backgroundColor: "#777777",
@@ -158,7 +158,14 @@ const Auth:React.FC= () => {
                 const result = await dispatch(fetchAsyncLogin(values));
                 if (fetchAsyncLogin.fulfilled.match(result)) {
                   await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
-                  await dispatch(fetchAsyncGetNotification());//通知
+                  const result=await dispatch(fetchAsyncGetNotification());//通知
+                  if(fetchAsyncGetNotification.fulfilled.match(result)){
+                    const notifi=result.payload
+                    const newnotification=notifi.filter((n: { status: boolean; })=>{
+                        return n.status===true;
+                    });
+                    dispatch(setCount(newnotification.length));
+                }
                   
                   // await dispatch(fetchAsyncTimeline());
                   const packet = { destination: "", date: "",prefecture:""};

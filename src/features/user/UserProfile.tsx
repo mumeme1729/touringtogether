@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import { useSelector,useDispatch } from "react-redux";
 import { 
     selectSelectedProfile,
@@ -32,10 +32,12 @@ import {
     selectUserPlan,
     fetchAsyncGetUserPlan,
     fetchAsyncCommentPlan,
+    fetchAsyncLikedPlans,
     setCommentPlan,
     resetCommentPlan,
     selectIsOpenUserPlan,
     selectCommentPlan,
+    selectLikedPlans
 }from "./userSlice";
 
 const UserProfile:React.FC = () => {
@@ -49,6 +51,8 @@ const UserProfile:React.FC = () => {
     const userplan = useSelector(selectUserPlan);
     const isopenuserplan=useSelector(selectIsOpenUserPlan);
     const commentplan =useSelector(selectCommentPlan);
+    const likedplans=useSelector(selectLikedPlans);
+    
     
     useEffect(() => {
         const fetchLoader = async ()=>{ 
@@ -70,6 +74,7 @@ const UserProfile:React.FC = () => {
 
                 await dispatch(fetchAsyncGetUserPlan(user_id));
                 await dispatch(fetchAsyncCommentPlan(user_id));
+                await dispatch(fetchAsyncLikedPlans(user_id));
                 dispatch(setCommentPlan());
                 dispatch(endProfileLoad());
             }

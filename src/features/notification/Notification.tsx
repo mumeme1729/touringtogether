@@ -14,15 +14,12 @@ const Notification:React.FC = () => {
         const fetchLoader = async ()=>{
             //ログインしていたら
             if (localStorage.localJWT) {
-                console.log('通知既読')
                 notification.map(async(n)=>{
                     if(n.status && n.id!==0){
                        await dispatch(fetchAsyncUpdateStatus(n));
                     }
                 });
-                console.log('取得')
                 await dispatch(fetchAsyncGetNotification());//通知を取得
-        
                 dispatch(setCount(0));
             };
         };
@@ -31,20 +28,28 @@ const Notification:React.FC = () => {
    
     return (
         <div>
+            <div className={styles.home_title}>
+                <h2 className={styles.title_h2}>通知</h2>
+            </div>
+            <br/>  
+            <br/>
             {notification.map((noti)=>(
                 noti.targetplan!==null?(
                     <>
                         <div className={styles.notification_detail_container}>
                             <div className={styles.notification_body}>
                                 <Link to={'/plandetail/'+noti.receive+'/'+noti.targetplan} >
-                                {noti.profile.img!==null?
-                                    
-                                    <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/> 
-                                :
-                                    <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
-                                }         
-                                    {noti.profile.nickName}さんがコメントしました。
-                                    
+                                    <Link to ={"/profile/"+noti.profile.userProfile}>
+                                        <div className={styles.notification_profile}>
+                                            {noti.profile.img!==null?
+                                                <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/> 
+                                            :
+                                                <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
+                                            }
+                                            {noti.profile.nickName}
+                                        </div> 
+                                    </Link>        
+                                        {noti.profile.nickName}さんがコメントしました。    
                                 </Link>
                             </div>
                         </div>

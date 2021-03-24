@@ -65,11 +65,11 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                                 <p className={styles.plan_description_p}>{plan.text}</p>
                             </div>
                     </Link>
-                    <Likes id={plan.id} />
+                     <Likes id={plan.id} /> 
                     {plan.img!==null?
                         <img src={plan.img} className={styles.plan_img} alt=""  onClick={()=>{setImage(plan.img)}}/>     
                     :null}
-                    <Link to ="/search">
+                    <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
                         <div className={styles.plan_prefecture_div}>
                             <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
                         </div>

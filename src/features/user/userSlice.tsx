@@ -32,7 +32,18 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     return res.data;
   });
 
-  
+  // いいねしたプラン
+  export const fetchAsyncLikedPlans = createAsyncThunk("likedplans/get", async (id:string) => {
+    const res = await axios.get(`${apiUrl}api/likedplans/`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+      params:{
+        id:`${id}`,
+      },
+    });
+    return res.data;
+  });
 
 
 export const userSlice =createSlice({
@@ -78,7 +89,30 @@ export const userSlice =createSlice({
               base:"",
             }
         },
-    ],
+      ],
+      likedplan:[
+        {
+          id:0,
+          title:"",
+          prefecture:"",
+          destination:"",
+          departure:"",
+          date:"",
+          userPlan:0,
+          created_on:"",
+          text:"",
+          img:"",
+            profile: {
+              id: 0,
+              nickName: "",
+              text: "",
+              userProfile: 0,
+              created_on: "",
+              img: "",
+              base:"",
+            }
+        },
+      ],
     },
     reducers:{
       setCommentPlan(state){
@@ -101,6 +135,9 @@ export const userSlice =createSlice({
         builder.addCase(fetchAsyncCommentPlan.fulfilled,(state,action)=>{
           state.commnetplan=action.payload;
         });
+        builder.addCase(fetchAsyncLikedPlans.fulfilled,(state,action)=>{
+          state.likedplan=action.payload;
+        });
     },
 
 });
@@ -117,5 +154,6 @@ export const selectUserPlan=(state:RootState)=>state.user.userPlan;
 export const selectIsOpenUserPlan=(state:RootState)=>state.user.isOpenUserPlan;
 export const selectCommentPlan=(state:RootState)=>state.user.commnetplan;
 export const selectIsOpenImageTrimming=(state:RootState)=>state.user.isOpenImageTrimming;
+export const selectLikedPlans=(state:RootState)=>state.user.likedplan;
 
 export default userSlice.reducer;

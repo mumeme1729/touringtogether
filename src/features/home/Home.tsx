@@ -16,7 +16,7 @@ const Home:React.FC = () => {
         const fetchLoader = async ()=>{
             if (localStorage.localJWT) {
                 dispatch(startLoad());
-                //await dispatch(fetchAsyncTimeline());//タイムラインの投稿を取得
+                console.log('ホームだよ')
                 const packet = { destination: "", date: "",prefecture:""};
                 await dispatch(fetchAsyncSearchPlans(packet));
                 const result = await dispatch(fetchAsyncGetNotification());//通知を取得
