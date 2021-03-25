@@ -11,9 +11,9 @@ import {startProfileLoad} from "../auth/authSlice";
 const Following:React.FC<PROPS_ALL_USER> = (profile) => {
     const dispatch: AppDispatch = useDispatch();
     return (
-        <div>
-            <div  className={styles.relationship_all}>
-                <button className={styles.plan_btnprofile} onClick={()=>{
+        <div className={styles.followcard_container}>
+            <div  className={styles.followcard_left}>
+                <button className={styles.followcard_avatar_btn} onClick={()=>{
                     dispatch(resetOpenRelationshipDetail());
                     dispatch(startProfileLoad());
                     }}>
@@ -21,10 +21,12 @@ const Following:React.FC<PROPS_ALL_USER> = (profile) => {
                         <Avatar alt="who?" src={profile.img} style={{height:'50px',width:'50px'}}/>
                     </Link> 
                 </button>
-                <div className={styles.relationship_nickname}>{profile.nickName}</div>
             </div>
-            <div  className={styles.profile_text}>
-                <p className={styles.text_p}>{profile.text}</p>
+            <div  className={styles.followcard_right}>
+                <div className={styles.relationship_nickname}>
+                    {profile.nickName}
+                </div>
+                <p className={styles.followcard_text_p}>{profile.text}</p>
             </div>    
         </div>
     )

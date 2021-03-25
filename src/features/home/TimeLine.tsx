@@ -36,6 +36,7 @@ const TimeLine = () => {
                             text={plan.text} 
                             img={plan.img} 
                             profile={plan.profile}
+                            likes={plan.likes}
                     />
                 ))}
                 

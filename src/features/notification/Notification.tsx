@@ -36,7 +36,7 @@ const Notification:React.FC = () => {
             {notification.map((noti)=>(
                 noti.targetplan!==null?(
                     <>
-                        <div className={styles.notification_detail_container}>
+                        <div key={noti.id} className={styles.notification_detail_container}>
                             <div className={styles.notification_body}>
                                 <Link to={'/plandetail/'+noti.receive+'/'+noti.targetplan} >
                                     <Link to ={"/profile/"+noti.profile.userProfile}>
@@ -56,7 +56,7 @@ const Notification:React.FC = () => {
                     </>
                 ):
                     <>
-                        <div className={styles.notification_detail_container}>
+                        <div key={noti.id+noti.profile.id}  className={styles.notification_detail_container}>
                             <div className={styles.notification_body}>
                                 <Link to ={"/profile/"+noti.profile.userProfile}>
                                       {noti.profile.img!==null && noti.id!==0?

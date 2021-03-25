@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { COMMENT,COMMENT_PROFILE } from '../types';
 import { AppDispatch } from "../../app/store";
 import {fetchAsyncCommentDelete}from './commentSlice'
-import {selectProfile} from "../auth/authSlice";
+import {selectProfile,startProfileLoad} from "../auth/authSlice";
 import { Avatar,Button,TextField} from "@material-ui/core";
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL
@@ -23,26 +23,29 @@ const Comment:React.FC<COMMENT_PROFILE> = (comment) => {
   
     return (
         <>
-            <div className={styles.comment_container}>
-                <div className={styles.post_comment}>
-                    <Link to ={"/profile/"+comment.userComment}>
-                        <button className={styles.plan_btnprofile} onClick={()=>{}}>
-                            {imgpath!==apiUrl?
-                                <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
-                            :null}         
-                        </button>
-                    </Link>
-                    { comment.profile.nickName}
-                    <br/>
-                    {comment.text}
-                    <div key={comment.id}>
-                        {comment.userComment===profile.userProfile?
-                            <>
-                                <button onClick={()=>{dispatch(fetchAsyncCommentDelete(comment.id))}}>
-                                <DeleteIcon />
-                                </button>
-                            </>
-                        :null}
+            <div className={styles.comment_container_back}>
+                <div className={styles.comment_container}>
+                    <div className={styles.comment_left}>
+                        <Link to ={"/profile/"+comment.userComment}>
+                            <button className={styles.comment_avatar_btn} onClick={()=>{dispatch(startProfileLoad());}}>
+                                {imgpath!==apiUrl?
+                                    <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
+                                :null} 
+                            </button>
+                        </Link>
+                    </div>
+                    <div className={styles.comment_right}>
+                        <div className={styles.comment_nickname}>
+                            { comment.profile.nickName}
+                            {comment.userComment===profile.userProfile?
+                                <div className={styles.comment_delete_icon}>
+                                    <button className={styles.comment_avatar_btn} onClick={()=>{dispatch(fetchAsyncCommentDelete(comment.id))}}>
+                                        <DeleteIcon style={{ fontSize: 20 }}/>
+                                    </button>
+                                </div>
+                            :null}
+                        </div>
+                        <p className={styles.comment_text_p}>{comment.text}</p>
                     </div>  
                 </div>  
             </div>

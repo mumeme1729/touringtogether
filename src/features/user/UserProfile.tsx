@@ -15,6 +15,7 @@ import {
 
 import { RELATION } from "../types";
 import { Avatar,Button,CircularProgress} from "@material-ui/core";
+import AddLocationIcon from '@material-ui/icons/AddLocation';
 import styles from "./User.module.css";
 import { AppDispatch } from "../../app/store";
 import EditProfile from './EditProfile';
@@ -53,6 +54,9 @@ const UserProfile:React.FC = () => {
     const commentplan =useSelector(selectCommentPlan);
     const likedplans=useSelector(selectLikedPlans);
     
+    const [isopenplan,setOpenPlan]=useState(true);
+    const [isopencommentplan,setOpenCommentPlan]=useState(false);
+    const [isopenlikedplan,setOpenLikedPlan]=useState(false);
     
     useEffect(() => {
         const fetchLoader = async ()=>{ 
@@ -98,96 +102,153 @@ const UserProfile:React.FC = () => {
                     <div className={styles.profileDetail_container}>
                         { loginUser.id== selectedProfile.id?(
                             <>
-                                <div className={styles.logout_btn}>
-                                    <Link to ="/">
-                                        <Button onClick={() => {
-                                             localStorage.removeItem("localJWT");
-                                             dispatch(setOpenSignIn());
-                                        }}
-                                        >Logout</Button>
-                                    </Link>
-                                    <Button onClick={() => {
-                                            dispatch(setOpenEditProfile());
-                                        }}
-                                    >編集</Button>
-                                    <EditProfile/>
-                                </div>
-                                <div className={styles.detail_avatar}>
-                                    <Avatar alt="who?" src={loginUser.img} style={{height:'70px',width:'70px'}}/>{" "}
-                                    <div className={styles.profile_nickname}>
-                                        <h2 className={styles.nickname_h2}>{loginUser.nickName}</h2>
+                                <div className={styles.profile_container_top}>
+                                    <div className={styles.profile_container_top_left}>
+                                        <div className={styles.detail_avatar}>
+                                            <div className={styles.profile_avatar_img}>
+                                                <Avatar alt="who?" src={loginUser.img} style={{height:'70px',width:'70px'}}/>{" "}
+                                            </div>
+                                            <div className={styles.profile_nickname}>
+                                                <h2 className={styles.nickname_h2}>{loginUser.nickName}</h2>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
-                                    <div className={styles.relationship}>
-                                    <RelationShip 
-                                        key={loginUser.id} 
-                                        id={loginUser.id} 
-                                        nickName={loginUser.nickName} 
-                                        text={loginUser.text} 
-                                        userProfile={loginUser.userProfile} 
-                                        created_on={loginUser.created_on} 
-                                        img={loginUser.img} 
-                                        base={loginUser.base} 
-                                    />
+                                    <div className={styles.profile_container_top_right}>
+                                        <div className={styles.logout_btn}>
+                                            <div className={styles.logout_btn_left}>
+                                                <Link to ="/">
+                                                    <Button variant="outlined" color="primary" onClick={() => {
+                                                        localStorage.removeItem("localJWT");
+                                                        dispatch(setOpenSignIn());
+                                                    }}
+                                                    >Logout</Button>
+                                                </Link>
+                                            </div>
+                                            <div className={styles.logout_btn_right}>
+                                                <Button variant="outlined" color="primary" onClick={() => {
+                                                        dispatch(setOpenEditProfile());
+                                                    }}
+                                                >編集</Button>
+                                                <EditProfile/>
+                                            </div>
+                                        </div>
+                                        <div className={styles.relationship}>
+                                            <RelationShip 
+                                                key={loginUser.id} 
+                                                id={loginUser.id} 
+                                                nickName={loginUser.nickName} 
+                                                text={loginUser.text} 
+                                                userProfile={loginUser.userProfile} 
+                                                created_on={loginUser.created_on} 
+                                                img={loginUser.img} 
+                                                base={loginUser.base} 
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <div className={styles.profile_description}>
-                                    <p>{loginUser.text}</p>
-                                    <p>{loginUser.base}</p>
+                                <div className={styles.profile_container_bottom}>   
+                                    <div className={styles.profile_description}>
+                                        <p className={styles.profile_text_p}>{loginUser.text}</p>
+                                        <div className={styles.profile_base}>
+                                            <div className={styles.profile_base_icon}>
+                                                <AddLocationIcon style={{ fontSize: 22 }}/>
+                                            </div>
+                                            <p className={styles.profile_base_p} >{loginUser.base}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </>
                         ): 
                         <>
                             {/* ログインしているユーザー以外 */}
-                            <div className={styles.detail_avatar_other}>
-                                <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>
-                                <div className={styles.profile_nickname}>
-                                    <h2 className={styles.nickname_h2}>{selectedProfile.nickName}</h2>
+                            <div className={styles.profile_container_top}>
+                                <div className={styles.profile_container_top_left}>
+                                    <div className={styles.detail_avatar}>
+                                        <div className={styles.profile_avatar_img}>
+                                            <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>
+                                        </div>
+                                        <div className={styles.profile_nickname}>
+                                            <h2 className={styles.nickname_h2}>{selectedProfile.nickName}</h2>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className={styles.relationship}>
-                                    <RelationShip 
-                                        key={selectedProfile.id} 
-                                        id={selectedProfile.id} 
-                                        nickName={selectedProfile.nickName} 
-                                        text={selectedProfile.text} 
-                                        userProfile={selectedProfile.userProfile} 
-                                        created_on={selectedProfile.created_on} 
-                                        img={selectedProfile.img} 
-                                        base={selectedProfile.base} 
-                                    />
+                                <div className={styles.profile_container_top_right}>
+                                        <div className={styles.relationship}>
+                                            <RelationShip 
+                                                key={selectedProfile.id} 
+                                                id={selectedProfile.id} 
+                                                nickName={selectedProfile.nickName} 
+                                                text={selectedProfile.text} 
+                                                userProfile={selectedProfile.userProfile} 
+                                                created_on={selectedProfile.created_on} 
+                                                img={selectedProfile.img} 
+                                                base={selectedProfile.base} 
+                                            />
+                                        </div>
                                 </div>
                             </div>
-
-                            
+                            <div className={styles.profile_container_bottom}>
                                 <div className={styles.profile_description}>
-                                    <p>{selectedProfile.text}</p>
-                                    <p>{selectedProfile.base}</p>
+                                    <p className={styles.profile_text_p}>{selectedProfile.text}</p>
+                                    <div className={styles.profile_base}>
+                                        <div className={styles.profile_base_icon}>
+                                        <AddLocationIcon style={{ fontSize: 22 }}/>
+                                        </div>
+                                        <p className={styles.profile_base_p}>{selectedProfile.base}</p>
+                                    </div>
                                 </div>
-                           
+                            </div>
                         </>
                         }
-                        
+
+                        <div className={styles.profile_plan_choose}>
+                            <div className={styles.profile_plan_choose_btn}>
+                                <button className={styles.plan_switch} 
+                                    onClick={() => {
+                                    setOpenPlan(true);
+                                    setOpenCommentPlan(false);
+                                    setOpenLikedPlan(false);
+                                    }}
+                                >
+                                    {isopenplan?
+                                        <p className={styles.plan_switch_p}>プラン</p>
+                                    :<p>プラン</p>}
+                                
+                                </button>
+                            </div>
+                            
+                            <div className={styles.profile_plan_choose_btn}>
+                                <button className={styles.plan_switch} onClick={() => {
+                                        setOpenPlan(false);
+                                        setOpenCommentPlan(true);
+                                        setOpenLikedPlan(false);
+                                    }}
+                                >
+                                    {isopencommentplan?
+                                        <p className={styles.plan_switch_p}>コメントしたプラン</p>
+                                    :<p>コメントしたプラン</p>}
+                                </button>
+                            </div>
+                            <div className={styles.profile_plan_choose_btn}>
+                                <button className={styles.plan_switch}
+                                    onClick={() => {
+                                        setOpenPlan(false);
+                                        setOpenCommentPlan(false);
+                                        setOpenLikedPlan(true);
+                                    }}
+                                >
+                                    {isopenlikedplan?
+                                        <p className={styles.plan_switch_p}>いいね</p>
+                                    :<p>いいね</p>}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <Button variant="outlined" color="primary"
-                    onClick={() => {
-                     dispatch(setCommentPlan());
-                    }}
-                    >プラン</Button>
-                    <br/>
-                    <br/>
-                    <Button variant="outlined" color="primary"
-                    onClick={() => {
-                     dispatch(resetCommentPlan());
-                    }}
-                    >コメントしたプラン</Button>
                 
-                </div>
+                
                 {/* プラン表示 */}
-                {isopenuserplan
-                ?
+                {isopenplan?
                 <>
                     {userplan.map((plan)=>(
                         <UserPlan key={plan.id} 
@@ -201,11 +262,13 @@ const UserProfile:React.FC = () => {
                                   created_on={plan.created_on} 
                                   text={plan.text} 
                                   img={plan.img} 
-                                  profile={selectedProfile}
+                                  profile={plan.profile}
+                                  likes={plan.likes}
                         /> 
                     ))}
                 </>
-                :
+                :null}
+                {isopencommentplan?
                 <>
                     {commentplan.map((plan)=>(
                          <UserPlan key={plan.id} 
@@ -220,11 +283,31 @@ const UserProfile:React.FC = () => {
                                 text={plan.text} 
                                 img={plan.img} 
                                 profile={plan.profile}
+                                likes={plan.likes}
                          />
                     ))}
                 </>
-                }
-                
+                :null}
+                {isopenlikedplan?
+                <>
+                    {likedplans.map((plan)=>(
+                         <UserPlan key={plan.id} 
+                                id={plan.id} 
+                                title={plan.title}
+                                departure={plan.departure} 
+                                prefecture={plan.prefecture} 
+                                destination={plan.destination} 
+                                date={plan.date} 
+                                userPlan={plan.userPlan} 
+                                created_on={plan.created_on} 
+                                text={plan.text} 
+                                img={plan.img} 
+                                profile={plan.profile}
+                                likes={plan.likes}
+                         />
+                    ))}
+                </>
+                :null}
             </>
             }
         </>

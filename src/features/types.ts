@@ -101,6 +101,12 @@ export interface PROPS_PLANPROFILE{
         img: string,
         base:string,
     }
+    likes:{
+        id:number,
+        plan:number,
+        userLikes:number,
+        created_on:string,
+    }[]
 }
 
 export interface PROPS_SEARCH_PLAN{
@@ -194,4 +200,14 @@ export interface PLAN_IMAGE{
 export interface PROPS_LIKES{
     plan:number;
     userLikes:number;
+}
+
+export interface PLAN_LIKES{
+    likes:{
+        id:number,
+        plan:number,
+        userLikes:number,
+        created_on:string,
+    }[]
+    planid:number
 }

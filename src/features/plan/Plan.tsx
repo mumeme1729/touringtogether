@@ -38,17 +38,24 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
         const packet = { destination: "", date: "",prefecture:String(plan.prefecture)};
         await dispatch(fetchAsyncSearchPlans(packet));
     }
+
+    const likeProps={
+        likes:plan.likes,
+        planid:plan.id,
+    }
     
     return (
         
             <div className={styles.plan_detail_container}>
                 <div className={styles.plan_body}>
-                    <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
-                            <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
+                    <div className={styles.plan_body_top}>
+                        <div className={styles.plan_body_left}>
+                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
+                                <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
                                     <div className={styles.plan_profile}>
                                         {imgpath!==apiUrl?
                                             <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
-                                            :null}
+                                        :null}
                                         <div className={styles.plan_profile_nickname}>
                                             {plan.profile.nickName}
                                             <div className={styles.plan_title}>
@@ -56,24 +63,32 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                                             </div>
                                         </div>
                                     </div>
-                            </Link> 
-                            <div className={styles.plan_description}>
-                                <br/>
-                                <p className={styles.plan_description_p}>目的地    : {plan.destination}</p>
-                                <p className={styles.plan_description_p}>出発予定日: {plan.date}</p>
-                                <p className={styles.plan_description_p}>出発地    : {plan.departure}</p>
-                                <p className={styles.plan_description_p}>{plan.text}</p>
+                                </Link> 
+                                <div className={styles.plan_description}>
+                                    <br/>
+                                    <p className={styles.plan_description_p}>目的地    : {plan.destination}</p>
+                                    <p className={styles.plan_description_p}>出発予定日: {plan.date}</p>
+                                    <p className={styles.plan_description_p}>出発地    : {plan.departure}</p>
+                                    <p className={styles.plan_description_p}>{plan.text}</p>
+                                </div>
+                            </Link>
+                        </div>
+                        <div className={styles.plan_body_right}>
+                            <div className={styles.plan_likes}>
+                                <Likes {...likeProps} /> 
                             </div>
-                    </Link>
-                     <Likes id={plan.id} /> 
+                            <div className={styles.plan_prefecture_container}>
+                                <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
+                                    <div className={styles.plan_prefecture_div}>
+                                        <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                     {plan.img!==null?
                         <img src={plan.img} className={styles.plan_img} alt=""  onClick={()=>{setImage(plan.img)}}/>     
                     :null}
-                    <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
-                        <div className={styles.plan_prefecture_div}>
-                            <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
-                        </div>
-                    </Link>
                 </div> 
             </div>
         

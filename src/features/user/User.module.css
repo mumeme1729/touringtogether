@@ -23,22 +23,53 @@
     display: flex;
     justify-content: center;
     margin-bottom: -4px; 
-    
 }
-
 .profileDetail_container{
     width: 500px;
     border:solid 1px rgba(0,0,0,0.1);
     position: relative;
     left: -24px;
 }
-
-
-.detail_avatar{
+.profile_container_top{
     display: flex;
-    justify-content: left;
-    margin-top: -15px;
-    margin-left: 10px;
+    height:120px;
+}
+.profile_container_top_left{
+    width:50%;
+    display: flex;
+    justify-content: center;
+}
+.detail_avatar{
+    width: 100%;
+}
+.profile_avatar_img{
+    margin-top: 4px;
+    margin-left: 4px;
+}
+.profile_nickname{
+   text-align: left;
+   margin-top: -7px;
+   margin-left: 3%;
+}
+.nickname_h2{
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    max-width: 200px;
+}
+.profile_container_top_right{
+    width:50%;
+}
+.logout_btn{
+    display: flex;
+    margin-top: 6px;
+}
+.logout_btn_left{
+    margin-left: 55px;
+}
+.logout_btn_right{
+    margin-left:20px;
 }
 .detail_avatar_other{
     display: flex;
@@ -46,27 +77,47 @@
     margin-top: 10px;
     margin-left: 10px;
 }
-
-.profile_nickname{
-    margin-left: -30%;
-    margin-top: 55px;
-    width: 100%;
-    
-}
-.nickname_h2{
-    font-size: 18px;
-}
-.relationship{
-    width:100%;
-    height: 50px;
-}
-
-.logout_btn{
+.profile_base{
     display: flex;
-    height: 35px;
-    margin-left: 70%;
+    justify-content: left;
 }
-
+.profile_base_icon{
+    margin-top: 8px;
+}
+.profile_base_p{
+    font-size: 12px;
+}
+.profile_description{
+    text-align: left;
+}
+.profile_text_p{
+    font-size: 14px;
+    margin-left: 2px;
+}
+/* 選択 */
+.profile_plan_choose{
+    display: flex;
+    justify-content: space-around;
+}
+.profile_plan_choose_btn{
+    width: 33%;
+    border-radius: 30px;
+}
+.profile_plan_choose_btn:hover{
+    background-color: rgba(99, 89, 233, 0.2);
+}
+.plan_switch{
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    outline: none;
+}
+.plan_switch_p{
+    border-bottom:solid 1px rgba(99, 89, 233, 0.2);
+    margin-bottom: -1px;
+    color: rgba(99, 89, 233);
+}
+/* プラン表示 */
 .plandetail_title{
     border:solid 1px rgba(0,0,0,0.1);
     width:500px;
@@ -79,7 +130,6 @@
     left:50%;
     margin-left: -275px;
 }
-
 .title_h2{
     margin-top: 3px;
     position: absolute;
@@ -98,7 +148,16 @@
     position: relative;
     left: -24px;
 }
+.plan_body_top{
+    display: flex;
+}
+.plan_body_left{
+    width:80%;
+}
 
+.plan_body_right{
+    width:20%;
+}
 .plan_link{
     text-decoration: none;
     color:black;
@@ -118,7 +177,7 @@
     margin-left:7% ; 
 }
 .plan_h2{
-    max-width: 400px;
+    max-width: 380px;
     font-size: 18px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -135,7 +194,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
-    max-width: 400px;
+    max-width: 380px;
 }
 .plan_btnprofile {
     background-color: transparent;
@@ -166,6 +225,27 @@
     font-size: 14px;
     color: blue;
 }
+
+.plan_likes{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.plan_prefecture_container{
+    margin-right: 35px;
+}
+.likes_btn{
+    background-color: transparent;
+    border: none;  
+    outline: none;
+    border-radius: 60px;
+}
+
+.likes_btn:hover{
+    background-color:rgba(253, 218, 63, 0.2);
+    border: none; 
+}
+
 
 /* 画像 */
 .plan_img {

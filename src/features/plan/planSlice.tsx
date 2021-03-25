@@ -28,7 +28,7 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
   //プランを取得(リロード用)
   export const fetchAsyncGetSelectPlan = createAsyncThunk("selectplan/get", async (id:string) => {
-    const res = await axios.get(`${apiUrl}api/plan/${id}`, {
+    const res = await axios.get(`${apiUrl}api/searchplan/${id}`, {
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },
@@ -55,7 +55,6 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },
-      
     });
     return res.data;
   });
@@ -111,17 +110,17 @@ export const fetchAsyncAddLikes = createAsyncThunk(
 );
 
 //いいね取得
-export const fetchAsyncGetLikesCount = createAsyncThunk("likes/get", async (id:string) => {
-  const res = await axios.get(`${apiUrl}api/countlikes/`, {
-    headers: {
-      Authorization: `JWT ${localStorage.localJWT}`,
-    },
-    params:{
-      id:`${id}`,
-    },
-  })
-  return res.data;
-});
+// export const fetchAsyncGetLikesCount = createAsyncThunk("likes/get", async (id:string) => {
+//   const res = await axios.get(`${apiUrl}api/countlikes/`, {
+//     headers: {
+//       Authorization: `JWT ${localStorage.localJWT}`,
+//     },
+//     params:{
+//       id:`${id}`,
+//     },
+//   })
+//   return res.data;
+// });
 
 
 
@@ -165,7 +164,15 @@ export const planSlice =createSlice({
                 created_on: "",
                 img: "",
                 base:""
-              }
+              },
+              likes:[
+                {
+                  id:0,
+                  plan:0,
+                  userLikes:0,
+                  created_on:"",
+                }
+              ],
           },
       ],
         searchplans:[
@@ -189,7 +196,15 @@ export const planSlice =createSlice({
                 created_on: "",
                 img: "",
                 base:""
+                },
+              likes:[
+                {
+                  id:0,
+                  plan:0,
+                  userLikes:0,
+                  created_on:"",
                 }
+              ],
             },
         ],
         prefectures:[
@@ -209,7 +224,23 @@ export const planSlice =createSlice({
           created_on:"",
           text:"",
           img:"",
-          liked:[0],
+          profile: {
+            id: 0,
+            nickName: "",
+            text: "",
+            userProfile: 0,
+            created_on: "",
+            img: "",
+            base:""
+            },
+          likes:[
+            {
+              id:0,
+              plan:0,
+              userLikes:0,
+              created_on:"",
+            }
+          ],
         },
     },
     reducers:{

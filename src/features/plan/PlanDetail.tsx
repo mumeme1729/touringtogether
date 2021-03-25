@@ -5,6 +5,7 @@ import { AppDispatch } from "../../app/store";
 import { PROPS_PLANS } from '../types';
 import styles from "./Plan.module.css";
 import Comment from "../comment/Comment";
+import Likes from './Likes';
 import {selectProfile,fetchAsyncSelectProfile,selectSelectedProfile,startProfileLoad} from "../auth/authSlice";
 import {Link,useLocation} from 'react-router-dom';
 import {
@@ -13,7 +14,11 @@ import {
     fetchAsyncGetSelectPlan,
     startLoad,
     endLoad,
-    selectLoadPlan
+    selectLoadPlan,
+    selectPrefectures,
+    fetchAsyncSearchPlans,
+    setPlanImage,
+    setOpenImage,
 } from "../plan/planSlice";
 
   
@@ -28,6 +33,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import {fetchAsyncPostNotification} from '../notification/notificationSlice';
 
+const apiUrl = process.env.REACT_APP_DEV_API_URL
+
 const PlanDetail:React.FC< PROPS_PLANS> = () => {
     const selectedProfile=useSelector(selectSelectedProfile);
     const plan=useSelector(selectSelectedPlan);
@@ -39,17 +46,45 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
     const id=(location.pathname.split('/'));
     const isloadcomment=useSelector(selectIsLoadComment);
     const isloadplan=useSelector(selectLoadPlan);
+    const prefectures=useSelector(selectPrefectures);
 
     const postComment = async () => {
         const packet = { text: text, plan: plan.id,profile:myprofile };
         await dispatch(fetchAsyncPostComment(packet));
         setText("");
       };
+      let imgpath=""
+      if(plan.profile.img!==null){
+          if((plan.profile.img)[0]!=='h'){
+              imgpath=apiUrl+(plan.profile.img).substr(1);
+          }else{
+              imgpath=plan.profile.img;
+          }
+      }
 
     //通知
     const addNotification=async()=>{
         const packet={status:true,receive:plan.userPlan,send:myprofile.userProfile,targetplan:plan.id}
         await dispatch(fetchAsyncPostNotification(packet));
+    }
+
+    const prefecture=prefectures.filter((p)=>{
+        return p.id===Number(plan.prefecture);
+    })
+
+    const setImage=(image:string)=>{
+        dispatch(setPlanImage(image));
+        dispatch(setOpenImage());
+    }
+
+    const searchPlan =async()=>{
+        const packet = { destination: "", date: "",prefecture:String(plan.prefecture)};
+        await dispatch(fetchAsyncSearchPlans(packet));
+    }
+
+    const likeProps={
+        likes:plan.likes,
+        planid:plan.id,
     }
 
     useEffect(()=>{
@@ -80,21 +115,50 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
         
         {isloadplan?
             <CircularProgress/>
-            :<div className={styles.plan_detail_container}>
-                <div className={styles.plan_body}>
-                    <button className={styles.plan_btnprofile} onClick={()=>dispatch(startProfileLoad())}>
-                        <Link to ={"/profile/"+selectedProfile.userProfile}> 
-                            <Avatar alt="who?" src={selectedProfile.img} style={{height:'70px',width:'70px'}}/>{" "}
-                        </Link> 
-                    </button>
-                        
-                    {selectedProfile.nickName}
-                    <h2>目的地:{plan.destination}</h2>
-                    <h3>出発予定日:{plan.date}</h3>
-                    <p>{plan.text}</p>
-                    {plan.img!==null?
-                        <img src={plan.img} className={styles.plan_img} alt="" />
-                    :null}
+        :<div className={styles.plan_detail_container}>
+            <div className={styles.plan_body}>
+                <div className={styles.plan_body_top}>
+                    <div className={styles.plan_body_left}>
+                        <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
+                            <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
+                                <div className={styles.plan_profile}>
+                                    {imgpath!==apiUrl?
+                                        <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
+                                    :null}
+                                    <div className={styles.plan_profile_nickname}>
+                                        {plan.profile.nickName}
+                                        <div className={styles.plan_title}>
+                                            <h2 className={styles.plan_h2}>{plan.title}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link> 
+                            <div className={styles.plan_description}>
+                                <br/>
+                                <p className={styles.plan_description_p}>目的地    : {plan.destination}</p>
+                                <p className={styles.plan_description_p}>出発予定日: {plan.date}</p>
+                                <p className={styles.plan_description_p}>出発地    : {plan.departure}</p>
+                                <p className={styles.plan_description_p}>{plan.text}</p>
+                            </div>
+                        </Link>
+                    </div>
+                    <div className={styles.plan_body_right}>
+                        <div className={styles.plan_likes}>
+                            <Likes {...likeProps} /> 
+                        </div>
+                        <div className={styles.plan_prefecture_container}>
+                            <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
+                                <div className={styles.plan_prefecture_div}>
+                                    <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+                {plan.img!==null?
+                    <img src={plan.img} className={styles.plan_img} alt=""  onClick={()=>{setImage(plan.img)}}/>     
+                :null}
+            
                         
                     {plan.userPlan===myprofile.userProfile?
                         <>
@@ -104,11 +168,12 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                                 </button>
                             </Link> 
                         </>
-                            :null}
+                    :null}
+            </div> 
+        </div>
             
-                </div>                
-            </div>
         }
+        <br/>
         <div>
             <TextField
                 placeholder="コメント"

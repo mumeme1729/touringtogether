@@ -31,7 +31,15 @@
     position: relative;
     left: -24px;
 }
-
+.plan_body_top{
+    display: flex;
+}
+.plan_body_left{
+    width:80%;
+}
+.plan_body_right{
+    width:20%;
+}
 .plan_link{
     text-decoration: none;
     color:black;
@@ -51,7 +59,7 @@
     margin-left:7% ; 
 }
 .plan_h2{
-    max-width: 400px;
+    max-width: 380px;
     font-size: 18px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -68,7 +76,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
-    max-width: 400px;
+    max-width: 380px;
 }
 .plan_btnprofile {
     background-color: transparent;
@@ -100,6 +108,27 @@
     color: blue;
 }
 
+.plan_likes{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.plan_prefecture_container{
+    margin-right: 35px;
+}
+.likes_btn{
+    background-color: transparent;
+    border: none;  
+    outline: none;
+    border-radius: 60px;
+    
+}
+
+.likes_btn:hover{
+    background-color:rgba(253, 218, 63, 0.2);
+    border: none; 
+}
+
 /* 画像 */
 .plan_img {
     width: 400px;
@@ -120,7 +149,6 @@
     justify-content: center; 
     
 }
-
 .image_modal_image{
     display: flex;
     justify-content: center;

@@ -39,6 +39,7 @@ const SearchList:React.FC = () => {
                                text={plan.text} 
                                img={plan.img} 
                                profile={plan.profile}
+                               likes={plan.likes}
                         />
                     ))} 
                     

@@ -86,7 +86,7 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
     
     return (
         <>
-            <div className={styles.relationship_num}>
+            <div className={styles.follow_btn_container}>
                     {proFile.id!==loginUser.id?(
                         isFollowing?(
                             <div className={styles.follow_btn}>
@@ -108,15 +108,15 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
                             </div>
                     ):null}  
             </div>
-            <div className={styles.follow_follower_btn}>
-                <Button onClick={()=>{
+            <div className={styles.follow_follow_num_btn}>
+                <Button style={{height:'10px',width:'50%'}} onClick={()=>{
                     dispatch(setOpenRelationshipDetail());
                     dispatch(resetOpenFollower());
                     dispatch(setOpenFollowing());
                 }}>
                     <p className={styles.relationship_p}>{following.length} フォロー中</p> 
                 </Button>
-                <Button onClick={()=>{
+                <Button style={{height:'10px',width:'50%'}} onClick={()=>{
                     dispatch(setOpenRelationshipDetail());
                     dispatch(resetOpenFollowing());
                     dispatch(setOpenFollower());
@@ -127,37 +127,43 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
             {/* フォロー・フォロワーの一覧 */}
             <Modal
                     isOpen={openRelationshipDetail}
-                    onRequestClose={async () => {
-                        await dispatch(resetOpenRelationshipDetail());
+                    onRequestClose={() => {
+                        dispatch(resetOpenRelationshipDetail());
                     }}
                     style={modalStyle}
                     ariaHideApp={false}
                 >
-                    <div>
-                        <Button onClick={()=>{
-                             dispatch(resetOpenFollower());
-                             dispatch(setOpenFollowing());
-                        }}>
-                            フォロー中
-                        </Button>
-                        <Button onClick={()=>{
-                            dispatch(resetOpenFollowing());
-                            dispatch(setOpenFollower());
-                        }}>
-                            フォロワー
-                        </Button>
+                    <div className={styles.relationship_follow_switch_btn_container}>
+                        <div className={styles.relationship_follow_switch_btn}>
+                            <button className={styles.relationship_switch_btn} onClick={()=>{
+                                dispatch(resetOpenFollower());
+                                dispatch(setOpenFollowing());
+                            }}>
+                                {!openFollowing?
+                                    <h4 className={styles.follow_selected}>フォロー中</h4>
+                                :<h4>フォロー中</h4>}
+                            </button>
+                        </div>
+                        <div className={styles.relationship_follow_switch_btn}>
+                            <button className={styles.relationship_switch_btn} onClick={()=>{
+                                dispatch(resetOpenFollowing());
+                                dispatch(setOpenFollower());
+                            }}>
+                                {openFollowing?
+                                    <h4 className={styles.follow_selected}>フォロワー</h4>
+                                :<h4>フォロワー</h4>}
+                            </button>
+                        </div>
                     </div>
                     {!openFollowing ?(
                         <>
                             {/* フォローしているユーザー */}
-                            フォロー中
                              {following.map((f)=>(
                                 <Following key={f.id} id={f.id} nickName={f.nickName} text={f.text} userProfile={f.userProfile} created_on={f.created_on} img={f.img} base={f.base}/>
                             ))}  
                         </>
                     ):
                         <>
-                            フォロワー
                              {follower.map((f)=>(
                                 <Follower key={f.id} id={f.id} nickName={f.nickName} text={f.text} userProfile={f.userProfile} created_on={f.created_on} img={f.img} base={f.base}/>
                             ))}  

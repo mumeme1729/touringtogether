@@ -65,6 +65,23 @@ export const userSlice =createSlice({
           created_on:"",
           text:"",
           img:"",
+          profile: {
+            id: 0,
+            nickName: "",
+            text: "",
+            userProfile: 0,
+            created_on: "",
+            img: "",
+            base:"",
+          },
+          likes:[
+            {
+              id:0,
+              plan:0,
+              userLikes:0,
+              created_on:"",
+            }
+          ],
         },
       ],
       commnetplan:[
@@ -87,7 +104,15 @@ export const userSlice =createSlice({
               created_on: "",
               img: "",
               base:"",
-            }
+            },
+            likes:[
+              {
+                id:0,
+                plan:0,
+                userLikes:0,
+                created_on:"",
+              }
+            ],
         },
       ],
       likedplan:[
@@ -110,7 +135,15 @@ export const userSlice =createSlice({
               created_on: "",
               img: "",
               base:"",
-            }
+            },
+            likes:[
+              {
+                id:0,
+                plan:0,
+                userLikes:0,
+                created_on:"",
+              }
+            ],
         },
       ],
     },
