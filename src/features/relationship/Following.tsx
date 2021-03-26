@@ -8,8 +8,20 @@ import {resetOpenRelationshipDetail} from "./RelationshipSlice";
 import {Link} from 'react-router-dom';
 import {startProfileLoad} from "../auth/authSlice";
 
+const apiUrl = process.env.REACT_APP_DEV_API_URL
+
 const Following:React.FC<PROPS_ALL_USER> = (profile) => {
     const dispatch: AppDispatch = useDispatch();
+
+    let imgpath=""
+    if(profile.img!==null){
+        if((profile.img)[0]!=='h'){
+            imgpath=apiUrl+(profile.img).substr(1);
+        }else{
+            imgpath=profile.img;
+        }
+    }
+
     return (
         <div className={styles.followcard_container}>
             <div  className={styles.followcard_left}>
@@ -18,7 +30,9 @@ const Following:React.FC<PROPS_ALL_USER> = (profile) => {
                     dispatch(startProfileLoad());
                     }}>
                     <Link to ={"/profile/"+profile.userProfile}> 
-                        <Avatar alt="who?" src={profile.img} style={{height:'50px',width:'50px'}}/>
+                        {imgpath!==apiUrl?
+                            <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
+                        :null}
                     </Link> 
                 </button>
             </div>

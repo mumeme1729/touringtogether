@@ -15,10 +15,12 @@ const Comment:React.FC<COMMENT_PROFILE> = (comment) => {
     const dispatch: AppDispatch = useDispatch();
     const profile = useSelector(selectProfile);
     let imgpath=""
-    if((comment.profile.img)[0]!=='h'){
-        imgpath=apiUrl+(comment.profile.img).substr(1);
-    }else{
-        imgpath=comment.profile.img;
+    if(comment.profile.img!==null){
+        if((comment.profile.img)[0]!=='h'){
+            imgpath=apiUrl+(comment.profile.img).substr(1);
+        }else{
+            imgpath=comment.profile.img;
+        }
     }
   
     return (

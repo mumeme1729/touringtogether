@@ -60,18 +60,18 @@ const Likes:React.FC<PLAN_LIKES> = (props) => {
     return (
         <div>
             {!flag?
-                <div>
+                <div className={styles.likes_container}>
                     <button className={styles.likes_btn} onClick={()=>addLikes() }>
                         <StarBorderIcon />
                     </button>
-                {count}
+                    <p className={styles.likes_p}>{count}</p>
                 </div>
             :
-                <div>
+                <div className={styles.likes_container}>
                     <button className={styles.likes_btn} onClick={()=>deleteLikes()}>
                         <StarIcon style={{ color: yellow[900],}}/>
                     </button>
-                    {count}
+                    <p className={styles.likes_p}>{count}</p>
                 </div>
             }
         </div>

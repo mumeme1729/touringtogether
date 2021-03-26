@@ -6,6 +6,7 @@ import { PROPS_PLANS } from '../types';
 import styles from "./Plan.module.css";
 import Comment from "../comment/Comment";
 import Likes from './Likes';
+import EditPlan from "./EditPlan";
 import {selectProfile,fetchAsyncSelectProfile,selectSelectedProfile,startProfileLoad} from "../auth/authSlice";
 import {Link,useLocation} from 'react-router-dom';
 import {
@@ -19,9 +20,8 @@ import {
     fetchAsyncSearchPlans,
     setPlanImage,
     setOpenImage,
+    setOpenEditPlan,
 } from "../plan/planSlice";
-
-  
 import {
     selectComments,
     fetchAsyncGetComments,
@@ -31,6 +31,7 @@ import {
     selectIsLoadComment,
 }from '../comment/commentSlice';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import {fetchAsyncPostNotification} from '../notification/notificationSlice';
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL
@@ -66,6 +67,18 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
     const addNotification=async()=>{
         const packet={status:true,receive:plan.userPlan,send:myprofile.userProfile,targetplan:plan.id}
         await dispatch(fetchAsyncPostNotification(packet));
+        if(plan.userPlan==myprofile.userProfile){
+            const comment=comments.map((com)=>{
+                return com.userComment;
+            });
+            const setComment=Array.from(new Set(comment));
+            setComment.map(async(setcom)=>{
+                if(setcom!==myprofile.userProfile){
+                    const packet2= {status:true,receive:setcom,send:myprofile.userProfile,targetplan:plan.id}
+                    await dispatch(fetchAsyncPostNotification(packet2));
+                };
+            });
+        }
     }
 
     const prefecture=prefectures.filter((p)=>{
@@ -119,7 +132,6 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
             <div className={styles.plan_body}>
                 <div className={styles.plan_body_top}>
                     <div className={styles.plan_body_left}>
-                        <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
                             <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
                                 <div className={styles.plan_profile}>
                                     {imgpath!==apiUrl?
@@ -128,21 +140,35 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                                     <div className={styles.plan_profile_nickname}>
                                         {plan.profile.nickName}
                                         <div className={styles.plan_title}>
-                                            <h2 className={styles.plan_h2}>{plan.title}</h2>
+                                            <h2>{plan.title}</h2>
                                         </div>
                                     </div>
                                 </div>
                             </Link> 
                             <div className={styles.plan_description}>
                                 <br/>
-                                <p className={styles.plan_description_p}>目的地    : {plan.destination}</p>
-                                <p className={styles.plan_description_p}>出発予定日: {plan.date}</p>
-                                <p className={styles.plan_description_p}>出発地    : {plan.departure}</p>
-                                <p className={styles.plan_description_p}>{plan.text}</p>
+                                <p className={styles.plandetail_description_p}>目的地    : {plan.destination}</p>
+                                <p className={styles.plandetail_description_p}>出発予定日: {plan.date}</p>
+                                <p className={styles.plandetail_description_p}>出発地    : {plan.departure}</p>
+                                <p>{plan.text}</p>
                             </div>
-                        </Link>
                     </div>
                     <div className={styles.plan_body_right}>
+                        {plan.userPlan===myprofile.userProfile?
+                            <>
+                                <div className={styles.plandetail_edit_container}>
+                                    <button className={styles.plandetail_delete_btn} onClick={()=>{dispatch(setOpenEditPlan())}}>
+                                        <EditIcon style={{fontSize:25}}/>
+                                    </button>
+                                    <EditPlan/>
+                                    <Link to ={"/"}> 
+                                        <button className={styles.plandetail_delete_btn} onClick={()=>{dispatch(fetchAsyncPlanDelete(plan.id))}}>
+                                            <DeleteIcon style={{ fontSize: 25 }}/>
+                                        </button>
+                                    </Link>
+                                </div> 
+                            </>
+                        :null}
                         <div className={styles.plan_likes}>
                             <Likes {...likeProps} /> 
                         </div>
@@ -158,17 +184,6 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                 {plan.img!==null?
                     <img src={plan.img} className={styles.plan_img} alt=""  onClick={()=>{setImage(plan.img)}}/>     
                 :null}
-            
-                        
-                    {plan.userPlan===myprofile.userProfile?
-                        <>
-                            <Link to ={"/"}> 
-                                <button onClick={()=>{dispatch(fetchAsyncPlanDelete(plan.id))}}>
-                                    <DeleteIcon />
-                                </button>
-                            </Link> 
-                        </>
-                    :null}
             </div> 
         </div>
             

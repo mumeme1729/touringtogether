@@ -1,67 +1,67 @@
-import React,{useState} from 'react'
-import { useSelector, useDispatch } from "react-redux";
-import {
-    fetchAsyncNewPlan,
-    resetOpenNewPlan,
-    selectOpenPlan,
-    selectPrefectures,
-}from "../plan/planSlice";
+import React,{ useState } from 'react'
+import Modal from "react-modal";
+import { AppDispatch } from "../../app/store";
+import {selectOpenEditPlan,resetOpenEditPlan,selectPrefectures, selectSelectedPlan,fetchAsyncUpdatePlan} from "./planSlice";
 import { Button, TextField, IconButton,Menu,MenuItem } from "@material-ui/core";
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import Modal from "react-modal";
-import {selectProfile } from "../auth/authSlice";
 import AddLocationIcon from '@material-ui/icons/AddLocation';
-import styles from "./Home.module.css";
-
-
+import { useSelector, useDispatch } from "react-redux";
+import styles from "./Plan.module.css";
 const customStyles = {
     overlay: {
         backgroundColor: 'rgba(0,0,0,0.6)',
         zIndex:2
       },
     content: {
-      top: "50%",
+      top: "55%",
       left: "50%",
-      backgroundColor: 'white',
-      width: '320px',
-      height: '450px',
+  
+      width: 280,
+      height: '90vh',
+      padding: "50px",
+  
       transform: "translate(-50%, -50%)",
     },
   };
 
-  const ITEM_HEIGHT=47;
+const ITEM_HEIGHT=47;
 
-const NewPlan:React.FC = () => {
-    const dispatch = useDispatch();
-    const openPlan=useSelector(selectOpenPlan);
-    const myprofile=useSelector(selectProfile);
+const EditPlan:React.FC = () => {
+    const dispatch: AppDispatch = useDispatch();
+    const openeditplan=useSelector(selectOpenEditPlan);
+    const plan=useSelector(selectSelectedPlan);
+    
     const prefectures=useSelector(selectPrefectures);
-    const [title,setTitle]=useState("");
-    const [departure,setDeparture]=useState("");
-    const [prefecture,setPrefecture]=useState(0);
-    const [destination,setDestination]=useState("");
-    const [date,setDate]=useState("");
-    const [text,setText]=useState("");
+    const [title,setTitle]=useState(plan.title);
+    const [departure,setDeparture]=useState(plan.departure);
+    const [prefecturestate,setPrefecture]=useState(plan.prefecture);
+    const [destination,setDestination]=useState(plan.destination);
+    const [date,setDate]=useState(plan.date);
+    const [text,setText]=useState(plan.text);
     const [image, setImage] = useState<File | null>(null);
     const [anchorEl, setAnchorEl] =useState(null);
     const open = Boolean(anchorEl);
     const [pref,setP]=useState("");
-    
-    let url="";
-    const newPlan = async()=>{
-        const packet = { title:title,departure:departure,prefecture:String(prefecture), destination: destination, date: date ,text:text,img:image,profile:myprofile};
-        const results= dispatch(fetchAsyncNewPlan(packet));
+
+    let url=""
+    if(plan.img!==null){
+        url=plan.img;
+    }
+
+    const editPlan = async()=>{
+        const packet = { id:plan.id,title:title,departure:departure,prefecture:String(prefecturestate), destination: destination, date: date ,text:text,img:image,profile:plan.profile,likes:plan.likes};
+        const results= dispatch(fetchAsyncUpdatePlan(packet));
         console.log(results);
-        setDestination("");
-        setDate("");
-        setText("");
-        setTitle("");
-        setDeparture("");
-        setPrefecture(0);
+        // setDestination("");
+        // setDate("");
+        // setText("");
+        // setPrefecture('');
         setP("");
         setImage(null);
-        dispatch(resetOpenNewPlan());
+        dispatch(resetOpenEditPlan());
     }
+
+
     const handlerEditPicture = () => {
         const fileInput = document.getElementById("imageInput");
         fileInput?.click();
@@ -69,12 +69,11 @@ const NewPlan:React.FC = () => {
 
       const handleClick = (event:any) => {
         setAnchorEl(event.currentTarget);
-        
       };
     
       const handleClose = () => {
         setAnchorEl(null);
-        setPrefecture(0);
+        setPrefecture('');
         setP("");
       };
 
@@ -90,13 +89,9 @@ const NewPlan:React.FC = () => {
       }
     return (
         <>
-            <Modal isOpen={openPlan}
+            <Modal isOpen={openeditplan}
                 onRequestClose={async () => {
-                    url="";
-                    setImage(null);
-                    dispatch(resetOpenNewPlan());
-                    setPrefecture(0);
-                    setP("");
+                    dispatch(resetOpenEditPlan());
                 }}
                 style={customStyles}
                ariaHideApp={false}
@@ -200,12 +195,12 @@ const NewPlan:React.FC = () => {
                     </div>
                     <div className={styles.newplan_modal_btn}>
                         <Button
-                            disabled={!destination || !date  ||!text ||!prefecture}
+                            disabled={!destination || !date  ||!text}
                             variant="contained"
                             color="primary"
-                            onClick={newPlan}
+                            onClick={editPlan}
                         >
-                            投稿
+                            更新
                         </Button>
                     </div>
                 </form>
@@ -216,4 +211,4 @@ const NewPlan:React.FC = () => {
     )
 }
 
-export default NewPlan
+export default EditPlan

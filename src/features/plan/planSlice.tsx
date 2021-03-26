@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import {PROPS_PLAN,PROPS_LIKES,PROPS_SEARCH_PLAN} from "../types";
+import {PROPS_PLAN,PROPS_LIKES,PROPS_SEARCH_PLAN,EDIT_PLAN} from "../types";
 import { create } from "yup/lib/array";
 
 
@@ -35,8 +35,6 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     });
     return res.data;
   });
-
-
 
   //2P以降
   export const fetchAsyncSearchPlansPage = createAsyncThunk("searchplansPage/get", 
@@ -81,8 +79,37 @@ export const fetchAsyncNewPlan = createAsyncThunk(
                 },
         });
         res.data.profile=newPlan.profile
+        res.data.likes=[]
         return res.data;
     });
+  
+  //プラン更新
+  export const fetchAsyncUpdatePlan = createAsyncThunk(
+    "plan/put",
+    async (plan: EDIT_PLAN) => {
+      const editPlanData = new FormData();
+      editPlanData.append("title",plan.title)
+      editPlanData.append("prefecture",plan.prefecture)
+      editPlanData.append("departure",plan.departure)
+      editPlanData.append("destination",plan.destination)
+      editPlanData.append("date",plan.date)
+      editPlanData.append("text",plan.text)
+      plan.img && editPlanData.append("img", plan.img, plan.img.name);
+      const res = await axios.put(
+        `${apiUrl}api/plan/${plan.id}/`,
+        editPlanData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${localStorage.localJWT}`,
+          },
+        }
+      );
+      res.data.profile=plan.profile
+      res.data.likes=plan.likes
+      return res.data;
+    }
+  );
 
 //予定を削除
 export const fetchAsyncPlanDelete =createAsyncThunk("plan/delete",async (id:number) =>{
@@ -108,22 +135,6 @@ export const fetchAsyncAddLikes = createAsyncThunk(
     return res.data;
   }
 );
-
-//いいね取得
-// export const fetchAsyncGetLikesCount = createAsyncThunk("likes/get", async (id:string) => {
-//   const res = await axios.get(`${apiUrl}api/countlikes/`, {
-//     headers: {
-//       Authorization: `JWT ${localStorage.localJWT}`,
-//     },
-//     params:{
-//       id:`${id}`,
-//     },
-//   })
-//   return res.data;
-// });
-
-
-
 //言い値取り消し
 export const fetchAsyncLikeDelete =createAsyncThunk("likes/delete",async (id:number) =>{
   await axios.delete(`${apiUrl}api/likes/${id}/`,{
@@ -143,6 +154,7 @@ export const planSlice =createSlice({
         isOpenImage:false,
         planImage:"",
         nextpage:"",
+        isOpenEditPlan:false,
         timeline:[
           {
               id:0,
@@ -269,7 +281,13 @@ export const planSlice =createSlice({
           return {
             ...state,
             searchplans: [...state.searchplans,...action.payload],
-        };
+          };
+        },
+        setOpenEditPlan(state){
+          state.isOpenEditPlan=true;
+        },
+        resetOpenEditPlan(state){
+          state.isOpenEditPlan=false;
         }
     },
     extraReducers:(builder)=>{
@@ -296,6 +314,9 @@ export const planSlice =createSlice({
         builder.addCase(fetchAsyncGetPrefectures.fulfilled,(state,action)=>{
             state.prefectures=action.payload;
         });
+        builder.addCase(fetchAsyncUpdatePlan.fulfilled,(state,action)=>{
+            state.selectedPlan=action.payload;
+        });
         builder.addCase(fetchAsyncPlanDelete.fulfilled,(state,action)=>{
           return{
             ...state,
@@ -313,7 +334,9 @@ export const{
     setOpenImage,
     resetOpenImage,
     setPlanImage,
-    setNextPagePlans
+    setNextPagePlans,
+    setOpenEditPlan,
+    resetOpenEditPlan,
 }=planSlice.actions
 
 
@@ -326,4 +349,5 @@ export const selectOpenImage=(state:RootState)=>state.plan.isOpenImage;
 export const selectPlanImage=(state:RootState)=>state.plan.planImage;
 export const selectPrefectures=(state:RootState)=>state.plan.prefectures;
 export const selectNextPage=(state:RootState)=>state.plan.nextpage;
+export const selectOpenEditPlan=(state:RootState)=>state.plan.isOpenEditPlan;
 export default planSlice.reducer;

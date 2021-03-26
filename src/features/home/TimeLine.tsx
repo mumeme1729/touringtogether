@@ -1,10 +1,10 @@
 import React,{useEffect} from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
-import {selectTimeline,fetchAsyncTimeline,startLoad,endLoad,selectLoadPlan,} from "../plan/planSlice";
+import {selectTimeline,fetchAsyncTimeline} from "../plan/planSlice";
 import Plan from "../plan/Plan";
-import { Avatar,Button,CircularProgress} from "@material-ui/core";
-import { PROPS_PLANS } from '../types';
+import styles from "./Home.module.css";
+
 const TimeLine = () => {
     const dispatch: AppDispatch = useDispatch();
     const timeline=useSelector(selectTimeline);
@@ -22,7 +22,11 @@ const TimeLine = () => {
 
     return (
         <div>
-            
+            <div className={styles.home_title}>
+                <h2 className={styles.title_h2}>タイムライン</h2>
+            </div> 
+            <br/>  
+            <br/> 
                 {timeline.map((plan)=>(
                      <Plan key={plan.id} 
                             id={plan.id} 
@@ -39,9 +43,6 @@ const TimeLine = () => {
                             likes={plan.likes}
                     />
                 ))}
-                
-                
-            
         </div>
     )
 }

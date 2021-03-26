@@ -33,7 +33,6 @@ export interface PROPS_ALL_USER{
 export interface File extends Blob {
     readonly lastModified: number;
     readonly name: string;
-    
   }
 
 export interface PROPS_RELATION{
@@ -55,7 +54,6 @@ export interface PROPS_PLAN{
     date:string,
     text:string,
     img:File|null,
-    // liked:number[],
     profile: {
         id: number,
         nickName: string,
@@ -64,8 +62,8 @@ export interface PROPS_PLAN{
         created_on: string,
         img: string,
         base:string,
-    }
-
+    },
+    
 }
 export interface USERPROFILE{
     userProfile:string;
@@ -210,4 +208,30 @@ export interface PLAN_LIKES{
         created_on:string,
     }[]
     planid:number
+}
+
+export interface EDIT_PLAN{
+    id:number,
+    title:string,
+    destination:string,
+    prefecture:string,
+    departure:string,
+    date:string,
+    text:string,
+    img:File|null,
+    profile: {
+        id: number,
+        nickName: string,
+        text: string,
+        userProfile: number,
+        created_on: string,
+        img: string,
+        base:string,
+    }
+    likes:{
+        id:number,
+        plan:number,
+        userLikes:number,
+        created_on:string,
+    }[]
 }

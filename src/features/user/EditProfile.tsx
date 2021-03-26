@@ -19,13 +19,11 @@ import ImageTrimming from "./ImageTrimming";
 import {setOpenImageTrimming}from "./userSlice";
 const modalStyle={
     overlay: {
-        
         zIndex:2
       },
     content: {
         width: 400,
         height: 520,
-
         top: "55%",
         left: "50%",
 
@@ -41,21 +39,11 @@ const EditProfile:React.FC = () => {
     const [image, setImage] = useState<File | null>(null);
 
     const updateProfile = async () => {
-        
         const packet = { id: profile.id, nickName: profile.nickName,text:profile.text,base:profile.base};
-    
         await dispatch(fetchAsyncUpdateProf(packet));
-        //dispatch(resetOpenEditProfile());
-      };
+    };
 
-
-    //   const handlerEditPicture = () => {
-    //     const fileInput = document.getElementById("imageInput");
-    //     fileInput?.click();
-    //   };
-    
     return (
-        
             <Modal
                 isOpen={openEditProfile}
                 onRequestClose={async () => {
@@ -93,11 +81,8 @@ const EditProfile:React.FC = () => {
                     >
                         Update
                     </Button>
-
                 </form>
-
                <ImageTrimming/> 
-
              </Modal>
         
     )

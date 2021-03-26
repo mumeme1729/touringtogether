@@ -88,7 +88,7 @@ const Header:React.FC = () => {
                             onClick={() => {
                             dispatch(setOpenNewPlan());
                             }}
-                        >ツーリング予定を投稿する</Button>
+                        >プランを投稿する</Button>
                      </div>
                     <div className={styles.home_header_profile}>
                         <div className={styles.home_header_avater}>

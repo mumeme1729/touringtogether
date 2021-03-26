@@ -119,7 +119,6 @@
     display: flex;
     justify-content: center;
 }
-
 /* 検索 */
 .search_container{
     display: flex;
@@ -130,4 +129,25 @@
     border:solid 1px rgba(0,0,0,0.1);
     position: relative;
     left: -24px;
+}
+/* 新規プラン */
+.newplan_modal_container{
+    width: 100%;
+}
+
+.newplan_modal_prefecture_menu{
+    display: flex;
+}
+.newplan_modal_img_container{
+    display: flex;
+    margin-top: 10px;
+}
+.newplan_modal_img{
+    width: 250px;
+    height: 90px;
+    text-align: center;
+}
+.newplan_modal_btn{
+    margin-top: 10px;
+    text-align: center;
 }

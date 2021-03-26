@@ -17,13 +17,11 @@ const modalStyle={
         //backgroudColor:'rgba(0,0,0,0.6)',
         top: "55%",
         left: "50%",
-        width:'100%',
-        height:'100%',
+        width:'80%',
+        height:'80%',
         transform: "translate(-50%, -50%)",
         backgroundColor: "rgba(0,0,0,0)",
         border:'none',
-        
-        
       },
 };
 
