@@ -16,12 +16,11 @@ const Home:React.FC = () => {
         const fetchLoader = async ()=>{
             if (localStorage.localJWT) {
                 dispatch(startLoad());
-                console.log('ホームだよ')
                 const packet = { destination: "", date: "",prefecture:""};
                 await dispatch(fetchAsyncSearchPlans(packet));
                 const result = await dispatch(fetchAsyncGetNotification());//通知を取得
                 if(fetchAsyncGetNotification.fulfilled.match(result)){
-                    const notifi=result.payload
+                    const notifi=result.payload.results
                     const newnotification=notifi.filter((n: { status: boolean; })=>{
                         return n.status===true;
                     });
@@ -37,7 +36,7 @@ const Home:React.FC = () => {
         <>
             <Auth />
             {/* メインコンテンツ */}       
-            <div className={styles.home_title}>
+            <div id="top" className={styles.home_title}>
                 <h2 className={styles.title_h2}>新着プラン</h2>
             </div> 
             <br/>  

@@ -47,70 +47,82 @@ const Search:React.FC = () => {
     return (
         <div className={styles.search_container}>
             <div className={styles.search_body}>
-                <SearchIcon/>ツーリング仲間を探す
-                <br/>
-                {/* 都道府県 */}
-                <IconButton
-                    aria-label="more"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                >
-                    <AddLocationIcon />
-                </IconButton>
-                <Menu
-                    id="long-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                    style: {
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: '20ch',
-                    },
-                    }}
-                >
-                    
-                    {prefectures.map((prefecture)=>(
-                         <MenuItem key={prefecture.id} selected={prefecture.id === 1}  onClick={()=>{handleClose();setPref(prefecture)}}>
-                            {prefecture.name} 
-                         </MenuItem>
-                    ))}
-                </Menu>
-                {pref}
-                <TextField
-                        placeholder="目的地は？"
-                        type="text"
-                        defaultValue={destination}
-                        onChange={(e) => setDestination(e.target.value)}
-                    />
-                <br/>
-                <br />
+                <div className={styles.search_title}>
+                    <div className={styles.search_title_icon}>
+                        <SearchIcon/>
+                    </div>
+                    <div className={styles.search_title_title}>
+                        <h4>ツーリング仲間を探す</h4>
+                    </div>
+                </div>
+                <div className={styles.search_textfield_body}>
+                    <div className={styles.search_prefecture_container}>
+                        <div className={styles.search_prefecture}>
+                            <p>都道府県</p>
+                            <IconButton
+                                aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                onClick={handleClick}
+                            >
+                                <AddLocationIcon />
+                            </IconButton>
+                            <Menu
+                                id="long-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={open}
+                                onClose={handleClose}
+                                PaperProps={{
+                                style: {
+                                    maxHeight: ITEM_HEIGHT * 4.5,
+                                    width: '20ch',
+                                },
+                                }}
+                            >
+                                
+                                {prefectures.map((prefecture)=>(
+                                    <MenuItem key={prefecture.id} selected={prefecture.id === 1}  onClick={()=>{handleClose();setPref(prefecture)}}>
+                                        {prefecture.name} 
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                            <p className={styles.search_prefecture_p}>{pref}</p>
+                        </div>
+                    </div>
                     <TextField
-                        id="date"
-                        label="予定日"
-                        type="date"
-                        //defaultValue="2017-05-24"
-                        onChange={(e)=>setDate(e.target.value)}
-                        defaultValue={date}
-                        // className={classes.textField}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                <br />
-                <br />
-                <Link to ={'/search/'+'destination='+destination+'/'+'date='+date+'/'+'prefecture='+String(prefecture)}>
-                    <Button
-                        //disabled={!destination || !date}
-                        variant="contained"
-                        color="primary"
-                        onClick={searchPlan}
-                    >
-                    検索
-                    </Button>
-                </Link>
+                            placeholder="目的地"
+                            type="text"
+                            fullWidth
+                            defaultValue={destination}
+                            onChange={(e) => setDestination(e.target.value)}
+                        />
+                    <br/>
+                    <br />
+                        <TextField
+                            id="date"
+                            label="予定日"
+                            type="date"
+                            fullWidth
+                            onChange={(e)=>setDate(e.target.value)}
+                            defaultValue={date}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    <br />
+                    <br />
+                    <Link to ={'/search/'+'destination='+destination+'/'+'date='+date+'/'+'prefecture='+String(prefecture)}>
+                        <Button
+                            //disabled={!destination || !date}
+                            variant="contained"
+                            color="primary"
+                            onClick={searchPlan}
+                        >
+                        検索
+                        </Button>
+                    </Link>
+                </div>
             </div>
         </div>
     )

@@ -190,7 +190,7 @@ const NewPlan:React.FC = () => {
                         />
                     </div>
                     <div className={styles.newplan_modal_img_container}>
-                        <input type="file" id="imageInput" hidden={true} onChange={(e) => setImage(e.target.files![0])}/>
+                        <input type="file" id="imageInput" hidden={true} accept=".jpg,.gif,.png,image/gif,image/jpeg,image/png" onChange={(e) => setImage(e.target.files![0])}/>
                         <IconButton onClick={handlerEditPicture}>
                             <AddPhotoAlternateIcon />
                         </IconButton>

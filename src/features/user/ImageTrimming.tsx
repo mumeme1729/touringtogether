@@ -4,9 +4,11 @@ import { AppDispatch } from "../../app/store";
 import ReactCrop, {Crop} from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import Modal from "react-modal";
-import { Button} from "@material-ui/core";
+import {IconButton,Button} from "@material-ui/core";
 import { resetOpenImageTrimming,selectIsOpenImageTrimming }from "./userSlice";
 import {selectProfile,fetchAsyncUpdateProfImage} from "../auth/authSlice";
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import styles from "./User.module.css";
 // import { File} from "../types";
 
 const modalStyle={
@@ -42,12 +44,19 @@ const ImageTrimming:React.FC= () =>{
 
     const onSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files !== null) {
-            const reader = new FileReader();
-            reader.addEventListener("load", () =>{
-                setSrc(reader.result);
-            });
-            reader.readAsDataURL(event.target.files[0]);
+            if(event.target.files.length!==0){
+                const reader = new FileReader();
+                reader.addEventListener("load", () =>{
+                    setSrc(reader.result);
+                });
+                reader.readAsDataURL(event.target.files[0]);
+            }
         }
+    };
+
+    const handlerEditPicture = () => {
+        const fileInput = document.getElementById("editInputImage");
+        fileInput?.click();
     };
 
     const onImageLoaded = (image:HTMLImageElement) => {
@@ -68,7 +77,6 @@ const ImageTrimming:React.FC= () =>{
             const newImage=new File([bloB],name,{type:"image/jpg",lastModified:Date.now()});
             const packet = { id: profile.id,nickName:profile.nickName,text:profile.text,img: newImage,name:name,};
             await dispatch(fetchAsyncUpdateProfImage(packet)); 
-            //console.log(newImage); 
             dispatch(resetOpenImageTrimming());
         }  
     };
@@ -126,36 +134,44 @@ const ImageTrimming:React.FC= () =>{
                     setSrc(null);
                 }}
                 style={modalStyle}
+                ariaHideApp={false}
              >
-            {/* <form > */}
                 <div>
-                    <div>
-                    <input type="file" id="imageInput"  onChange={onSelectFile} />
-                    </div>
+                    <div className={styles.profile_image_top}>
                         <div>
-                            {src && (
-                                <ReactCrop
-                                    src={src}
-                                    crop={crop}
-                                    ruleOfThirds
-                                    onImageLoaded={onImageLoaded}
-                                    onComplete={onCropComplete}
-                                    onChange={onCropChange}
-                                />
-                            )}
+                            <input type="file" id="editInputImage" className={styles.profile_image_icon_input} 
+                                accept=".jpg,.gif,.png,image/gif,image/jpeg,image/png"
+                                onChange={onSelectFile}
+                            />
+                            <IconButton onClick={handlerEditPicture}>
+                                <AddPhotoAlternateIcon />
+                            </IconButton>    
                         </div>
                         <div>
-                        <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                onClick={updateImage}
-                            >
-                                Upload
+                            <Button
+                                    // disabled={bloB!==null}
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    onClick={updateImage}
+                                >
+                                    Upload
                             </Button>
                         </div>
+                    </div>
+                    <div>
+                        {src && (
+                            <ReactCrop
+                                src={src}
+                                crop={crop}
+                                ruleOfThirds
+                                onImageLoaded={onImageLoaded}
+                                onComplete={onCropComplete}
+                                onChange={onCropChange}
+                            />
+                        )}
+                    </div>
                 </div>
-            {/* </form> */}
         </Modal>
     )
 }

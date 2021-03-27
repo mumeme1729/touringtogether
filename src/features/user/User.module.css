@@ -93,6 +93,7 @@
 .profile_text_p{
     font-size: 14px;
     margin-left: 2px;
+    max-width: 490px;
 }
 /* 選択 */
 .profile_plan_choose{
@@ -264,14 +265,12 @@
 /* モーダル */
 .image_modal{
     display: flex;
-    justify-content: center; 
-    
+    justify-content: center;   
 }
 
 .image_modal_image{
     display: flex;
     justify-content: center;
-    
 }
 
 /* コメント */
@@ -285,4 +284,27 @@
     justify-content: center;
     border: solid;
     width: 50%;
+}
+/* edit profile */
+.editprofile_modal_container{
+    height: 90%;
+}
+.editprofile_modal_top{
+    display: flex;
+}
+.editprofile_modal_nickname{
+    margin-left: 10px;
+    margin-top: 19px;
+}
+.editprofile_modal_update_btn{
+    text-align: center;
+    margin-top: 50px;
+}
+/* 画像切り抜き */
+.profile_image_icon_input{
+    display: none;
+}
+.profile_image_top{
+    display: flex;
+    justify-content: space-between;
 }

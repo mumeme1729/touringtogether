@@ -31,6 +31,10 @@ import {useLocation} from 'react-router-dom';
 import {fetchAsyncPostNotification} from '../notification/notificationSlice';
 
 const modalStyle={
+    overlay: {
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        zIndex:2
+      },
     content: {
         width: 400,
         height: 520,

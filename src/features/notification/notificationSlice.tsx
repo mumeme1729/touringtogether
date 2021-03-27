@@ -30,13 +30,22 @@ export const fetchAsyncGetNotification = createAsyncThunk("notification/get", as
   return res.data;
 });
 
+//2P以降
+export const fetchAsyncNotificationPage = createAsyncThunk("notificationPage/get", 
+async (url:string) => {
+  const res = await axios.get(`${url}`, {
+    headers: {
+      Authorization: `JWT ${localStorage.localJWT}`,
+    },
+  });
+  return res.data;
+});
+
 //通知を既読
 export const fetchAsyncUpdateStatus = createAsyncThunk(
   "notification/put",
   async (notification:NOTIFICATION_DELETE) => {
-    
     const uploadData={'status':false,'receive':notification.receive,'send':notification.send,'targetplan':notification.targetplan,'profile':notification.profile}
-    //profile.img && uploadData.append("img", profile.img, profile.img.name);
     const res = await axios.put(
       `${apiUrl}api/notification/${notification.id}/`,
       uploadData,
@@ -47,7 +56,6 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
         },
       }
     );
-    
     return res.data;
   }
 );
@@ -57,6 +65,7 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
     name:"notification",
     initialState:{
         notificationCount:0,
+        nextpage:"",
         notifications: [
             {
                 id:0,
@@ -81,20 +90,32 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
     reducers:{
       setCount(state,action){
         state.notificationCount=action.payload;
-      }
+      },
+      setNextPageNotification(state,action){
+        return {
+          ...state,
+          notifications: [...state.notifications,...action.payload],
+        };
+      },
 
     },
     extraReducers:(builder)=>{
       builder.addCase(fetchAsyncGetNotification.fulfilled, (state, action) => {
-        state.notifications = action.payload;
+        state.notifications = action.payload.results;
+        state.nextpage=action.payload.next;
+      });
+      builder.addCase(fetchAsyncNotificationPage.fulfilled,(state,action)=>{
+        state.nextpage=action.payload.next;
       });
     },
 });
 
 export const {
-  setCount
+  setCount,
+  setNextPageNotification
 } = notificationSlice.actions;
 
 export const selectNotifications = (state: RootState) => state.notification.notifications; 
 export const selectNotificationCount=(state:RootState)=>state.notification.notificationCount;
+export const selectNotificationNextPage=(state:RootState)=>state.notification.nextpage;
 export default notificationSlice.reducer;

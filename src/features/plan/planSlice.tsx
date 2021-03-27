@@ -25,6 +25,16 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
     });
     return res.data;
   });
+  //タイムライン2P以降
+  export const fetchAsyncTimeLinePage = createAsyncThunk("timelinePage/get", 
+  async (url:string) => {
+    const res = await axios.get(`${url}`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  });
 
   //プランを取得(リロード用)
   export const fetchAsyncGetSelectPlan = createAsyncThunk("selectplan/get", async (id:string) => {
@@ -154,6 +164,7 @@ export const planSlice =createSlice({
         isOpenImage:false,
         planImage:"",
         nextpage:"",
+        timelinenextpage:"",
         isOpenEditPlan:false,
         timeline:[
           {
@@ -283,6 +294,12 @@ export const planSlice =createSlice({
             searchplans: [...state.searchplans,...action.payload],
           };
         },
+        setNextTimeLine(state,action){
+          return {
+            ...state,
+            timeline: [...state.timeline,...action.payload],
+          };
+        },
         setOpenEditPlan(state){
           state.isOpenEditPlan=true;
         },
@@ -298,8 +315,8 @@ export const planSlice =createSlice({
             };
         });
         builder.addCase(fetchAsyncTimeline.fulfilled,(state, action) => {
-          state.timeline = action.payload;
-
+          state.timeline = action.payload.results;
+          state.timelinenextpage=action.payload.next;
       });
         builder.addCase(fetchAsyncGetSelectPlan.fulfilled,(state,action)=>{
             state.selectedPlan=action.payload;
@@ -311,6 +328,9 @@ export const planSlice =createSlice({
         builder.addCase(fetchAsyncSearchPlansPage.fulfilled,(state,action)=>{
           state.nextpage=action.payload.next;
         });
+        builder.addCase(fetchAsyncTimeLinePage.fulfilled,(state,action)=>{
+          state.timelinenextpage=action.payload.next;
+        })
         builder.addCase(fetchAsyncGetPrefectures.fulfilled,(state,action)=>{
             state.prefectures=action.payload;
         });
@@ -337,6 +357,7 @@ export const{
     setNextPagePlans,
     setOpenEditPlan,
     resetOpenEditPlan,
+    setNextTimeLine,
 }=planSlice.actions
 
 
@@ -349,5 +370,6 @@ export const selectOpenImage=(state:RootState)=>state.plan.isOpenImage;
 export const selectPlanImage=(state:RootState)=>state.plan.planImage;
 export const selectPrefectures=(state:RootState)=>state.plan.prefectures;
 export const selectNextPage=(state:RootState)=>state.plan.nextpage;
+export const selectTimeLineNextPage=(state:RootState)=>state.plan.timelinenextpage;
 export const selectOpenEditPlan=(state:RootState)=>state.plan.isOpenEditPlan;
 export default planSlice.reducer;

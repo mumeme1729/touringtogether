@@ -160,7 +160,7 @@ const Auth:React.FC= () => {
                   await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
                   const result=await dispatch(fetchAsyncGetNotification());//通知
                   if(fetchAsyncGetNotification.fulfilled.match(result)){
-                    const notifi=result.payload
+                    const notifi=result.payload.results
                     const newnotification=notifi.filter((n: { status: boolean; })=>{
                         return n.status===true;
                     });

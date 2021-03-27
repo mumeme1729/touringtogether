@@ -16,14 +16,16 @@ import {
     selectProfile,
 } from "../auth/authSlice";
 import {setOpenNewPlan,fetchAsyncGetPrefectures} from "../plan/planSlice";
-import {Link} from 'react-router-dom';
+import {Link,useLocation} from 'react-router-dom';
+import {HashLink} from 'react-router-hash-link';
 
 
 const Header:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const profile = useSelector(selectProfile);
     const notification=useSelector(selectNotifications);
-    const ncount=useSelector(selectNotificationCount)
+    const ncount=useSelector(selectNotificationCount);
+    
     let count=0;
     const newnotification=notification.filter((n)=>{
         return n.status===true;
@@ -48,25 +50,25 @@ const Header:React.FC = () => {
     },[dispatch]);
  
 
-
     return (
         <>
             <div className={styles.home_header}>
                 <ImageModal />
                 <div className={styles.header_top}>
                     <div className={styles.header_con}>
-                        <Link to ="/" className={styles.header_link}>
+                        
+                        <Link to ="/" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);}}>
                             <div className={styles.header_contents_container}>
                                 <div className={styles.home_header_contents}>  
                                     <HomeIcon style={{ fontSize: 40 }}/><p className={styles.header_p} >TOP</p>   
                                 </div>
                             </div>
                         </Link>
-                    
-                        <Link to ="/notification" className={styles.header_link} >
+                        
+                
+                        <Link to ="/notification" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);}}>
                             <div className={styles.header_contents_container}>
                                 <div className={styles.home_header_contents}>
-                                
                                 <Badge badgeContent={ncount} color="secondary">
                                     <NotificationsIcon style={{ fontSize: 40 }}/><p>通知</p>
                                 </Badge>
@@ -74,7 +76,7 @@ const Header:React.FC = () => {
                             </div>
                         </Link>
 
-                        <Link to ="/timeline" className={styles.header_link}>
+                        <Link to ="/timeline" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);}}>
                             <div className={styles.header_contents_container}>
                                 <div className={styles.home_header_contents}> 
                                     <TimelineIcon style={{ fontSize: 40 }}/><p>プラン</p>

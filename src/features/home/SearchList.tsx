@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {selectSearchPlans} from "../plan/planSlice";
 import Plan from "../plan/Plan";
-import {selectNextPage,fetchAsyncSearchPlansPage,setNextPagePlans,fetchAsyncSearchPlans}from "../plan/planSlice";
+import {selectNextPage,fetchAsyncSearchPlansPage,setNextPagePlans,}from "../plan/planSlice";
 import UseInfiniteScroll from './UseInfiniteScroll'
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";

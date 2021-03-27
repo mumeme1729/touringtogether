@@ -4,6 +4,7 @@ import Home from './features/home/Home';
 import {
   BrowserRouter as Router, 
   Route,
+  Switch,
 } from "react-router-dom";
 import UserProfile from './features/user/UserProfile';
 import Header from './features/home/Header';
@@ -15,15 +16,19 @@ import TimeLine from './features/home/TimeLine';
 function App() {
   return (
     <div className="App">
+      
       <Router>
         <Header/>
+        <Switch>
         <Route exact path="/" component={Home}/>
         <Route  path="/profile/:id" component={UserProfile}/> 
         <Route  path="/search" component={SearchResults}/>
         <Route  path="/plandetail/:id/:id" component={PlanDetail}/>
         <Route path="/notification" component={Notification}/>
         <Route path="/timeline"component={TimeLine}/>
+        </Switch>
       </Router>
+      
     </div>
   );
 }

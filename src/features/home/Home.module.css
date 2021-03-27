@@ -55,6 +55,10 @@
 .nickname_p{
     font-size: 20px;
     font-weight: 900;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .home_avatar{
     height: 50px;
@@ -110,10 +114,6 @@
     margin-left: 10px;
     
 }
-
-
-
-
 /* プラン */
 .plan_body{
     display: flex;
@@ -129,6 +129,29 @@
     border:solid 1px rgba(0,0,0,0.1);
     position: relative;
     left: -24px;
+}
+.search_title{
+    display: flex;
+}
+.search_title_icon{
+    margin-top: 7px;
+    margin-left: 7px;
+}
+.search_title_title{
+    margin-left: 5px;
+    margin-top: -14px;
+}
+.search_textfield_body{
+    width: 300px;
+    margin-left: 100px;
+}
+.search_prefecture{
+    display: flex;
+}
+.search_prefecture_p{
+    border-bottom: solid 1px rgba(0,0,0,0.1);
+    width: 80px;
+
 }
 /* 新規プラン */
 .newplan_modal_container{

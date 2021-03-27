@@ -188,25 +188,33 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
         </div>
             
         }
-        <br/>
-        <div>
-            <TextField
-                placeholder="コメント"
-                type="text"
-                defaultValue={text}
-                onChange={(e) => setText(e.target.value)}
-            />
-            <button
-                disabled={!text.length}
-                className={styles.post_button}
-                type="submit"
-                onClick={()=>{
-                    postComment();
-                    addNotification();
-                }}
-            >
-                コメントを投稿
-            </button>
+        <div className={styles.comment_input_container}>
+            <div className={styles.comment_input_body}>
+                <div className={styles.comment_input_textfield}>
+                    <TextField
+                        placeholder="コメント"
+                        type="text"
+                        value={text}
+                        fullWidth
+                        multiline
+                        onChange={(e) => setText(e.target.value)}
+                    />
+                </div>
+                <div className={styles.comment_inut_btn}>
+                    <Button
+                        disabled={!text.length}
+                        className={styles.post_button}
+                        type="submit"
+                        color='primary'
+                        onClick={()=>{
+                            postComment();
+                            addNotification();
+                        }}
+                    >
+                        コメントを投稿
+                    </Button>
+                </div>
+            </div>
         </div>  
         <br/>
         <div>
@@ -214,9 +222,16 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
                 <CircularProgress/>
             :
                 <div className={styles.post_comments}>
-                {comments.map((comment) => (
-                    <Comment key={comment.id} id={comment.id} text={comment.text} userComment={comment.userComment} plan={comment.plan} profile={comment.profile}/>        
-                ))} 
+                    {comments.map((comment) => (
+                        <Comment 
+                            key={comment.id} 
+                            id={comment.id} 
+                            text={comment.text} 
+                            userComment={comment.userComment} 
+                            plan={comment.plan} 
+                            profile={comment.profile}
+                        />        
+                    ))} 
                 </div>
             }
         </div>

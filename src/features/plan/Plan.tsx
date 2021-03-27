@@ -50,7 +50,7 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                 <div className={styles.plan_body}>
                     <div className={styles.plan_body_top}>
                         <div className={styles.plan_body_left}>
-                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
+                            {/* <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}> */}
                                 <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
                                     <div className={styles.plan_profile}>
                                         {imgpath!==apiUrl?
@@ -58,13 +58,14 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                                         :null}
                                         <div className={styles.plan_profile_nickname}>
                                             {plan.profile.nickName}
-                                            <div className={styles.plan_title}>
-                                                <h2 className={styles.plan_h2}>{plan.title}</h2>
-                                            </div>
                                         </div>
                                     </div>
                                 </Link> 
+                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
                                 <div className={styles.plan_description}>
+                                    <div className={styles.plan_title_list}>
+                                        <h2 className={styles.plan_h2}>{plan.title}</h2>
+                                    </div>
                                     <br/>
                                     <p className={styles.plan_description_p}>目的地    : {plan.destination}</p>
                                     <p className={styles.plan_description_p}>出発予定日: {plan.date}</p>
