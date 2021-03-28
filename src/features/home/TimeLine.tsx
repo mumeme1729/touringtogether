@@ -33,12 +33,14 @@ const TimeLine = () => {
     },[dispatch]);
 
     return (
-        <div>
+        <div className={styles.home_container}>
+            <div className={styles.home_body}> 
             <div className={styles.home_title}>
                 <h2 className={styles.title_h2}>タイムライン</h2>
             </div> 
             <br/>  
             <br/> 
+            <div className={styles.timeline_min}>
                 {timeline.map((plan)=>(
                      <Plan key={plan.id} 
                             id={plan.id} 
@@ -55,6 +57,8 @@ const TimeLine = () => {
                             likes={plan.likes}
                     />
                 ))}
+            </div>
+            </div>
         </div>
     )
 }

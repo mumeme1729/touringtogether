@@ -1,34 +1,35 @@
 /* ページタイトル */
+.profile_container{
+    display: flex;
+    justify-content: center;
+}
+.profile_body{
+    width: 480px;
+}
 .profile_title{
     border:solid 1px rgba(0,0,0,0.1);
-    width:500px;
+    width:478px;
     height: 40px;
     /* position: relative; */
-    margin-bottom: 10px;
     position: fixed;
-    background-color: white;
     z-index: 1;
-    left:50%;
-    margin-left: -275px;
+    background-color: white;
     
 }
 .title_h2{
     margin-top: 3px;
-    position: absolute;
-    left: 0;
+    text-align: left;
     margin-left: 10px;
 }
 
 .profileDetail{
     display: flex;
     justify-content: center;
-    margin-bottom: -4px; 
+    margin-bottom: -4px;
 }
 .profileDetail_container{
     width: 500px;
     border:solid 1px rgba(0,0,0,0.1);
-    position: relative;
-    left: -24px;
 }
 .profile_container_top{
     display: flex;
@@ -118,25 +119,6 @@
     margin-bottom: -1px;
     color: rgba(99, 89, 233);
 }
-/* プラン表示 */
-.plandetail_title{
-    border:solid 1px rgba(0,0,0,0.1);
-    width:500px;
-    height: 40px;
-    /* position: relative; */
-    margin-bottom: 10px;
-    position: fixed;
-    background-color: white;
-    z-index: 1;
-    left:50%;
-    margin-left: -275px;
-}
-.title_h2{
-    margin-top: 3px;
-    position: absolute;
-    left: 0;
-    margin-left: 10px;
-}
 /* プラン表示部分 */
 .plan_detail_container{
     display: flex;
@@ -146,8 +128,6 @@
 .plan_body{
     width: 500px;
     border:solid 1px rgba(0,0,0,0.1);
-    position: relative;
-    left: -24px;
 }
 .plan_body_top{
     display: flex;
@@ -307,4 +287,12 @@
 .profile_image_top{
     display: flex;
     justify-content: space-between;
+}
+@media screen and (max-width: 680px){
+    .profile_title{
+        margin-top: 40px;
+    }
+    .profileDetail_container{
+        margin-top: 40px;
+    }
 }

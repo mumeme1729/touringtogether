@@ -1,14 +1,17 @@
-.home_title{
+.notification_container{
+    display: flex;
+    justify-content: center;
+}
+.notification_body{
+    width: 480px;
+}
+.notification_title{
     border:solid 1px rgba(0,0,0,0.1);
-    width:500px;
+    width:478px;
     height: 40px;
-    /* position: relative; */
-    margin-bottom: 10px;
     position: fixed;
     background-color: white;
     z-index: 1;
-    left:50%;
-    margin-left: -275px;
 }
 .notification_link{
     text-decoration: none;
@@ -25,12 +28,11 @@
     justify-content: center;
     margin-bottom: -4px; 
 }
-.notification_body{
-    width: 500px;
+.notification_detail_body{
+    width: 480px;
     height: 70px;
     border:solid 1px rgba(0,0,0,0.1);
     /* position: relative; */
-    margin-left: -48px;
 }
 .notification_profile_icon{
     width: 70px;
@@ -55,4 +57,12 @@
 }
 .notification_text_comment{
     margin-top: 24px;
+}
+@media screen and (max-width: 680px){
+    .notification_title{
+        margin-top: 40px;
+    }
+    .notification_min{
+        margin-top: 40px;
+    }
 }

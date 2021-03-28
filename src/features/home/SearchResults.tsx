@@ -19,8 +19,6 @@ const SearchResults:React.FC = () => {
                 const destination=words[2].replace(/destination=/g,"");
                 const date=words[3].replace(/date=/g,"");
                 const prefecture=words[4].replace(/prefecture=/g,"");
-                console.log('まうんと？')
-                console.log(searchplans)
                 if(searchplans.length!==0){
                     if(searchplans[0].id===0){
                         const packet = { destination: destination, date: date,prefecture:String(prefecture)};
@@ -41,7 +39,9 @@ const SearchResults:React.FC = () => {
             </div>
             <br/>  
             <br/>
-            <SearchList/>
+            <div className={styles.searchresult_min}>
+                <SearchList/>
+            </div>
         </>
     )
 }

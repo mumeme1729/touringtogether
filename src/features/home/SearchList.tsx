@@ -5,6 +5,7 @@ import {selectNextPage,fetchAsyncSearchPlansPage,setNextPagePlans,}from "../plan
 import UseInfiniteScroll from './UseInfiniteScroll'
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
+import { styles } from '@material-ui/pickers/views/Calendar/Calendar';
 
 const SearchList:React.FC = () => {
     const searchplans=useSelector(selectSearchPlans);
@@ -23,7 +24,7 @@ const SearchList:React.FC = () => {
       }
     
     return (
-        <div>
+        <div >
             {searchplans.length?
                 <>    
                     {searchplans.map((plan)=>(

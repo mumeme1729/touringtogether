@@ -45,69 +45,75 @@ const Notification:React.FC = () => {
   }
    
     return (
-            <div>
-            <div className={styles.home_title}>
-                <h2 className={styles.title_h2}>通知</h2>
-            </div>
-            <br/>  
-            <br/>
-            {React.Children.toArray(
-            notification.map((noti)=>(
-                noti.targetplan!==null?(
-                    <>
-                        <div  className={styles.notification_detail_container}>
-                            <div className={styles.notification_body}>
-                                <div className={styles.notification_profile_icon}>
-                                    <Link to ={"/profile/"+noti.profile.userProfile} >
-                                        <div className={styles.notification_profile}>
-                                            {noti.profile.img!==null?
-                                                <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/> 
-                                            :
-                                                <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
-                                            }
-                                        </div> 
-                                    </Link> 
-                                </div>
-                                <div className={styles.notification_text_container}>
-                                    <Link to={'/plandetail/'+noti.receive+'/'+noti.targetplan} className={styles.notification_link}> 
-                                        <div className={styles.notification_text}>       
-                                            <p className={styles.notification_text_p}>{noti.profile.nickName}</p> 
-                                            <div className={styles.notification_text_comment}>
-                                                <p>さんがコメントしました。</p>
-                                            </div>   
-                                        </div>
-                                    </Link>
+            <div className={styles.notification_container}>
+                <div className={styles.notification_body}>
+                <div className={styles.notification_title}>
+                    <h2 className={styles.title_h2}>通知</h2>
+                </div>
+                <br/>  
+                <br/>
+                <div className={styles.notification_min}>
+                {React.Children.toArray(
+                notification.map((noti)=>(
+                    noti.targetplan!==null?(
+                        <>
+                            <div  className={styles.notification_detail_container}>
+                                <div className={styles.notification_detail_body}>
+                                    <div className={styles.notification_profile_icon}>
+                                        <Link to ={"/profile/"+noti.profile.userProfile} >
+                                            <div className={styles.notification_profile}>
+                                                {noti.profile.img!==null?
+                                                    <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/> 
+                                                :
+                                                    <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
+                                                }
+                                            </div> 
+                                        </Link> 
+                                    </div>
+                                    <div className={styles.notification_text_container}>
+                                        <Link to={'/plandetail/'+noti.receive+'/'+noti.targetplan} className={styles.notification_link}> 
+                                            <div className={styles.notification_text}>       
+                                                <p className={styles.notification_text_p}>{noti.profile.nickName}</p> 
+                                                <div className={styles.notification_text_comment}>
+                                                    <p>さんがコメントしました。</p>
+                                                </div>   
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </>
-                ):
-                    <>
-                        <div className={styles.notification_detail_container}>
-                            <Link to ={"/profile/"+noti.profile.userProfile} className={styles.notification_link}>
-                                <div className={styles.notification_body}>
-                                    <div className={styles.notification_profile_icon}>
-                                        {noti.profile.img!==null && noti.id!==0?
-                                            <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/>
-                                            :
-                                            <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
-                                            }     
-                                    </div>
-                                    <div className={styles.notification_text}>
-                                        <div className={styles.notification_text_nickname}>
-                                            <p className={styles.notification_text_p}>{noti.profile.nickName}</p>
+                        </>
+                    ):
+                        <>
+                            <div className={styles.notification_detail_container}>
+                            <div className={styles.notification_detail_body}>
+                                <Link to ={"/profile/"+noti.profile.userProfile} className={styles.notification_link}>
+                                    <div className={styles.notification_body}>
+                                        <div className={styles.notification_profile_icon}>
+                                            {noti.profile.img!==null && noti.id!==0?
+                                                <Avatar alt="who?" src={apiUrl+noti.profile.img.substr(1)} style={{height:'50px',width:'50px'}}/>
+                                                :
+                                                <Avatar alt="who?" src={""} style={{height:'50px',width:'50px'}}/>
+                                                }     
                                         </div>
-                                        <div className={styles.notification_text_text}>
-                                            <p>さんにフォローされました。</p>
+                                        <div className={styles.notification_text}>
+                                            <div className={styles.notification_text_nickname}>
+                                                <p className={styles.notification_text_p}>{noti.profile.nickName}</p>
+                                            </div>
+                                            <div className={styles.notification_text_text}>
+                                                <p>さんにフォローされました。</p>
+                                            </div>
                                         </div>
                                     </div>
+                                </Link>
                                 </div>
-                            </Link>
-                        </div>
-                    </>
-            )) )} 
-        </div>
-    )
+                            </div>
+                        </>
+                )) )}
+                </div>
+                </div> 
+            </div>
+        )
 }
 
 export default Notification

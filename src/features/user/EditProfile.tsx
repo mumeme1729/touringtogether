@@ -18,14 +18,15 @@ import {setOpenImageTrimming}from "./userSlice";
 
 const modalStyle={
     overlay: {
-        zIndex:2
+        background: 'rgba(0, 0, 0, 0.2)',
+        zIndex:2,
       },
     content: {
+        
         width: 420,
         height: 460,
         top: "48%",
         left: "48%",
-
         transform: "translate(-50%, -50%)",
       },
 };

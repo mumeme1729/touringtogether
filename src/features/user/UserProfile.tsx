@@ -88,7 +88,9 @@ const UserProfile:React.FC = () => {
 
 
     return (
-        <>  <div className={styles.profile_title}>
+        <div className={styles.profile_container}>
+            <div className={styles.profile_body}>  
+            <div className={styles.profile_title}>
                 <h2 className={styles.title_h2}>プロフィール</h2>
             </div>
             <br/>
@@ -129,7 +131,9 @@ const UserProfile:React.FC = () => {
                                                         dispatch(setOpenEditProfile());
                                                     }}
                                                 >編集</Button>
-                                                <EditProfile/>
+                                                <div className={styles.userprofile_modal_container}>
+                                                    <EditProfile/>
+                                                </div>    
                                             </div>
                                         </div>
                                         <div className={styles.relationship}>
@@ -310,7 +314,8 @@ const UserProfile:React.FC = () => {
                 :null}
             </>
             }
-        </>
+            </div>
+        </div>
     )
 }
 

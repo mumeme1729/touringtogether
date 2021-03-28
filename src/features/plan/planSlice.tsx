@@ -340,7 +340,7 @@ export const planSlice =createSlice({
         builder.addCase(fetchAsyncPlanDelete.fulfilled,(state,action)=>{
           return{
             ...state,
-            timeline:state.timeline.filter((t)=>t.id!==action.payload),
+            searchplans:state.searchplans.filter((t)=>t.id!==action.payload),
           };
         });
     },

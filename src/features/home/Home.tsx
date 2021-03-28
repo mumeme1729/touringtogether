@@ -33,30 +33,30 @@ const Home:React.FC = () => {
     },[dispatch]);
  
     return (
-        <>
-            <Auth />
-            {/* メインコンテンツ */}       
-            <div id="top" className={styles.home_title}>
-                <h2 className={styles.title_h2}>新着プラン</h2>
-            </div> 
-            <br/>  
-            <br/> 
-           
-            <Search/>
-             <br />
-            {/* プランを表示 */}
-             <div >
-                {isloadplan?
-                    <> 
-                        <CircularProgress />
-                    </>
-                :
-                    <>
-                        <SearchList/>
-                    </>
-            }
+        <div className={styles.home_container}>
+            <Auth />  
+            {/* メインコンテンツ */}
+            <div className={styles.home_body}>     
+                <div id="top" className={styles.home_title}>
+                    <h2 className={styles.title_h2}>新着プラン</h2>
+                </div> 
+                <br/>  
+                <br/> 
+                <Search/>
+                {/* プランを表示 */}
+                <div>
+                    {isloadplan?
+                        <> 
+                            <CircularProgress />
+                        </>
+                    :
+                        <>
+                            <SearchList/>
+                        </>
+                }
+                </div>
             </div>  
-        </>
+        </div>
     )
 }
 

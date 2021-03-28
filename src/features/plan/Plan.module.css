@@ -4,15 +4,12 @@
     border:solid 1px rgba(0,0,0,0.1);
     width:500px;
     height: 40px;
-    /* position: relative; */
     margin-bottom: 10px;
     position: fixed;
-    background-color: white;
     z-index: 1;
     left:50%;
     margin-left: -275px;
 }
-
 .title_h2{
     margin-top: 3px;
     position: absolute;
@@ -23,13 +20,28 @@
 .plan_detail_container{
     display: flex;
     justify-content: center;
-    margin-bottom: -4px;   
+}
+.plan_detail_body{
+    width: 480px;
+}
+.plan_detail_title{
+    border:solid 1px rgba(0,0,0,0.1);
+    width:478px;
+    height: 40px;
+    position: fixed;
+    background-color: white;
+    z-index: 1;
+}
+.plan_detail_container2{
+    display: flex;
+    justify-content: center;
+    margin-bottom: -4px;
+      
 }
 .plan_body{
-    width: 500px;
+    width: 480px;
     border:solid 1px rgba(0,0,0,0.1);
     position: relative;
-    left: -24px;
 }
 .plan_body_top{
     display: flex;
@@ -117,12 +129,10 @@
     font-size: 14px;
     color: blue;
 }
-
 .plan_likes{
     margin-top: 10px;
     margin-right: 10px;
 }
-
 .plan_prefecture_container{
     margin-right: 35px;
 }
@@ -219,4 +229,12 @@
 .newplan_modal_btn{
     margin-top: 10px;
     text-align: center;
+}
+@media screen and (max-width: 680px){
+    .plan_detail_title{
+        margin-top: 40px;
+    }
+    .plan_detail_container2{
+        margin-top: 40px;
+    }
 }

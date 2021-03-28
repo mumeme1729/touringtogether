@@ -119,123 +119,129 @@ const PlanDetail:React.FC< PROPS_PLANS> = () => {
 
 
     return (
-        <>
-        <div className={styles.plandetail_title}>
-                <h2 className={styles.title_h2}>プラン</h2>
-        </div>
-        <br/>  
-        <br/>
-        
-        {isloadplan?
-            <CircularProgress/>
-        :<div className={styles.plan_detail_container}>
-            <div className={styles.plan_body}>
-                <div className={styles.plan_body_top}>
-                    <div className={styles.plan_body_left}>
-                            <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
-                                <div className={styles.plan_profile}>
-                                    {imgpath!==apiUrl?
-                                        <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
-                                    :null}
-                                    <div className={styles.plan_profile_nickname}>
-                                        {plan.profile.nickName}
-                                        <div className={styles.plan_title}>
-                                            <h2>{plan.title}</h2>
+        <div className={styles.plan_detail_container}>
+            <div className={styles.plan_detail_body}>
+            <div className={styles.plan_detail_title}>
+                    <h2 className={styles.title_h2}>プラン</h2>
+            </div>
+            <br/>  
+            <br/>
+            {plan.id!==0?
+            <>
+            {isloadplan?
+                <CircularProgress/>
+            :<div className={styles.plan_detail_container2}>
+                <div className={styles.plan_body}>
+                    <div className={styles.plan_body_top}>
+                        <div className={styles.plan_body_left}>
+                                <Link to ={"/profile/"+plan.profile.userProfile} onClick={()=>dispatch(startProfileLoad())} className={styles.plan_btn}> 
+                                    <div className={styles.plan_profile}>
+                                        {imgpath!==apiUrl?
+                                            <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
+                                        :null}
+                                        <div className={styles.plan_profile_nickname}>
+                                            {plan.profile.nickName}
+                                            <div className={styles.plan_title}>
+                                                <h2>{plan.title}</h2>
+                                            </div>
                                         </div>
                                     </div>
+                                </Link> 
+                                <div className={styles.plan_description}>
+                                    <br/>
+                                    <p className={styles.plandetail_description_p}>目的地    : {plan.destination}</p>
+                                    <p className={styles.plandetail_description_p}>出発予定日: {plan.date}</p>
+                                    <p className={styles.plandetail_description_p}>出発地    : {plan.departure}</p>
+                                    <p>{plan.text}</p>
                                 </div>
-                            </Link> 
-                            <div className={styles.plan_description}>
-                                <br/>
-                                <p className={styles.plandetail_description_p}>目的地    : {plan.destination}</p>
-                                <p className={styles.plandetail_description_p}>出発予定日: {plan.date}</p>
-                                <p className={styles.plandetail_description_p}>出発地    : {plan.departure}</p>
-                                <p>{plan.text}</p>
-                            </div>
-                    </div>
-                    <div className={styles.plan_body_right}>
-                        {plan.userPlan===myprofile.userProfile?
-                            <>
-                                <div className={styles.plandetail_edit_container}>
-                                    <button className={styles.plandetail_delete_btn} onClick={()=>{dispatch(setOpenEditPlan())}}>
-                                        <EditIcon style={{fontSize:25}}/>
-                                    </button>
-                                    <EditPlan/>
-                                    <Link to ={"/"}> 
-                                        <button className={styles.plandetail_delete_btn} onClick={()=>{dispatch(fetchAsyncPlanDelete(plan.id))}}>
-                                            <DeleteIcon style={{ fontSize: 25 }}/>
+                        </div>
+                        <div className={styles.plan_body_right}>
+                            {plan.userPlan===myprofile.userProfile?
+                                <>
+                                    <div className={styles.plandetail_edit_container}>
+                                        <button className={styles.plandetail_delete_btn} onClick={()=>{dispatch(setOpenEditPlan())}}>
+                                            <EditIcon style={{fontSize:25}}/>
                                         </button>
-                                    </Link>
-                                </div> 
-                            </>
-                        :null}
-                        <div className={styles.plan_likes}>
-                            <Likes {...likeProps} /> 
-                        </div>
-                        <div className={styles.plan_prefecture_container}>
-                            <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
-                                <div className={styles.plan_prefecture_div}>
-                                    <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
-                                </div>
-                            </Link>
+                                        <EditPlan/>
+                                        <Link to ={"/"}> 
+                                            <button className={styles.plandetail_delete_btn} onClick={async()=>{await dispatch(fetchAsyncPlanDelete(plan.id))}}>
+                                                <DeleteIcon style={{ fontSize: 25 }}/>
+                                            </button>
+                                        </Link>
+                                    </div> 
+                                </>
+                            :null}
+                            <div className={styles.plan_likes}>
+                                <Likes {...likeProps} /> 
+                            </div>
+                            <div className={styles.plan_prefecture_container}>
+                                <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
+                                    <div className={styles.plan_prefecture_div}>
+                                        <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
+                                    </div>
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {plan.img!==null?
-                    <img src={plan.img} className={styles.plan_img} alt=""  onClick={()=>{setImage(plan.img)}}/>     
-                :null}
-            </div> 
-        </div>
-            
-        }
-        <div className={styles.comment_input_container}>
-            <div className={styles.comment_input_body}>
-                <div className={styles.comment_input_textfield}>
-                    <TextField
-                        placeholder="コメント"
-                        type="text"
-                        value={text}
-                        fullWidth
-                        multiline
-                        onChange={(e) => setText(e.target.value)}
-                    />
-                </div>
-                <div className={styles.comment_inut_btn}>
-                    <Button
-                        disabled={!text.length}
-                        className={styles.post_button}
-                        type="submit"
-                        color='primary'
-                        onClick={()=>{
-                            postComment();
-                            addNotification();
-                        }}
-                    >
-                        コメントを投稿
-                    </Button>
-                </div>
+                    {plan.img!==null?
+                        <img src={plan.img} className={styles.plan_img} alt=""  onClick={()=>{setImage(plan.img)}}/>     
+                    :null}
+                </div> 
             </div>
-        </div>  
-        <br/>
-        <div>
-            {isloadcomment?
-                <CircularProgress/>
-            :
-                <div className={styles.post_comments}>
-                    {comments.map((comment) => (
-                        <Comment 
-                            key={comment.id} 
-                            id={comment.id} 
-                            text={comment.text} 
-                            userComment={comment.userComment} 
-                            plan={comment.plan} 
-                            profile={comment.profile}
-                        />        
-                    ))} 
-                </div>
+                
             }
+            <div className={styles.comment_input_container}>
+                <div className={styles.comment_input_body}>
+                    <div className={styles.comment_input_textfield}>
+                        <TextField
+                            placeholder="コメント"
+                            type="text"
+                            value={text}
+                            fullWidth
+                            multiline
+                            onChange={(e) => setText(e.target.value)}
+                        />
+                    </div>
+                    <div className={styles.comment_inut_btn}>
+                        <Button
+                            disabled={!text.length}
+                            className={styles.post_button}
+                            type="submit"
+                            color='primary'
+                            onClick={()=>{
+                                postComment();
+                                addNotification();
+                            }}
+                        >
+                            コメントを投稿
+                        </Button>
+                    </div>
+                </div>
+            </div>  
+            <br/>
+            <div>
+                {isloadcomment?
+                    <CircularProgress/>
+                :
+                    <div className={styles.post_comments}>
+                        {comments.map((comment) => (
+                            <Comment 
+                                key={comment.id} 
+                                id={comment.id} 
+                                text={comment.text} 
+                                userComment={comment.userComment} 
+                                plan={comment.plan} 
+                                profile={comment.profile}
+                            />        
+                        ))} 
+                    </div>
+                }
+            </div>
+            </>:
+            <h3>プランが存在しません</h3>}
+            </div>
         </div>
-    </>
+
     )
 }
 

@@ -1,49 +1,35 @@
 
 /*    ヘッダー    */
-
-.home_header {
+.header_container {
     bottom:1vh;
     padding: 10px;
     /* display: flex; */
-    z-index: 1;
     position:fixed;
-    width:20%;
+    width:25vw;
     height: 90vh;
-    margin-left: 5%; 
+    display: flex;
+    justify-content:center;
 }
-.header_top{
+.header_body{
     bottom:5vh;
     position:fixed;
-    width:20%;  
+    width:20vw;  
+    z-index: 1;
 }
-.header_contents_container{
-    width:100%;
-    margin-top: 5px;
-    margin-left: 15px;
-}
+
 .home_header_contents{
-    width:40%;
-    border-radius: 10px;
     display: flex;
-    justify-content:left;
+    justify-content:center;
 }
 .header_link{
     text-decoration: none;
     color:black;
 }
-.header_con{
-    width: 100%;
-}
-.header_contents_container:hover .home_header_contents{
-    border-color: crimson;
-    border:solid 1px;
-    border-radius: 20px;
-    opacity: 0.9;
-}
-.home_header_profile{
+.header_profile{
     display: flex;
+    justify-content:center;
     border-radius:60px;
-    height: 90px;  
+    height: 90px; 
 }
 .home_header_avater{
     margin-top: 10px;
@@ -64,25 +50,30 @@
     height: 50px;
     width:50px;
 }
+.header_new_plan_btn{
+    background-color: honeydew;
+}
 
-/* ページタイトル */
+/* ホーム */
+.home_container{
+    display: flex;
+    justify-content: center;
+}
+.home_body{
+    width: 480px;
+}
 .home_title{
     border:solid 1px rgba(0,0,0,0.1);
-    width:500px;
+    width:478px;
     height: 40px;
     /* position: relative; */
-    margin-bottom: 10px;
     position: fixed;
     background-color: white;
     z-index: 1;
-    left:50%;
-    margin-left: -275px;
-    
 }
 .title_h2{
     margin-top: 3px;
-    position: absolute;
-    left: 0;
+    text-align: left;
     margin-left: 10px;
 }
 
@@ -107,18 +98,15 @@
 .body_container{
     display: flex;
     justify-content: center;
-
 }
-
 .user{
     margin-left: 10px;
-    
 }
 /* プラン */
-.plan_body{
+/* .plan_body{
     display: flex;
     justify-content: center;
-}
+} */
 /* 検索 */
 .search_container{
     display: flex;
@@ -128,7 +116,6 @@
     width:500px;
     border:solid 1px rgba(0,0,0,0.1);
     position: relative;
-    left: -24px;
 }
 .search_title{
     display: flex;
@@ -151,7 +138,6 @@
 .search_prefecture_p{
     border-bottom: solid 1px rgba(0,0,0,0.1);
     width: 80px;
-
 }
 /* 新規プラン */
 .newplan_modal_container{
@@ -173,4 +159,108 @@
 .newplan_modal_btn{
     margin-top: 10px;
     text-align: center;
+}
+@media screen and (max-width: 900px) {
+	.header_container {
+        width:70px;
+        height: 90vh;
+        margin-left: 10px;
+    }
+    .header_body{
+        width:70px; 
+        position: fixed;
+        z-index: 1; 
+    }
+    .header_p{
+        display: none;
+    }
+    .home_header_contents{
+        display: flex;
+        justify-content:center;
+    }
+    .header_link{
+        text-decoration: none;
+        color:black;
+    }
+    .header_profile{
+        display: flex;
+        justify-content:center;
+        border-radius:60px;
+        height: 90px; 
+    }
+    .nickname_p{
+        display: none;
+    }
+}
+@media screen and (max-width: 680px) {
+	.header_container {
+        top:0;
+        width: 100%;
+        height: 20px;
+        margin-left: 10px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        z-index: 6;
+    }
+    .header_body{
+        top: 0;
+        height: 40px;
+        width: 500px;
+        position: fixed;
+        z-index: 6;
+        margin-left: -20px;
+    }
+    .header_contents_container{
+        background-color: white;
+        width: 300px;
+        display: flex;
+        justify-content:space-evenly;
+    }
+    
+    .header_link{
+        text-decoration: none;
+        color:black;
+    }
+    .header_profile{
+        display: flex;
+        justify-content:center;
+        border-radius:60px;
+        height: 90px; 
+    }
+     .home_title{
+        margin-top: 40px;
+    } 
+    .search_container{
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    } 
+    .header_profile{
+        display: none;
+    }
+    .header_profile_min{
+        width: 40px;
+        height: 40px;
+        margin-left: 420px;
+        margin-top: -52px;
+    }
+    .header_nickname_min{
+        margin-left: -40px;
+        margin-top: -30px;
+    }
+    .nickname_p_min{
+        font-size: 8px;
+        max-width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .timeline_min{
+        margin-top: 40px;
+    }
+    .searchresult_min{
+        margin-top: 40px;
+    }
 }
