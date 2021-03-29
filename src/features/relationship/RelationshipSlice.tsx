@@ -36,7 +36,7 @@ export const fetchAsyncGetRelationId =createAsyncThunk("relationshipid/delete",a
   return res.data[0];
 });
 
-//デリーーーと
+
 export const fetchAsyncFollowingDelete =createAsyncThunk("relationships/delete",async (id:number) =>{
   await axios.delete(`${apiUrl}api/relationship/${id}/`,{
       headers:{
@@ -168,8 +168,7 @@ export const RelationshipSlice = createSlice({
         ...state,
         follower:[action.payload,...state.follower]
       }
-  });
-   
+    });
     builder.addCase(fetchAsyncGetFollowingProfile.fulfilled,(state,action)=>{
       state.followingprofile = action.payload;
     });

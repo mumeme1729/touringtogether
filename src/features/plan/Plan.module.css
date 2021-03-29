@@ -170,17 +170,20 @@
 .comment_input_container{
     display: flex;
     justify-content: center;
-    
 }
 .comment_input_body{
-    width: 400px;
+    width: 480px;
     margin-top: 20px;
-    margin-left: -48px;
+}
+.comment_input_textfield{
+    width: 400px;
+    margin-left: 40px;
 }
 .comment_inut_btn{
     margin-top: 6px;
     text-align: right;
 }
+
 
 /* 画像 */
 .plan_img {
@@ -236,5 +239,11 @@
     }
     .plan_detail_container2{
         margin-top: 40px;
+    }
+    .image_modal_image{
+        display: flex;
+        justify-content: center;
+        max-width: 480px;
+        max-height: 480px;
     }
 }

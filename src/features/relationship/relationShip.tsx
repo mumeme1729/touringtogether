@@ -60,9 +60,7 @@ const RelationShip:React.FC<PROPS_ALL_USER> = (proFile) => {
     const follower  = useSelector(selectFollowerProfile);
     const Id=useSelector(selectDeleteId);
     
-   
 
-    //選択したユーザーをフォローしているかどうか
     const isFollowing =follower.some((f)=>{
         return loginUser.userProfile===f.userProfile;
     });

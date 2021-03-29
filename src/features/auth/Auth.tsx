@@ -61,6 +61,12 @@ const Auth:React.FC= () => {
            <Modal isOpen={openSignUp} style={customStyles} ariaHideApp={false}> 
             <div className={css_styles.auth_login_container}>
               <div className={css_styles.auth_login_body}>
+              <div className={css_styles.auth_login_body_left}>
+                  <div className={css_styles.auth_app_name}>
+                    <h1 className={css_styles.app_name_h1}>ツーリング　Together</h1>
+                  </div>
+              </div>
+              <div className={css_styles.auth_login_body_right}>
               <Formik
                 initialErrors={{ email: "required" }}
                 initialValues={{ email: "", password: "" }}
@@ -104,12 +110,15 @@ const Auth:React.FC= () => {
                   isValid,
                 }) => (
                   <div className={css_styles.auth_login_main_container}>
+                      <div className={css_styles.auth_app_name_min}>
+                          <h1 className={css_styles.app_name_h1}>ツーリング　Together</h1>
+                        </div>
                       <div className={css_styles.auth_login_main_top}>
                         <p className={css_styles.auth_login_p}>ツーリング仲間を探しましょう</p>
                         <p className={css_styles.auth_login_p}>目的地、日付からピッタリの仲間が探せます</p>
                       </div>
                       <div className={css_styles.auth_login_title}>
-                        <h2>アカウント作成</h2>
+                        <h2 className={css_styles.auth_login_h2}>アカウント作成</h2>
                       </div>
                       <div className={css_styles.auth_login_main_bottom}>
                         <form onSubmit={handleSubmit}>
@@ -159,6 +168,7 @@ const Auth:React.FC= () => {
                   </div>
                 )}
               </Formik>
+              </div>
             </div>
           </div>
         </Modal>
@@ -166,106 +176,116 @@ const Auth:React.FC= () => {
            {/*ログイン */}
            <Modal isOpen={openSignIn} style={customStyles} ariaHideApp={false}>
             <div className={css_styles.auth_login_container}>
-              
               <div className={css_styles.auth_login_body}>
-                <Formik
-                  initialErrors={{ email: "required" }}
-                  initialValues={{ email: "", password: "" }}
-                  onSubmit={async (values) => {
-                      const result = await dispatch(fetchAsyncLogin(values));
-                      if (fetchAsyncLogin.fulfilled.match(result)) {
-                        await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
-                        const result=await dispatch(fetchAsyncGetNotification());//通知
-                        if(fetchAsyncGetNotification.fulfilled.match(result)){
-                          const notifi=result.payload.results
-                          const newnotification=notifi.filter((n: { status: boolean; })=>{
-                              return n.status===true;
-                          });
-                          dispatch(setCount(newnotification.length));
-                      }
-                        
-                        // await dispatch(fetchAsyncTimeline());
-                        const packet = { destination: "", date: "",prefecture:""};
-                        await dispatch(fetchAsyncSearchPlans(packet));
-                        dispatch(resetFailedSignIn());
-                        dispatch(resetOpenSignIn());
-                      }else
-                      {
-                        values.email=""
-                        values.password=""
-                        dispatch(setFailedSignIn());
-                      }
-                  }}
-                  //バリデーション
-                  validationSchema={Yup.object().shape({
-                    email: Yup.string()
-                      .email("フォーマットが不正です。")
-                      .required("メールアドレスは必須です。"),
-                    password: Yup.string().required("パスワードは必須です。"),
-                  })}
-                >
-                  {({
-                    handleSubmit,
-                    handleChange,
-                    handleBlur,
-                    values,
-                    errors,
-                    touched,
-                    isValid,
-                  }) => (
-                    <div className={css_styles.auth_login_main_container}>
-                      <div className={css_styles.auth_login_main_top}>
-                        <p className={css_styles.auth_login_p}>ツーリング仲間を探しましょう</p>
-                        <p className={css_styles.auth_login_p}>目的地、日付からピッタリの仲間が探せます</p>
-                      </div>
-                      <div className={css_styles.auth_login_title}>
-                        <h2>ログイン</h2>
-                      </div>
-                      <div className={css_styles.auth_login_main_bottom}>
-                        <form onSubmit={handleSubmit}>
-                            { failedSignIn ? <div>ログインに失敗しました</div>:<div></div>}
-                            <TextField
-                              placeholder="email"
-                              type="input"
-                              name="email"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.email}
-                            />
-                            <br />
-                            {touched.email && errors.email ? (
-                              <div >{errors.email}</div>
-                            ) : null}
-                            <br />
-                            <TextField
-                              placeholder="password"
-                              type="password"
-                              name="password"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password}
-                            />
-                            {touched.password && errors.password ? (
-                              <div >{errors.password}</div>
-                            ) : null}
-                            <div className={css_styles.auth_login_btn}>
+                <div className={css_styles.auth_login_body_left}>
+                  <div className={css_styles.auth_app_name}>
+                    <h1 className={css_styles.app_name_h1}>ツーリング　Together</h1>
+                  </div>
+                </div>
+                <div className={css_styles.auth_login_body_right}>
+                  <Formik
+                    initialErrors={{ email: "required" }}
+                    initialValues={{ email: "", password: "" }}
+                    onSubmit={async (values) => {
+                        const result = await dispatch(fetchAsyncLogin(values));
+                        if (fetchAsyncLogin.fulfilled.match(result)) {
+                          await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
+                          const result=await dispatch(fetchAsyncGetNotification());//通知
+                          if(fetchAsyncGetNotification.fulfilled.match(result)){
+                            const notifi=result.payload.results
+                            const newnotification=notifi.filter((n: { status: boolean; })=>{
+                                return n.status===true;
+                            });
+                            dispatch(setCount(newnotification.length));
+                        }
+                          
+                          // await dispatch(fetchAsyncTimeline());
+                          const packet = { destination: "", date: "",prefecture:""};
+                          await dispatch(fetchAsyncSearchPlans(packet));
+                          dispatch(resetFailedSignIn());
+                          dispatch(resetOpenSignIn());
+                        }else
+                        {
+                          values.email=""
+                          values.password=""
+                          dispatch(setFailedSignIn());
+                        }
+                    }}
+                    //バリデーション
+                    validationSchema={Yup.object().shape({
+                      email: Yup.string()
+                        .email("フォーマットが不正です。")
+                        .required("メールアドレスは必須です。"),
+                      password: Yup.string().required("パスワードは必須です。"),
+                    })}
+                  >
+                    {({
+                      handleSubmit,
+                      handleChange,
+                      handleBlur,
+                      values,
+                      errors,
+                      touched,
+                      isValid,
+                    }) => (
+                      <div className={css_styles.auth_login_main_container}>
+                        <div className={css_styles.auth_app_name_min}>
+                          <h1 className={css_styles.app_name_h1}>ツーリング　Together</h1>
+                        </div>
+                        <div className={css_styles.auth_login_main_top}>
+                          <p className={css_styles.auth_login_p}>ツーリング仲間を探しましょう</p>
+                          <p className={css_styles.auth_login_p}>目的地、日付からピッタリの仲間が探せます</p>
+                        </div>
+                        <div className={css_styles.auth_login_title}>
+                          <h2 className={css_styles.auth_login_h2}>ログイン</h2>
+                        </div>
+                        <div className={css_styles.auth_login_main_bottom}>
+                          <form onSubmit={handleSubmit}>
+                              { failedSignIn ? <div>ログインに失敗しました</div>:<div></div>}
+                              <TextField
+                                placeholder="email"
+                                type="input"
+                                name="email"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.email}
+                              />
+                              <br />
+                              {touched.email && errors.email ? (
+                                <div >{errors.email}</div>
+                              ) : null}
+                              <br />
+                              <TextField
+                                placeholder="password"
+                                type="password"
+                                name="password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.password}
+                              />
+                              {touched.password && errors.password ? (
+                                <div >{errors.password}</div>
+                              ) : null}
+                              <div className={css_styles.auth_login_btn}>
 
-                              <Button variant="contained" color="primary" disabled={!isValid} type="submit"> ログイン </Button>
-                              <div className={css_styles.auth_login_span}>
-                                <span onClick={async () => {
-                                    dispatch(resetOpenSignIn());
-                                    dispatch(setOpenSignUp());
-                                  }}
-                                >
-                                  アカウント作成 
-                                </span>
+                                <Button variant="contained" color="primary" disabled={!isValid} type="submit"> ログイン </Button>
+                                <div className={css_styles.auth_login_span}>
+                                  <span onClick={async () => {
+                                      dispatch(resetOpenSignIn());
+                                      dispatch(setOpenSignUp());
+                                    }}
+                                  >
+                                    アカウント作成 
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                        </form>
+                          </form>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </Formik>
+                      
+                    )}
+                  </Formik>
+                </div>
               </div>
             </div>
         </Modal>
