@@ -48,9 +48,6 @@ const Likes:React.FC<PLAN_LIKES> = (props) => {
     }
 
     const deleteLikes=async()=>{
-        console.log('クリック')
-        console.log(props)
-        console.log('デリート')
         await dispatch(fetchAsyncLikeDelete(likesId));
         setCount(count-1);
         setFlag(false);

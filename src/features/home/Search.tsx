@@ -23,8 +23,8 @@ const Search:React.FC = () => {
     const open = Boolean(anchorEl);
     
     const searchPlan =()=>{
-        const packet = { destination: destination, date: date,prefecture:String(prefecture)};
-        dispatch(fetchAsyncSearchPlans(packet));
+        //const packet = { destination: destination, date: date,prefecture:String(prefecture)};
+        //dispatch(fetchAsyncSearchPlans(packet));
         setDestination("");
         setDate("");
     }

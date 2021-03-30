@@ -69,15 +69,16 @@ const Auth:React.FC= () => {
               <div className={css_styles.auth_login_body_right}>
               <Formik
                 initialErrors={{ email: "required" }}
-                initialValues={{ email: "", password: "" }}
+                initialValues={{ email: "", password: "",password2:"" }}
                 //入力したメアドなどをオブジェクトとしてvaluesへ
                 onSubmit={async (values) => {
-                  const resultRegister = await dispatch(fetchAsyncRegister(values));
-                    
+                  const auth_packet={email: values.email,password: values.password}
+                  const resultRegister = await dispatch(fetchAsyncRegister(auth_packet));
+                  console.log(auth_packet)
                   //新規作成に成功したらログイン
                   if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
                     console.log(resultRegister);
-                    await dispatch(fetchAsyncLogin(values));
+                    await dispatch(fetchAsyncLogin(auth_packet));
                     
                     await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定",base:"" }));
                     const packet = { destination: "", date: "",prefecture:""};
@@ -88,6 +89,7 @@ const Auth:React.FC= () => {
                     console.log(resultRegister);
                     values.email="";
                     values.password="";
+                    values.password2="";
                     dispatch(setFailedSignUp());
                   }
                   
@@ -98,6 +100,7 @@ const Auth:React.FC= () => {
                     .email("メールアドレスのフォーマットが不正です。")
                     .required("メールアドレスは必須です。"),
                   password: Yup.string().required("パスワードは必須です。").min(4),
+                  password2:Yup.string().required().oneOf([Yup.ref("password"), null], "Passwords must match")
                 })}
               >
                 {({
@@ -148,6 +151,19 @@ const Auth:React.FC= () => {
                             />
                             {touched.password && errors.password ? (
                               <div >{errors.password}</div>
+                            ) : null}
+                             <br />
+                             <br/>
+                            <TextField
+                              placeholder="confirmpassword"
+                              type="password"
+                              name="password2"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.password2}
+                            />
+                            {touched.password2 && errors.password2 ? (
+                              <div >{errors.password2}</div>
                             ) : null}
                             <div className={css_styles.auth_login_btn}>
                               <Button variant="contained" color="primary" disabled={!isValid} type="submit">アカウント作成</Button>

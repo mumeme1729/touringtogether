@@ -75,10 +75,9 @@ const UserProfile:React.FC = () => {
                 if(myfollowing[0]?.id===0){
                     await dispatch(fetchAsyncGetmyFollowingProfile());
                 }
-
                 await dispatch(fetchAsyncGetUserPlan(user_id));
-                await dispatch(fetchAsyncCommentPlan(user_id));
-                await dispatch(fetchAsyncLikedPlans(user_id));
+                // await dispatch(fetchAsyncCommentPlan(user_id));
+                // await dispatch(fetchAsyncLikedPlans(user_id));
                 dispatch(setCommentPlan());
                 dispatch(endProfileLoad());
             }
@@ -208,10 +207,13 @@ const UserProfile:React.FC = () => {
                         <div className={styles.profile_plan_choose}>
                             <div className={styles.profile_plan_choose_btn}>
                                 <button className={styles.plan_switch} 
-                                    onClick={() => {
+                                    onClick={async() => {
+                                    
+                                    await dispatch(fetchAsyncGetUserPlan(user_id));
                                     setOpenPlan(true);
                                     setOpenCommentPlan(false);
                                     setOpenLikedPlan(false);
+                                    
                                     }}
                                 >
                                     {isopenplan?
@@ -222,7 +224,8 @@ const UserProfile:React.FC = () => {
                             </div>
                             
                             <div className={styles.profile_plan_choose_btn}>
-                                <button className={styles.plan_switch} onClick={() => {
+                                <button className={styles.plan_switch} onClick={async() => {
+                                        await dispatch(fetchAsyncCommentPlan(user_id));
                                         setOpenPlan(false);
                                         setOpenCommentPlan(true);
                                         setOpenLikedPlan(false);
@@ -235,7 +238,8 @@ const UserProfile:React.FC = () => {
                             </div>
                             <div className={styles.profile_plan_choose_btn}>
                                 <button className={styles.plan_switch}
-                                    onClick={() => {
+                                    onClick={async() => {
+                                        await dispatch(fetchAsyncLikedPlans(user_id));
                                         setOpenPlan(false);
                                         setOpenCommentPlan(false);
                                         setOpenLikedPlan(true);

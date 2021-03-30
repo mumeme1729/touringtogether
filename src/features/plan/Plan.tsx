@@ -35,8 +35,8 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
     })
 
     const searchPlan =async()=>{
-        const packet = { destination: "", date: "",prefecture:String(plan.prefecture)};
-        await dispatch(fetchAsyncSearchPlans(packet));
+        //const packet = { destination: "", date: "",prefecture:String(plan.prefecture)};
+        //await dispatch(fetchAsyncSearchPlans(packet));
     }
 
     const likeProps={

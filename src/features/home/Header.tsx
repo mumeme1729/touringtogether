@@ -15,7 +15,7 @@ import {
     fetchAsyncGetMyProf,
     selectProfile,
 } from "../auth/authSlice";
-import {setOpenNewPlan,fetchAsyncGetPrefectures} from "../plan/planSlice";
+import {setOpenNewPlan,fetchAsyncGetPrefectures,startLoad} from "../plan/planSlice";
 import {Link} from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive'
 import PostAddIcon from '@material-ui/icons/PostAdd';
@@ -75,7 +75,7 @@ const Header:React.FC = () => {
                                 </div>
                             </div>
                         </Link>
-                        <Link to ="/timeline" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);}}>
+                        <Link to ="/timeline" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);dispatch(startLoad());}}>
                             <div className={styles.header_contents_body}>
                                 <div className={styles.home_header_contents}> 
                                     <TimelineIcon style={{ fontSize: 40 }}/><p className={styles.header_p}>プラン</p>
