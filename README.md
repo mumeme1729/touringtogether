@@ -7,4 +7,7 @@
     ・Django
  VPS サービスconohaを使用
  BD:Postgres
-    
+##### フロントエンド
+  　・TypeScript
+    ・React
+    ・Redux ToolKit
