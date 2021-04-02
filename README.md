@@ -41,5 +41,7 @@ password:qwerty
 ・投稿したプラン、コメントしたプラン、いいねしたプランの表示  
 ・プロフィール情報の編集
 ・ログアウト  
-<img src="https://user-images.githubusercontent.com/28708899/113420203-db4cfa80-9403-11eb-92ee-a4b360e8d17e.jpg" width="580px">
+<img src="https://user-images.githubusercontent.com/28708899/113420203-db4cfa80-9403-11eb-92ee-a4b360e8d17e.jpg" width="580px">  
+
+
 
