@@ -5,7 +5,7 @@
 ### 使用技術
 ##### バックエンド
     ・Django
- VPS サービスconohaを使用
+ VPS サービスconohaを使用  
  BD:Postgres
 ##### フロントエンド
   　・TypeScript
