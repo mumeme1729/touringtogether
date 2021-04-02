@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/toringtogether/static/css/main.5b54216e.chunk.css",
-    "main.js": "/toringtogether/static/js/main.578bf9c8.chunk.js",
-    "main.js.map": "/toringtogether/static/js/main.578bf9c8.chunk.js.map",
+    "main.js": "/toringtogether/static/js/main.6a18f60a.chunk.js",
+    "main.js.map": "/toringtogether/static/js/main.6a18f60a.chunk.js.map",
     "runtime-main.js": "/toringtogether/static/js/runtime-main.08c3bba9.js",
     "runtime-main.js.map": "/toringtogether/static/js/runtime-main.08c3bba9.js.map",
     "static/css/2.21050121.chunk.css": "/toringtogether/static/css/2.21050121.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.21050121.chunk.css",
     "static/js/2.e3ed2a69.chunk.js",
     "static/css/main.5b54216e.chunk.css",
-    "static/js/main.578bf9c8.chunk.js"
+    "static/js/main.6a18f60a.chunk.js"
   ]
 }
