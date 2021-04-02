@@ -11,3 +11,4 @@
   　・TypeScript
     ・React
     ・Redux ToolKit
+   
