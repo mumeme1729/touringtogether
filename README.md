@@ -29,5 +29,8 @@ password:qwerty
 ・プランを投稿する:新たにプランを投稿します。  
 ・プロフィール：ログインしているユーザーのプロフィールを表示します。
 
-
 <img src="https://user-images.githubusercontent.com/28708899/113419200-f1f25200-9401-11eb-963d-5e00ce96a196.jpg" width="580px">
+
+
+プランページではコメントを投稿することができます。
+<img src="https://user-images.githubusercontent.com/28708899/113420029-8dd08d80-9403-11eb-9b7e-cf108a62d908.jpg" width="580px">
