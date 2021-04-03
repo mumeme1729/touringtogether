@@ -15,4 +15,6 @@
 ・Redux ToolKit
 #### 環境
 VPS conoHa  
-Ubuntu Gunicorn nginx
+Ubuntu Gunicorn nginx  
+
+### 使用方法
