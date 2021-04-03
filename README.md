@@ -32,6 +32,7 @@ TOPページでは新規プランが表示され、都道府県、目的地、�
 ・ログインしているユーザーのプロフィール画面に遷移  
 <img src="https://user-images.githubusercontent.com/28708899/113473134-9e841080-94a2-11eb-98bc-bc1673b5806f.jpg" width="550">  
 
+
 プラン表示画面ではコメントを投稿することができます。  
 <img src="https://user-images.githubusercontent.com/28708899/113473470-a0e76a00-94a4-11eb-83ed-695f7605b1a9.jpg" width="550">  
 
