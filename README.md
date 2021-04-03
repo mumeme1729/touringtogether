@@ -17,4 +17,10 @@
 VPS conoHa  
 Ubuntu Gunicorn nginx  
 
-### 使用方法
+### 使用方法  
+ログイン・新規アカウント作成を行います。  
+<img src="https://user-images.githubusercontent.com/28708899/113473025-ee160c80-94a1-11eb-9d62-5fdc1155de4b.jpg" width="550">  
+
+
+TOPページでは新規プランが表示され、都道府県、目的地、日付からプランを検索できます。  
+目的地検索は部分一致です。
