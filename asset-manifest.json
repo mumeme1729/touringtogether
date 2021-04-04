@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/toringtogether/static/css/main.53a62e0d.chunk.css",
-    "main.js": "/toringtogether/static/js/main.4ab715fe.chunk.js",
-    "main.js.map": "/toringtogether/static/js/main.4ab715fe.chunk.js.map",
-    "runtime-main.js": "/toringtogether/static/js/runtime-main.08c3bba9.js",
-    "runtime-main.js.map": "/toringtogether/static/js/runtime-main.08c3bba9.js.map",
-    "static/css/2.21050121.chunk.css": "/toringtogether/static/css/2.21050121.chunk.css",
-    "static/js/2.bab910d3.chunk.js": "/toringtogether/static/js/2.bab910d3.chunk.js",
-    "static/js/2.bab910d3.chunk.js.map": "/toringtogether/static/js/2.bab910d3.chunk.js.map",
-    "index.html": "/toringtogether/index.html",
-    "static/css/2.21050121.chunk.css.map": "/toringtogether/static/css/2.21050121.chunk.css.map",
-    "static/css/main.53a62e0d.chunk.css.map": "/toringtogether/static/css/main.53a62e0d.chunk.css.map",
-    "static/js/2.bab910d3.chunk.js.LICENSE.txt": "/toringtogether/static/js/2.bab910d3.chunk.js.LICENSE.txt",
-    "static/media/Auth.module.css": "/toringtogether/static/media/3883536_m.cd75aaef.jpg"
+    "main.css": "/touringtogether/static/css/main.05320681.chunk.css",
+    "main.js": "/touringtogether/static/js/main.d88b145b.chunk.js",
+    "main.js.map": "/touringtogether/static/js/main.d88b145b.chunk.js.map",
+    "runtime-main.js": "/touringtogether/static/js/runtime-main.a8bfd235.js",
+    "runtime-main.js.map": "/touringtogether/static/js/runtime-main.a8bfd235.js.map",
+    "static/css/2.21050121.chunk.css": "/touringtogether/static/css/2.21050121.chunk.css",
+    "static/js/2.bab910d3.chunk.js": "/touringtogether/static/js/2.bab910d3.chunk.js",
+    "static/js/2.bab910d3.chunk.js.map": "/touringtogether/static/js/2.bab910d3.chunk.js.map",
+    "index.html": "/touringtogether/index.html",
+    "static/css/2.21050121.chunk.css.map": "/touringtogether/static/css/2.21050121.chunk.css.map",
+    "static/css/main.05320681.chunk.css.map": "/touringtogether/static/css/main.05320681.chunk.css.map",
+    "static/js/2.bab910d3.chunk.js.LICENSE.txt": "/touringtogether/static/js/2.bab910d3.chunk.js.LICENSE.txt",
+    "static/media/Auth.module.css": "/touringtogether/static/media/3883536_m.cd75aaef.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.08c3bba9.js",
+    "static/js/runtime-main.a8bfd235.js",
     "static/css/2.21050121.chunk.css",
     "static/js/2.bab910d3.chunk.js",
-    "static/css/main.53a62e0d.chunk.css",
-    "static/js/main.4ab715fe.chunk.js"
+    "static/css/main.05320681.chunk.css",
+    "static/js/main.d88b145b.chunk.js"
   ]
 }
