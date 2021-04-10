@@ -19,7 +19,7 @@ import {setOpenNewPlan,fetchAsyncGetPrefectures,startLoad} from "../plan/planSli
 import {Link} from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive'
 import PostAddIcon from '@material-ui/icons/PostAdd';
-
+import { Theme, withStyles, createStyles } from '@material-ui/core/styles';
 
 const Header:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -50,7 +50,18 @@ const Header:React.FC = () => {
               }
             };
             fetchLoader();
-    },[dispatch]);
+    },[]);
+
+    const StyledBadge = withStyles((theme: Theme) =>
+        createStyles({
+        badge: {
+        right: 5,
+        top: 7,
+        border: `2px solid ${theme.palette.background.paper}`,
+        padding: '0 4px',
+        },
+    }),
+    )(Badge);
  
 
     return (
@@ -69,13 +80,14 @@ const Header:React.FC = () => {
                         <Link to ="/notification" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);}}>
                             <div className={styles.header_contents_body}>
                                 <div className={styles.home_header_contents}>
-                                <Badge badgeContent={ncount} color="secondary">
-                                    <NotificationsIcon style={{ fontSize: 40 }}/><p className={styles.header_p}>通知</p>
-                                </Badge>
+                                    <StyledBadge badgeContent={ncount} color="secondary" className={styles.notification_badge}>
+                                        <NotificationsIcon style={{ fontSize: 40 }}/>
+                                    </StyledBadge>
+                                    <p className={styles.header_p}>通知</p>
                                 </div>
                             </div>
                         </Link>
-                        <Link to ="/timeline" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);dispatch(startLoad());}}>
+                        <Link to ="/timeline" className={styles.header_link} onClick={()=>{window.scrollTo(0, 0);}}>
                             <div className={styles.header_contents_body}>
                                 <div className={styles.home_header_contents}> 
                                     <TimelineIcon style={{ fontSize: 40 }}/><p className={styles.header_p}>プラン</p>

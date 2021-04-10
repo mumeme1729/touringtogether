@@ -233,6 +233,12 @@
     margin-top: 10px;
     text-align: center;
 }
+.created_on{
+    margin-left: 20px;
+}
+.created_on_p{
+    font-size: 14px;
+}
 @media screen and (max-width: 680px){
     .plan_detail_title{
         margin-top: 40px;
@@ -246,4 +252,50 @@
         max-width: 480px;
         max-height: 480px;
     }
+}
+@media screen and (max-width: 500px){
+    .plan_body{
+        width: 100%;
+        border:solid 1px rgba(0,0,0,0.1);
+    }
+    .plan_description{
+        margin-top: -30px;
+        text-align: left;
+        margin-left: 20%;
+    }
+    .plan_img {
+        width: 95%;
+        height: 150px;
+        object-fit: cover; 
+        border:solid 1px rgba(0,0,0,0.1);
+        border-radius: 20px;
+      }
+    
+    .plan_image_module{
+        width: 70%;
+        height: 70%;
+    }
+    .plan_prefecture{
+        font-size: 12px;
+    }
+    /* プラン詳細 */
+    .plan_detail_body{
+        width: 100%;
+    }
+    .plan_detail_title{
+        border:solid 1px rgba(0,0,0,0.1);
+        width:100%;
+        height: 40px;
+        position: fixed;
+        z-index: 1;
+    }
+    .comment_input_body{
+        width: 100%;
+        margin-top: 20px;
+    }
+    .comment_input_textfield{
+        width: 80%;
+        margin-left: 30px;
+    }
+
 }

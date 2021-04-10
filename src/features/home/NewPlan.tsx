@@ -23,8 +23,8 @@ const customStyles = {
       top: "50%",
       left: "50%",
       backgroundColor: 'white',
-      width: '320px',
-      height: '450px',
+      width: 280,
+      height: 450,
       transform: "translate(-50%, -50%)",
     },
   };
@@ -51,7 +51,6 @@ const NewPlan:React.FC = () => {
     const newPlan = async()=>{
         const packet = { title:title,departure:departure,prefecture:String(prefecture), destination: destination, date: date ,text:text,img:image,profile:myprofile};
         const results= dispatch(fetchAsyncNewPlan(packet));
-        console.log(results);
         setDestination("");
         setDate("");
         setText("");
@@ -62,6 +61,8 @@ const NewPlan:React.FC = () => {
         setImage(null);
         dispatch(resetOpenNewPlan());
     }
+
+
     const handlerEditPicture = () => {
         const fileInput = document.getElementById("imageInput");
         fileInput?.click();

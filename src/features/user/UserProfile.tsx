@@ -64,7 +64,7 @@ const UserProfile:React.FC = () => {
                 dispatch(startProfileLoad());
                 await dispatch(fetchAsyncSelectProfile(user_id));
                 dispatch(addRelation({following:user_id}));
-                //リロード時に使用
+                //フォロー関係
                 await dispatch(fetchAsyncGetFollowerProfile(user_id));
                 await dispatch(fetchAsyncGetFollowingProfile(user_id));
                 const relation:RELATION={userFollow:loginUser.userProfile,following:user_id}
@@ -76,8 +76,6 @@ const UserProfile:React.FC = () => {
                     await dispatch(fetchAsyncGetmyFollowingProfile());
                 }
                 await dispatch(fetchAsyncGetUserPlan(user_id));
-                // await dispatch(fetchAsyncCommentPlan(user_id));
-                // await dispatch(fetchAsyncLikedPlans(user_id));
                 dispatch(setCommentPlan());
                 dispatch(endProfileLoad());
             }

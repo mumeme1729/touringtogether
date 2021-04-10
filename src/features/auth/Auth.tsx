@@ -23,10 +23,14 @@ import {
     setFailedSignUp,
     resetFailedSignUp,
     selectFailedSignUp,
+    startAuthLoad,
+    endAuthLoad,
+    selectisLoadingAuth,
   } from "./authSlice";
   import {fetchAsyncGetNotification,setCount} from "../notification/notificationSlice";
-  import {fetchAsyncSearchPlans} from "../plan/planSlice";
+  import {fetchAsyncSearchPlans,fetchAsyncGetPrefectures} from "../plan/planSlice";
 import { styles } from '@material-ui/pickers/views/Calendar/Calendar';
+import CircularProgress from '@material-ui/core/CircularProgress';
   const customStyles = {
     overlay: {
       backgroundColor: "#777777",
@@ -53,6 +57,7 @@ const Auth:React.FC= () => {
     const failedSignUp=useSelector(selectFailedSignUp);
     //新規登録
     const openSignUp = useSelector(selectOpenSignUp);
+    const isLoadingAuth=useSelector(selectisLoadingAuth);
     const dispatch: AppDispatch = useDispatch();
 
     return (
@@ -72,21 +77,20 @@ const Auth:React.FC= () => {
                 initialValues={{ email: "", password: "",password2:"" }}
                 //入力したメアドなどをオブジェクトとしてvaluesへ
                 onSubmit={async (values) => {
+                  dispatch(startAuthLoad());
                   const auth_packet={email: values.email,password: values.password}
                   const resultRegister = await dispatch(fetchAsyncRegister(auth_packet));
-                  console.log(auth_packet)
                   //新規作成に成功したらログイン
                   if (fetchAsyncRegister.fulfilled.match(resultRegister)) {
-                    console.log(resultRegister);
                     await dispatch(fetchAsyncLogin(auth_packet));
-                    
+                    await dispatch(fetchAsyncGetPrefectures());
                     await dispatch(fetchAsyncCreateProf({ nickName: "未設定",text:"未設定",base:"" }));
                     const packet = { destination: "", date: "",prefecture:""};
                     await dispatch(fetchAsyncSearchPlans(packet));
+                    dispatch(endAuthLoad());
                     dispatch(resetFailedSignUp()); 
                     dispatch(resetOpenSignUp());
                   }else{
-                    console.log(resultRegister);
                     values.email="";
                     values.password="";
                     values.password2="";
@@ -100,7 +104,7 @@ const Auth:React.FC= () => {
                     .email("メールアドレスのフォーマットが不正です。")
                     .required("メールアドレスは必須です。"),
                   password: Yup.string().required("パスワードは必須です。").min(4),
-                  password2:Yup.string().required().oneOf([Yup.ref("password"), null], "Passwords must match")
+                  password2:Yup.string().required("パスワードは必須です。").oneOf([Yup.ref("password"), null], "Passwords must match")
                 })}
               >
                 {({
@@ -119,6 +123,9 @@ const Auth:React.FC= () => {
                       <div className={css_styles.auth_login_main_top}>
                         <p className={css_styles.auth_login_p}>ツーリング仲間を探しましょう</p>
                         <p className={css_styles.auth_login_p}>目的地、日付からピッタリの仲間が探せます</p>
+                      </div>
+                      <div className={css_styles.auth_progress}>
+                        {isLoadingAuth && <CircularProgress />}
                       </div>
                       <div className={css_styles.auth_login_title}>
                         <h2 className={css_styles.auth_login_h2}>アカウント作成</h2>
@@ -205,6 +212,7 @@ const Auth:React.FC= () => {
                     onSubmit={async (values) => {
                         const result = await dispatch(fetchAsyncLogin(values));
                         if (fetchAsyncLogin.fulfilled.match(result)) {
+                          dispatch(startAuthLoad());
                           await dispatch(fetchAsyncGetMyProf()); //プロフィールを取得
                           const result=await dispatch(fetchAsyncGetNotification());//通知
                           if(fetchAsyncGetNotification.fulfilled.match(result)){
@@ -214,10 +222,10 @@ const Auth:React.FC= () => {
                             });
                             dispatch(setCount(newnotification.length));
                         }
-                          
-                          // await dispatch(fetchAsyncTimeline());
+                          await dispatch(fetchAsyncGetPrefectures());
                           const packet = { destination: "", date: "",prefecture:""};
                           await dispatch(fetchAsyncSearchPlans(packet));
+                          dispatch(endAuthLoad());
                           dispatch(resetFailedSignIn());
                           dispatch(resetOpenSignIn());
                         }else
@@ -251,6 +259,9 @@ const Auth:React.FC= () => {
                         <div className={css_styles.auth_login_main_top}>
                           <p className={css_styles.auth_login_p}>ツーリング仲間を探しましょう</p>
                           <p className={css_styles.auth_login_p}>目的地、日付からピッタリの仲間が探せます</p>
+                        </div>
+                        <div className={css_styles.auth_progress}>
+                          {isLoadingAuth && <CircularProgress />}
                         </div>
                         <div className={css_styles.auth_login_title}>
                           <h2 className={css_styles.auth_login_h2}>ログイン</h2>

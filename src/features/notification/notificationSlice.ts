@@ -66,6 +66,7 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
     initialState:{
         notificationCount:0,
         nextpage:"",
+        isloadingnotification:false,
         notifications: [
             {
                 id:0,
@@ -91,6 +92,12 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
       setCount(state,action){
         state.notificationCount=action.payload;
       },
+      startLoadNotification(state){
+        state.isloadingnotification=true;
+      },
+      endLoadNotification(state){
+        state.isloadingnotification=false;
+      },
       setNextPageNotification(state,action){
         return {
           ...state,
@@ -112,10 +119,13 @@ export const fetchAsyncUpdateStatus = createAsyncThunk(
 
 export const {
   setCount,
-  setNextPageNotification
+  setNextPageNotification,
+  startLoadNotification,
+  endLoadNotification,
 } = notificationSlice.actions;
 
 export const selectNotifications = (state: RootState) => state.notification.notifications; 
 export const selectNotificationCount=(state:RootState)=>state.notification.notificationCount;
 export const selectNotificationNextPage=(state:RootState)=>state.notification.nextpage;
+export const selectLoadNotification=(state:RootState)=>state.notification.isloadingnotification;
 export default notificationSlice.reducer;

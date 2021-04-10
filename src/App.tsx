@@ -13,11 +13,12 @@ import PlanDetail from './features/plan/PlanDetail';
 import Notification from './features/notification/Notification';
 import TimeLine from './features/home/TimeLine';
 
+
 function App() {
   return (
     <div className="App">
       
-      <Router>
+      <Router basename = {process.env.PUBLIC_URL}>
         <Header/>
         <Switch>
         <Route exact path="/" component={Home}/>
@@ -26,6 +27,7 @@ function App() {
         <Route  path="/plandetail/:id/:id" component={PlanDetail}/>
         <Route path="/notification" component={Notification}/>
         <Route path="/timeline"component={TimeLine}/>
+        <Route component = {()=>(<div> 404 Not found </div>)} />
         </Switch>
       </Router>
       

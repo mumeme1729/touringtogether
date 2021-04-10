@@ -13,13 +13,11 @@ const customStyles = {
         zIndex:2
       },
     content: {
-      top: "55%",
+      top: "50%",
       left: "50%",
-  
-      width: 280,
-      height: '90vh',
-      padding: "50px",
-  
+      backgroundColor: 'white',
+      width: 260,
+      height: 450,
       transform: "translate(-50%, -50%)",
     },
   };

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import styles from "./Home.module.css";
 import Search from "./Search";
-import {startLoad,endLoad,selectLoadPlan,fetchAsyncSearchPlans,} from "../plan/planSlice";
+import {startLoad,endLoad,selectLoadPlan,fetchAsyncSearchPlans,selectIsWaitingDeletePlan,} from "../plan/planSlice";
 import {CircularProgress} from "@material-ui/core";
 import {fetchAsyncGetNotification,selectNotifications,setCount} from "../notification/notificationSlice";
 import SearchList from "./SearchList";

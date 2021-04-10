@@ -7,7 +7,8 @@ import {  useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { startProfileLoad} from "../auth/authSlice";
 import Likes from './Likes';
-import {setOpenImage,selectOpenImage,setPlanImage,selectPrefectures,fetchAsyncSearchPlans} from '../plan/planSlice';
+import PrintDate from './PrintDate';
+import {setOpenImage,selectOpenImage,setPlanImage,selectPrefectures,startLoad,} from '../plan/planSlice';
 
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL
@@ -33,12 +34,6 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
     const prefecture=prefectures.filter((p)=>{
         return p.id===Number(plan.prefecture);
     })
-
-    const searchPlan =async()=>{
-        //const packet = { destination: "", date: "",prefecture:String(plan.prefecture)};
-        //await dispatch(fetchAsyncSearchPlans(packet));
-    }
-
     const likeProps={
         likes:plan.likes,
         planid:plan.id,
@@ -61,7 +56,7 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                                         </div>
                                     </div>
                                 </Link> 
-                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  className={styles.plan_link}>
+                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id} onClick={()=>dispatch(startLoad())} className={styles.plan_link}>
                                 <div className={styles.plan_description}>
                                     <div className={styles.plan_title_list}>
                                         <h2 className={styles.plan_h2}>{plan.title}</h2>
@@ -75,13 +70,18 @@ const Plan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                             </Link>
                         </div>
                         <div className={styles.plan_body_right}>
+                            <div>
+                                {plan.id!==0?
+                                    <PrintDate created_on={plan.created_on}/>
+                                :null} 
+                            </div>
                             <div className={styles.plan_likes}>
                                 <Likes {...likeProps} /> 
                             </div>
                             <div className={styles.plan_prefecture_container}>
                                 <Link to ={'/search/'+'destination='+'/'+'date='+'/'+'prefecture='+String(prefecture[0]?.id)}>
                                     <div className={styles.plan_prefecture_div}>
-                                        <p onClick={searchPlan} className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
+                                        <p className={styles.plan_prefecture}>{prefecture[0]?.name}</p>
                                     </div>
                                 </Link>
                             </div>

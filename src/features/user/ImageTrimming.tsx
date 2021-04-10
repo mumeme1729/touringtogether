@@ -16,8 +16,8 @@ const modalStyle={
         zIndex:4
       },
     content: {
-        width: 400,
-        height: 520,
+        width: '35vw',
+        height: '65%',
 
         top: "55%",
         left: "50%",
@@ -133,7 +133,9 @@ const ImageTrimming:React.FC= () =>{
                     dispatch(resetOpenImageTrimming());
                     setSrc(null);
                 }}
-                style={modalStyle}
+                // style={modalStyle}
+                className={styles.imagetrimming_modal}
+                overlayClassName={styles.overlay}
                 ariaHideApp={false}
              >
                 <div>
@@ -164,7 +166,8 @@ const ImageTrimming:React.FC= () =>{
                             <ReactCrop
                                 src={src}
                                 crop={crop}
-                                ruleOfThirds
+                                // ruleOfThirds
+                                circularCrop
                                 onImageLoaded={onImageLoaded}
                                 onComplete={onCropComplete}
                                 onChange={onCropChange}

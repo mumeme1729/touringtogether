@@ -29,7 +29,7 @@ export const fetchAsyncPostComment = createAsyncThunk(
           Authorization: `JWT ${localStorage.localJWT}`,
         },
       });
-      return res.data;
+      return res.data.reverse();
     }
   );
   
@@ -78,7 +78,7 @@ export const commentSlice =createSlice({
         builder.addCase(fetchAsyncPostComment.fulfilled, (state, action) => {
             return {
               ...state,
-              comments: [...state.comments, action.payload],
+              comments: [action.payload,...state.comments,],
             };
         });
         builder.addCase(fetchAsyncGetComments.fulfilled, (state, action) => {

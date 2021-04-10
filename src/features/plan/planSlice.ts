@@ -38,7 +38,7 @@ const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
   //プランを取得(リロード用)
   export const fetchAsyncGetSelectPlan = createAsyncThunk("selectplan/get", async (id:string) => {
-    const res = await axios.get(`${apiUrl}api/searchplan/${id}`, {
+    const res = await axios.get(`${apiUrl}api/searchplan/${id}/`, {
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },
@@ -166,6 +166,7 @@ export const planSlice =createSlice({
         nextpage:"",
         timelinenextpage:"",
         isOpenEditPlan:false,
+        isWaitingDeletePlan:false,
         timeline:[
           {
               id:0,
@@ -305,7 +306,13 @@ export const planSlice =createSlice({
         },
         resetOpenEditPlan(state){
           state.isOpenEditPlan=false;
-        }
+        },
+        startWitingDeletPlan(state){
+          state.isWaitingDeletePlan=true;
+        },
+        endWaitingDeletePlan(state){
+          state.isWaitingDeletePlan=false;
+        },
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchAsyncNewPlan.fulfilled,(state,action)=>{
@@ -358,6 +365,8 @@ export const{
     setOpenEditPlan,
     resetOpenEditPlan,
     setNextTimeLine,
+    startWitingDeletPlan,
+    endWaitingDeletePlan,
 }=planSlice.actions
 
 
@@ -372,4 +381,6 @@ export const selectPrefectures=(state:RootState)=>state.plan.prefectures;
 export const selectNextPage=(state:RootState)=>state.plan.nextpage;
 export const selectTimeLineNextPage=(state:RootState)=>state.plan.timelinenextpage;
 export const selectOpenEditPlan=(state:RootState)=>state.plan.isOpenEditPlan;
+export const selectIsWaitingDeletePlan=(state:RootState)=>state.plan.isWaitingDeletePlan;
+
 export default planSlice.reducer;

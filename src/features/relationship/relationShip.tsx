@@ -36,12 +36,11 @@ const modalStyle={
         zIndex:2
       },
     content: {
-        width: 400,
-        height: 520,
-
-        top: "55%",
+        top: "50%",
         left: "50%",
-
+        backgroundColor: 'white',
+        width: 260,
+        height: 450,
         transform: "translate(-50%, -50%)",
       },
 };

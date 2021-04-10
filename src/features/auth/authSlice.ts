@@ -136,6 +136,7 @@ export const authSlice = createSlice({
     failedSignUp:false,
     openEditProfile:false,
     isLoadingProfile:false,
+    isLoadingAuth:false,
     //ログインしている人のプロフィールを管理
     myprofile: {
       id: 0,
@@ -197,18 +198,6 @@ export const authSlice = createSlice({
       resetOpenSignUp(state) {
         state.openSignUpModal = false;
       },
-     
-      //ニックネームを編集するためのアクション
-      editNickname(state, action) {
-        state.myprofile.nickName = action.payload;
-      },
-      //紹介文の編集
-      editProfileText(state,action){
-        state.myprofile.text=action.payload;
-      },
-      editProfileBase(state,action){
-        state.myprofile.base=action.payload;
-      },
       //プロフィール編集画面のオンオフ
       setOpenEditProfile(state){
         state.openEditProfile=true;
@@ -216,13 +205,18 @@ export const authSlice = createSlice({
       resetOpenEditProfile(state){
         state.openEditProfile=false;
       },
-
       //ロード
       startProfileLoad(state){
         state.isLoadingProfile=true;
       },
       endProfileLoad(state){
         state.isLoadingProfile=false;
+      },
+      startAuthLoad(state){
+        state.isLoadingAuth=true;
+      },
+      endAuthLoad(state){
+        state.isLoadingAuth=false;
       },
   },
   extraReducers:(builder)=>{
@@ -260,15 +254,14 @@ export const {
     resetFailedSignIn,
     setOpenSignUp,
     resetOpenSignUp,
-    editNickname,
     setOpenEditProfile,
     resetOpenEditProfile,
-    editProfileText,
     startProfileLoad,
     endProfileLoad,
     setFailedSignUp,
     resetFailedSignUp,
-    editProfileBase,
+    startAuthLoad,
+    endAuthLoad,
   } = authSlice.actions;
 
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignInModal;
@@ -280,5 +273,6 @@ export const selectOpenEditProfile =(state:RootState)=>state.auth.openEditProfil
 export const selectmyFollowingProfile=(state:RootState)=>state.auth.myfollowingprofile;
 export const selectIsLoadingProfile=(state:RootState)=>state.auth.isLoadingProfile;
 export const selectFailedSignUp=(state:RootState)=>state.auth.failedSignUp;
+export const selectisLoadingAuth=(state:RootState)=>state.auth.isLoadingAuth;
 
 export default authSlice.reducer;

@@ -1,4 +1,3 @@
-
 /*    ヘッダー    */
 .header_container {
     bottom:1vh;
@@ -130,6 +129,7 @@
 .search_textfield_body{
     width: 300px;
     margin-left: 100px;
+    margin-bottom: 3px;
 }
 .search_prefecture{
     display: flex;
@@ -212,6 +212,8 @@
         margin-left: -20px;
     }
     .header_contents_container{
+        -webkit-appearance: none;
+        -webkit-text-size-adjust: 100%;
         background-color: white;
         width: 300px;
         display: flex;
@@ -261,5 +263,96 @@
     }
     .searchresult_min{
         margin-top: 40px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .header_container {
+        top:0;
+        width: 100%;
+        height: 20px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        z-index: 6;
+    }
+    .header_body{
+        /* background-color: aquamarine; */
+        margin-top: 5px; 
+        top: 0;
+        height: 40px;
+        width: 100%;
+        position: fixed;
+        z-index: 6;
+        /* margin-left: -60px; */
+    }
+    .header_contents_container{
+        background-color: white;
+        width: 60vw;
+        display: flex;
+        justify-content:space-evenly;
+    }
+    .header_link{
+        text-decoration: none;
+        color:black;
+    }
+    .header_profile{
+        display: flex;
+        justify-content:center;
+        border-radius:60px;
+        height: 90px; 
+        
+    }
+    .home_title{
+        border:solid 1px rgba(0,0,0,0.1);
+        width:100%;
+        height: 40px;
+        /* position: relative; */
+        position: fixed;
+        z-index: 1; 
+    }
+    .home_body{
+        width: 100%;
+    }
+    .search_container{
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    } 
+    .header_profile{
+        display: none;
+    }
+    .header_profile_min{
+        width: 40px;
+        height: 40px;
+        margin-left: 78%;
+        margin-top: -58px;
+        
+    }
+    .header_nickname_min{
+        margin-left: -40px;
+        margin-top: -30px;
+    }
+    .nickname_p_min{
+        font-size: 8px;
+        max-width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .timeline_min{
+        margin-top: 40px;
+    }
+    .searchresult_min{
+        margin-top: 40px;
+    }
+    .search_body{
+        width:100%;
+        border:solid 1px rgba(0,0,0,0.1);
+    }
+    .search_textfield_body{
+        width: 80%;
+        margin-left: 35px;
+        margin-bottom: 6px;
     }
 }

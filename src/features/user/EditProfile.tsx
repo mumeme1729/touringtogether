@@ -2,13 +2,10 @@ import React,{ useState } from 'react'
 import Modal from "react-modal";
 import styles from "./User.module.css";
 import {
-    editNickname,
-    editProfileText,
     selectProfile,
     selectOpenEditProfile,
     resetOpenEditProfile,
     fetchAsyncUpdateProf,
-    editProfileBase,
   } from "../auth/authSlice";
 import { Button, TextField,Avatar} from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,11 +20,12 @@ const modalStyle={
       },
     content: {
         
-        width: 420,
-        height: 460,
-        top: "48%",
-        left: "48%",
-        transform: "translate(-50%, -50%)",
+        top: "50%",
+      left: "50%",
+      backgroundColor: 'white',
+      width: 260,
+      height: 450,
+      transform: "translate(-50%, -50%)",
       },
 };
 
@@ -36,10 +34,12 @@ const EditProfile:React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const openEditProfile=useSelector(selectOpenEditProfile);
     const profile=useSelector(selectProfile);//ログインしているユーザーのprofile
-    const [image, setImage] = useState<File | null>(null);
+    const [nickName,setnickNme]=useState(profile.nickName);
+    const [text,setText]=useState(profile.text);
+    const [base,setBase]=useState(profile.base);
 
     const updateProfile = async () => {
-        const packet = { id: profile.id, nickName: profile.nickName,text:profile.text,base:profile.base};
+        const packet = { id: profile.id, nickName: nickName,text:text,base:base};
         await dispatch(fetchAsyncUpdateProf(packet));
     };
 
@@ -54,25 +54,24 @@ const EditProfile:React.FC = () => {
              >
                 <div className={styles.editprofile_modal_container}>
                     <form>
-                        <h1 className={styles.core_title}>プロフィールを編集</h1>
+                        <h2 className={styles.core_title}>プロフィールを編集</h2>
                         
                         <div className={styles.editprofile_modal_top}>
-                            {/* <input type="file" id="imageInput" hidden={true} onChange={(event) => setImage(event.target.files![0])}/> */}
                             <Button onClick={()=>{dispatch(setOpenImageTrimming());}} className={styles.homr_btnprofile}>
                                 <Avatar alt="who?" src={profile.img} style={{height:'70px',width:'70px'}}/>
                             </Button>
                             <div className={styles.editprofile_modal_nickname}>
-                                <TextField placeholder="nickname" type="text" value={profile?.nickName} label="ニックネーム"
-                                    onChange={(event) => dispatch(editNickname(event.target.value))}/>
+                                <TextField placeholder="nickname" type="text" value={nickName} label="ニックネーム"
+                                    onChange={(e) => setnickNme(e.target.value)}/>
                             </div>
                         </div>
                         <br />
-                        <TextField placeholder="自己紹介" type="text" value={profile?.text} multiline fullWidth label="自己紹介"
-                            onChange={(event) => dispatch(editProfileText(event.target.value))}/>
+                        <TextField placeholder="自己紹介" type="text" value={text} multiline fullWidth label="自己紹介"
+                            onChange={(event) => setText(event.target.value)}/>
                         <br />
                         <br />
-                        <TextField placeholder="拠点" type="text" value={profile?.base} label="拠点" fullWidth
-                            onChange={(event) => dispatch(editProfileBase(event.target.value))}/>
+                        <TextField placeholder="拠点" type="text" value={base} label="拠点" fullWidth
+                            onChange={(event) => setBase(event.target.value)}/>
                         <div className={styles.editprofile_modal_update_btn}>
                             <Button
                                 disabled={!profile?.nickName}

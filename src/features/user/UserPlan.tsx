@@ -3,11 +3,12 @@ import { Avatar,} from "@material-ui/core";
 import { PROPS_PLANPROFILE } from '../types';
 import styles from "./User.module.css";
 import {Link,} from 'react-router-dom';
-import {selectPrefectures,fetchAsyncSearchPlans,setPlanImage,setOpenImage } from '../plan/planSlice';
+import {selectPrefectures,fetchAsyncSearchPlans,setPlanImage,setOpenImage,startLoad,} from '../plan/planSlice';
 import Likes from '../plan/Likes';
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { selectProfile} from "../auth/authSlice";
+import PrintDate from '../plan/PrintDate';
 
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL
@@ -64,7 +65,7 @@ const UserPlan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                 <div className={styles.plan_body}>
                     <div className={styles.plan_body_top}>
                         <div className={styles.plan_body_left}>
-                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id} className={styles.plan_link}>
+                            <Link to={'/plandetail/'+plan.userPlan+'/'+plan.id}  onClick={()=>dispatch(startLoad())} className={styles.plan_link}>
                                 <div className={styles.plan_profile}>
                                         {imgpath!==apiUrl?
                                             <Avatar alt="who?" src={imgpath} style={{height:'50px',width:'50px'}}/>
@@ -86,6 +87,11 @@ const UserPlan:React.FC< PROPS_PLANPROFILE> = (plan) => {
                             </Link>
                         </div>
                         <div className={styles.plan_body_right}>
+                            <div>
+                                {plan.id!==0?
+                                    <PrintDate created_on={plan.created_on}/>
+                                :null} 
+                            </div>
                             <div className={styles.plan_likes}>
                                 <Likes {...likeProps} />
                             </div>

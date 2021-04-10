@@ -12,11 +12,13 @@ const TimeLine = () => {
     const [isFetching, setIsFetching] = UseInfiniteScroll(fetchMoreListItems);
     const nextpage=useSelector(selectTimeLineNextPage);
     const isloadplan=useSelector(selectLoadPlan);
+
     async function fetchMoreListItems() {
         if(nextpage!==null){
             const a=await dispatch(fetchAsyncTimeLinePage(nextpage));
-            console.log(a)
-            dispatch(setNextTimeLine(a.payload.results));
+            if(!fetchAsyncTimeLinePage.rejected.match(a)){
+                dispatch(setNextTimeLine(a.payload.results));
+            }
         }
         setIsFetching(false)
   }
@@ -54,7 +56,7 @@ const TimeLine = () => {
                                         id={plan.id} 
                                         title={plan.title}
                                         departure={plan.departure} 
-                                        prefecture={plan.departure} 
+                                        prefecture={plan.prefecture} 
                                         destination={plan.destination} 
                                         date={plan.date} 
                                         userPlan={plan.userPlan} 

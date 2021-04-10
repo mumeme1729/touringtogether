@@ -25,6 +25,7 @@ const SearchList:React.FC = () => {
     
     return (
         <div >
+            
             {searchplans.length?
                 <>    
                     {searchplans.map((plan)=>(
